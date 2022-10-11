@@ -32,7 +32,7 @@ function Dashboard({ date }) {
       <ErrorAlert error={reservationsError} />
       {JSON.stringify(reservations)}
     </main>
-  );
+  )
 }
 
 export default Dashboard;

@@ -4,6 +4,7 @@ import Routes from "./Routes";
 
 import "./Layout.css";
 
+
 /**
  * Defines the main layout of the application.
  *
@@ -23,7 +24,7 @@ function Layout() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Layout;
+export default Layout
