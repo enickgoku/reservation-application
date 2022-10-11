@@ -12,18 +12,18 @@ import Row from "react-bootstrap/Row"
  * @returns {JSX.Element}
  */
 function Dashboard({ date }) {
-  const [reservations, setReservations] = useState([]);
-  const [reservationsError, setReservationsError] = useState(null);
+  const [reservations, setReservations] = useState([])
+  const [reservationsError, setReservationsError] = useState(null)
 
-  useEffect(loadDashboard, [date]);
+  useEffect(loadDashboard, [date])
 
   function loadDashboard() {
-    const abortController = new AbortController();
-    setReservationsError(null);
+    const abortController = new AbortController()
+    setReservationsError(null)
     listReservations({ date }, abortController.signal)
       .then(setReservations)
-      .catch(setReservationsError);
-    return () => abortController.abort();
+      .catch(setReservationsError)
+    return () => abortController.abort()
   }
 
   return (
