@@ -1,62 +1,73 @@
+// React + Hooks
 import React from "react";
 
-import { Link } from "react-router-dom";
+// React Bootstrap Components
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Dropdown from "react-bootstrap/Dropdown";
+
+import "./Layout.css";
 
 /**
  * Defines the menu for this application.
- *
  * @returns {JSX.Element}
  */
-
 function Menu() {
+
+  const globalMenuOptions = [
+    {
+      name: "Dashboard",
+      url: "/dashboard",
+    },
+    {
+      name: "New Reservation",
+      url: "/reservations/new",
+    },
+    {
+      name: "New Table",
+      url: "/tables/new",
+    }
+]
+
+  /**
+   * Defines the menu that displays on all pages.
+   */
+  const globalPageOptions = globalMenuOptions.map((item, index) => (
+    <Dropdown.Item key={index} href={item.url}>
+      {item.name}
+    </Dropdown.Item>
+  ))
+
   return (
-    <nav className="navbar navbar-dark align-items-start p-0">
-      <div className="container-fluid d-flex flex-column p-0">
-        <Link
-          className="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
-          to="/"
-        >
-          <div className="sidebar-brand-text mx-3">
-            <span>Periodic Tables</span>
-          </div>
-        </Link>
-        <hr className="sidebar-divider my-0" />
-        <ul className="nav navbar-nav text-light" id="accordionSidebar">
-          <li className="nav-item">
-            <Link className="nav-link" to="/dashboard">
-              <span className="oi oi-dashboard" />
-              &nbsp;Dashboard
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/search">
-              <span className="oi oi-magnifying-glass" />
-              &nbsp;Search
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/reservations/new">
-              <span className="oi oi-plus" />
-              &nbsp;New Reservation
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/tables/new">
-              <span className="oi oi-layers" />
-              &nbsp;New Table
-            </Link>
-          </li>
-        </ul>
-        <div className="text-center d-none d-md-inline">
-          <button
-            className="btn rounded-circle border-0"
-            id="sidebarToggle"
-            type="button"
-          />
-        </div>
-      </div>
-    </nav>
-  );
+    <>
+      <Row>
+        <Col className="d-flex align-items-center">
+          <Dropdown className="mt-10">
+            <Dropdown.Toggle
+              className="btn btn-secondary dropdown-toggle mt-2 mb-2"
+              variant="dark"
+              style={{ fontSize: "1.5rem" }}
+            >
+            <svg xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="currentColor"
+              className="bi bi-list align-items-center justify-content-center mb-1"
+              viewBox="0 0 16 16"
+            >
+              <path fill-rule="evenodd"
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+              />
+            </svg>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {globalPageOptions}
+            </Dropdown.Menu>
+          </Dropdown>
+        </Col>
+      </Row>
+    </>
+  )
 }
 
-export default Menu;
+export default Menu

@@ -16,13 +16,14 @@ function Routes() {
   return (
     <Switch>
       <Route exact={true} path="/">
+        
         <Redirect to={"/dashboard"} />
       </Route>
-      <Route exact={true} path="/reservations">
-        <Redirect to={"/dashboard"} />
+      <Route path={["/reservations", "/tables", "/dashboard"]}>
+        <Dashboard />
       </Route>
-      <Route path="/dashboard">
-        <Dashboard date={today()} />
+      <Route exact={true} path="/search">
+        {/* <Search /> */}
       </Route>
       <Route>
         <NotFound />

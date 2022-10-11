@@ -2,3 +2,12 @@
   background-color: #393a44;
   min-width: 200px;
 }
+
+.dropdown-toggle::after {
+  display: none !important; 
+}
+
+.background {
+  background-color: #393a44;
+}
+
