@@ -16,7 +16,7 @@ import "./Layout.css"
  function Layout() {
  
    return (
-     <Container fluid>
+     <Container fluid className="layout">
        <Row>
          <Col className="d-flex align-items-end">
            <Menu />

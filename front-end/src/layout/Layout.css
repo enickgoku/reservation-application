@@ -7,10 +7,6 @@
   display: none !important; 
 }
 
-.background {
-  background-color: #393a44;
-}
-
 .h1-div {
   color: black;
 }
@@ -28,4 +24,8 @@
 
 .links {
   text-decoration: none !important;
+}
+
+.layout {
+  color:#393a44;
 }
