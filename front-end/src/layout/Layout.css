@@ -14,3 +14,18 @@
 .h1-div {
   color: black;
 }
+
+.menu-h1 {
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.menu-h1:hover {
+  color: #130ba2;
+  transition: all 0.5s;
+}
+
+.links {
+  text-decoration: none !important;
+}

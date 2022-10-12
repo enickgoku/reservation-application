@@ -1,5 +1,6 @@
 // React + Hooks
 import React from "react";
+import { Link } from "react-router-dom";
 
 // React Bootstrap Components
 import Col from "react-bootstrap/Col";
@@ -41,8 +42,11 @@ function Menu() {
   return (
     <>
       <Row>
-        <Col className="d-flex align-items-center">
-          <Dropdown className="mt-10">
+        <Col className="d-flex align-items-center justify-content-between flex-lg-row">
+          <div>
+              <Link className="links" to="/dashboard"><h1 className="menu-h1">The Canopy Lounge: Reservations</h1></Link>
+          </div>
+          <Dropdown className="mt-10 d-flex justify-content-start">
             <Dropdown.Toggle
               className="btn btn-secondary dropdown-toggle mt-2 mb-2"
               variant="dark"
