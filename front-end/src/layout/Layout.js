@@ -14,10 +14,15 @@ import "./Layout.css"
  */
 function Layout() {
   return (
-    <div className="container-fluid background">
-      <Menu />
-      <Routes />
-    </div>
+    <>
+      <div className="container-fluid background">
+        <Menu />
+      </div>
+      <div>
+        <Routes />
+      </div>
+    </>
+
   )
 }
 

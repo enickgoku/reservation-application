@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react"
 import { Switch, Route, useRouteMatch, Redirect } from "react-router-dom"
 import { listReservations } from "../utils/api"
 
+import CreateReservationForm from "../reservations/forms/CreateReservationForm"
+
 import Row from "react-bootstrap/Row"
 
 
@@ -37,7 +39,7 @@ function Dashboard({ date }) {
           <Redirect to={"/dashboard"} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
-          {/* <CreateReservationForm {...props} /> */}
+          <CreateReservationForm />
         </Route>
         <Route exact={true} path={"/reservations/:reservationId/edit"}>
           {/* <EditReservationForm {...props} /> */}
