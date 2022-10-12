@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react"
-import { Switch, Route, useRouteMatch, Redirect } from "react-router-dom"
+import { Switch, Route, Redirect } from "react-router-dom"
 import { listReservations } from "../utils/api"
 
 import CreateReservationForm from "../reservations/forms/CreateReservationForm"
+import Header from "../layout/Header"
 
 import Row from "react-bootstrap/Row"
 
+import "../layout/Layout.css"
 
-/**
- * Defines the dashboard page.
- * @param date
- *  the date for which the user wants to view reservations.
- * @returns {JSX.Element}
- */
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([])
   const [reservationsError, setReservationsError] = useState(null)
@@ -32,11 +28,9 @@ function Dashboard({ date }) {
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
         <Route exact={true} path={"/dashboard"}>
+          <Header />
             {/* <TablesList {...props} />
             <ReservationsList {...props} /> */}
-        </Route>
-        <Route exact={true} path={"/reservations"}>
-          <Redirect to={"/dashboard"} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <CreateReservationForm />

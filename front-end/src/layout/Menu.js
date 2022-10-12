@@ -43,9 +43,6 @@ function Menu() {
     <>
       <Row>
         <Col className="d-flex align-items-center justify-content-between flex-lg-row">
-          <div>
-              <Link className="links" to="/dashboard"><h1 className="menu-h1">The Canopy Lounge: Reservations</h1></Link>
-          </div>
           <Dropdown className="mt-10 d-flex justify-content-start">
             <Dropdown.Toggle
               className="btn btn-secondary dropdown-toggle mt-2 mb-2"
