@@ -5,33 +5,34 @@ import { listReservations } from "../utils/api"
 import CreateReservationForm from "../reservations/forms/CreateReservationForm"
 import EditReservationForm from "../reservations/forms/EditReservationForm"
 import Header from "../layout/Header"
+import ReservationsList from "../reservations/reservations-list/ReservationsList"
 
 import Row from "react-bootstrap/Row"
 
 import "../layout/Layout.css"
 
 function Dashboard({ date }) {
-  const [reservations, setReservations] = useState([])
-  const [reservationsError, setReservationsError] = useState(null)
+  // const [reservations, setReservations] = useState([])
+  // const [reservationsError, setReservationsError] = useState(null)
 
-  useEffect(loadDashboard, [date])
+  // useEffect(loadDashboard, [date])
 
-  function loadDashboard() {
-    const abortController = new AbortController()
-    setReservationsError(null)
-    listReservations({ date }, abortController.signal)
-      .then(setReservations)
-      .catch(setReservationsError)
-    return () => abortController.abort()
-  }
+  // function loadDashboard() {
+  //   const abortController = new AbortController()
+  //   setReservationsError(null)
+  //   listReservations({ date }, abortController.signal)
+  //     .then(setReservations)
+  //     .catch(setReservationsError)
+  //   return () => abortController.abort()
+  // }
 
   return (
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
         <Route exact={true} path={"/dashboard"}>
           <Header />
-            {/* <TablesList {...props} />
-            <ReservationsList {...props} /> */}
+            {/* <TablesList {...props} /> */}
+            <ReservationsList />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <CreateReservationForm />
