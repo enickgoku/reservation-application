@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom"
 import { listReservations } from "../utils/api"
 
 import CreateReservationForm from "../reservations/forms/CreateReservationForm"
+import EditReservationForm from "../reservations/forms/EditReservationForm"
 import Header from "../layout/Header"
 
 import Row from "react-bootstrap/Row"
@@ -36,7 +37,7 @@ function Dashboard({ date }) {
           <CreateReservationForm />
         </Route>
         <Route exact={true} path={"/reservations/:reservationId/edit"}>
-          {/* <EditReservationForm {...props} /> */}
+          <EditReservationForm />
         </Route>
         <Route exact={true} path={"/reservations/:reservationId/seat"}>
           {/* <SeatReservationForm {...props} /> */}

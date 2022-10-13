@@ -60,7 +60,7 @@ const CreateReservationForm = () => {
       <Col sm={8} md={6} lg={5} xl={5} className="mb-5">
         <ErrorAlert error={formError} />
         <h1 className="d-flex justify-content-center">Create Reservation</h1>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Form.Group controlId="first_name">
             <Form.Label htmlFor="first_name">First Name</Form.Label>
             <Form.Control id="first_name"
@@ -109,6 +109,17 @@ const CreateReservationForm = () => {
             <Form.Control id="reservation_time"
               type="time"
               name="reservation_time"
+              size="lg"
+              required={true}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <br></br>
+          <Form.Group controlId="people">
+            <Form.Label htmlFor="people">Number of Guests</Form.Label>
+            <Form.Control id="people"
+              type="number"
+              name="people"
               size="lg"
               required={true}
               onChange={handleChange}
