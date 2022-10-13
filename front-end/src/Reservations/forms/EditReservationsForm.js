@@ -6,9 +6,12 @@ import ErrorAlert from "../../layout/ErrorAlert"
 
 import { Col, Form, Button, ButtonGroup } from "react-bootstrap"
 
+const { deleteReservation, updateReservation } = require("../../utils/api")
+
 function EditReservationForm(){
 
   const history = useHistory()
+  const { reservationId } = useParams()
 
   const [formData, setFormData] = useState({})
   const [formError, setFormError] = useState(null)
@@ -23,17 +26,29 @@ function EditReservationForm(){
 
   const handleUpdateSubmit = (event) => {
     event.preventDefault()
+    const abortController = new AbortController()
+    updateReservation(formData, abortController.signal)
+      .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
+      .catch(setFormError)
+    return () => abortController.abort()
   }
 
   const handleCancel = () => {
     history.goBack()
   }
 
+  const handleReservationDelete = (event) => {
+    event.preventDefault()
+    deleteReservation(reservationId)
+        .then(() => history.push("/"))
+        .catch(setFormError)
+  }
+
 
   return (
     <>
       <Col sm={8} md={6} lg={5} xl={5} className="mb-5">
-        <ErrorAlert error />
+        <ErrorAlert error={formError} />
         <h1 className="d-flex justify-content-center">Create Reservation</h1>
         <Form onSubmit={handleUpdateSubmit}>
           <Form.Group controlId="first_name">
@@ -91,7 +106,7 @@ function EditReservationForm(){
           </Form.Group>
           <ButtonGroup aria-label="Basic example" className="mt-4 w-100">
             <Button variant="dark" type="cancel" onClick={handleCancel}>Cancel</Button>
-            <Button variant="danger" type="delete">Delete</Button>
+            <Button variant="danger" type="delete" onClick={handleReservationDelete}>Delete</Button>
             <Button variant="success" type="submit">Save</Button>
           </ButtonGroup>
         </Form>
@@ -99,3 +114,5 @@ function EditReservationForm(){
     </>
   )
 }
+
+export default EditReservationForm
