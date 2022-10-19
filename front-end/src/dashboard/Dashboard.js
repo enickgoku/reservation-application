@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom"
 import { listReservations } from "../utils/api"
 
 import CreateReservationForm from "../reservations/forms/CreateReservationForm"
-import EditReservationForm from "../reservations/forms/EditReservationForm"
+import EditReservationForm from "../reservations/forms/EditReservationsForm"
 import Header from "../layout/Header"
 import ReservationsList from "../reservations/reservations-list/ReservationsList"
 import CreateTableForm from "../tables/forms/CreateTableForm"
@@ -45,7 +45,7 @@ function Dashboard({ date }) {
           {/* <SeatReservationForm {...props} /> */}
         </Route>
         <Route exact={true} path={"/tables"}>
-          {/* <Redirect to={"/dashboard"} /> */}
+          <Redirect to={"/dashboard"} />
         </Route>
         <Route exact={true} path={"/tables/new"}>
           <CreateTableForm />

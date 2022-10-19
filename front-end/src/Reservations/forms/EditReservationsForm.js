@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom"
 
 import ErrorAlert from "../../layout/ErrorAlert"
 
-import { Col, Form, Button, ButtonGroup } from "react-bootstrap"
+import { Col, Form, Button, ButtonGroup, Modal } from "react-bootstrap"
 
 const { deleteReservation, updateReservation } = require("../../utils/api")
 
@@ -15,6 +15,10 @@ function EditReservationForm(){
 
   const [formData, setFormData] = useState({})
   const [formError, setFormError] = useState(null)
+  const [confirmation, setConfirmation] =  useState(false)
+
+  const handleClose = () => setConfirmation(false);
+  const handleShow = () => setConfirmation(true);  
 
   const handleChange = ({ target }) => {
     setFormError(null)
@@ -106,11 +110,27 @@ function EditReservationForm(){
           </Form.Group>
           <ButtonGroup aria-label="Basic example" className="mt-4 w-100">
             <Button variant="dark" type="cancel" onClick={handleCancel}>Cancel</Button>
-            <Button variant="danger" type="delete" onClick={handleReservationDelete}>Delete</Button>
+            <Button variant="danger" type="delete" onClick={handleShow}>Delete</Button>
             <Button variant="success" type="submit">Save</Button>
           </ButtonGroup>
         </Form>
       </Col>
+      <Modal show={confirmation} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>Delete Reservation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          You are about to delete the reservation. This cannot be undone. Continue?
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="dark" onClick={handleClose}>
+                Cancel
+            </Button>
+            <Button variant="danger" onClick={handleReservationDelete}>
+                Continue
+            </Button>
+          </Modal.Footer>
+      </Modal>
     </>
   )
 }

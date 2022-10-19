@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Card, Button } from 'react-bootstrap/Card'
+import { Card, Button } from 'react-bootstrap'
 
 export default function ReservationCard(...props) {
 

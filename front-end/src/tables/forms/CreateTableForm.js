@@ -9,7 +9,7 @@ import Col from "react-bootstrap/esm/Col"
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from "react-bootstrap/ButtonGroup"
 
-import createTable from "../../utils/api"
+import { createTable } from "../../utils/api"
 
 
 export default function CreateTableForm() {
