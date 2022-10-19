@@ -18,7 +18,7 @@ export default function TableCard(...props) {
           </Card.Text>
           <Button variant="primary"><Link to="/tables/:tableId/edit">Edit</Link></Button>
         </Card.Body>
-    </Card>
+      </Card>
     </>
   )
 }

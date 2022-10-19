@@ -99,3 +99,9 @@ export async function deleteReservation(reservationId, signal) {
   }
   return await fetchJson(url, options)
 }
+
+export async function listTables(params, signal) {
+}
+
+export async function createTable(table, signal) {
+}
