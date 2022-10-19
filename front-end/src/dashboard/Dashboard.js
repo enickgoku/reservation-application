@@ -6,6 +6,7 @@ import CreateReservationForm from "../reservations/forms/CreateReservationForm"
 import EditReservationForm from "../reservations/forms/EditReservationForm"
 import Header from "../layout/Header"
 import ReservationsList from "../reservations/reservations-list/ReservationsList"
+import CreateTableForm from "../tables/forms/CreateTableForm"
 
 import Row from "react-bootstrap/Row"
 
@@ -47,7 +48,7 @@ function Dashboard({ date }) {
           {/* <Redirect to={"/dashboard"} /> */}
         </Route>
         <Route exact={true} path={"/tables/new"}>
-          {/* <CreateTableForm /> */}
+          <CreateTableForm />
         </Route>
         <Route exact={true} path={"/tables/:tableId/edit"}>
           {/* <EditTableForm /> */}
