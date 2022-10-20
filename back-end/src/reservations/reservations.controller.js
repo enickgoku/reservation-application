@@ -1,16 +1,12 @@
-/**
- * List handler for reservation resources
- */
-
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 const reservationsService = require("./reservations.service")
 
-async function list(req, res, next) {
+async function list(req, res) {
   reservationsService
-    .list()
-    .then((data) => res.json(data))
-    .catch(next)
+    const data = await reservationsService.list()
+    res.json({ data })
 }
 
 module.exports = {
-  list,
+  list: asyncErrorBoundary(list),
 }

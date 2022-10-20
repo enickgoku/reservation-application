@@ -1,12 +1,11 @@
 const tableService = require("./tables.service")
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 
 async function list(req, res, next) {
-  tableService
-    .list()
-    .then((data) => res.json(data))
-    .catch(next)
+  const data = await tableService.list()
+  res.json({ data })
 }
 
 module.exports = {
-  list,
+  list: asyncErrorBoundary(list),
 }
