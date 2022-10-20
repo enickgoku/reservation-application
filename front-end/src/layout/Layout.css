@@ -6,21 +6,33 @@
 .dropdown-toggle::after {
   display: none !important; 
 }
-/* 
-.h1-div {
-  color: black;
+
+.links {
+  text-decoration: none !important;
 }
 
 .menu-h1 {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   color: black;
   cursor: pointer;
   text-decoration: none;
 }
 
 .menu-h1:hover {
-  color: #130ba2;
+  color: #ffffff;
   transition: all 0.5s;
 }
+
+/* 
+.h1-div {
+  color: black;
+}
+
+.menu-h1 {
+  cursor: pointer;
+  text-decoration: none;
+}
+
 
 .links {
   text-decoration: none !important;

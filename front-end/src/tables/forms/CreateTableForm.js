@@ -82,14 +82,6 @@ export default function CreateTableForm() {
                 Cancel
             </Button>
             <Button
-                variant="danger"
-                size="lg"
-                className="col-3"
-                onClick={handleShow}
-            >
-                Delete
-            </Button>
-            <Button
                 variant="success"
                 size="lg"
                 type="submit"
