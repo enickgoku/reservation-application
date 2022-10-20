@@ -12,12 +12,12 @@ export default function EditTableForm() {
   const history = useHistory()
   const { tableId } = useParams()
 
-  const [formData, setFormData] = useState({});
-  const [formError, setFormError] = useState(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [formData, setFormData] = useState({})
+  const [formError, setFormError] = useState(null)
+  const [showConfirmation, setShowConfirmation] = useState(false)
 
-  const handleClose = () => setShowConfirmation(false);
-  const handleShow = () => setShowConfirmation(true);
+  const handleClose = () => setShowConfirmation(false)
+  const handleShow = () => setShowConfirmation(true)
   
   const handleChange = ({ target }) => {
     setFormError(null)
