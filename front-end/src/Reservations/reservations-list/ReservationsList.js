@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 import ReservationCard from "../reservations-card/ReservationCard"
+import Loading from "../../loading/Loading"
 
 import { listReservations } from "../../utils/api"
 
@@ -18,7 +19,7 @@ export default function ReservationsList({ reservations, date }) {
   }, [date])
 
   if (!reservationsList) {
-    return null
+    return <Loading />
   }
 
   return (

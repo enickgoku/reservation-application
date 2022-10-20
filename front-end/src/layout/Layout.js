@@ -16,14 +16,14 @@ import "./Layout.css"
  function Layout() {
  
    return (
-     <Container fluid className="layout">
-       <Row>
-         <Col className="d-flex align-items-end">
+     <Container fluid className="layout bg-secondary text-white">
+       <Row className="bg-secondary text-white">
+         <Col className="d-flex align-items-end bg-secondary text-white">
            <Menu />
          </Col>
        </Row>
-       <Row>
-         <Col className="d-flex justify-content-center align-items-center p-0">
+       <Row className="bg-secondary text-white">
+         <Col className="d-flex justify-content-center align-items-center bg-secondary text-white p-0">
            <Routes />
          </Col>
        </Row>

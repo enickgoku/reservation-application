@@ -57,7 +57,7 @@ const CreateReservationForm = () => {
 
   return (
     <>
-      <Col sm={8} md={6} lg={5} xl={5} className="mb-5">
+      <Col sm={8} md={6} lg={5} xl={5} className="mb-5 bg-secondary text-white">
         <ErrorAlert error={formError} />
         <h1 className="d-flex justify-content-center">Create Reservation</h1>
         <Form onSubmit={handleSubmit}>

@@ -7,7 +7,7 @@ export default function ReservationCard(...props) {
 
   return (
     <>
-      <Card style={{ width: '18rem' }}>
+      <Card style={{ width: '18rem' }} className="bg-secondary text-white">
         <Card.Body>
           <Card.Title>Reservation Name</Card.Title>
           <Card.Text>

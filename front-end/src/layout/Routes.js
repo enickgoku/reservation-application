@@ -5,7 +5,7 @@ import Dashboard from "../dashboard/Dashboard"
 import NotFound from "./NotFound"
 
 import { today } from "../utils/date-time"
-import { DateSetting } from "luxon"
+import { DateTime } from "luxon"
 
 /**
  * Defines all the routes for the application.
@@ -23,7 +23,7 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path={["/reservations", "/tables", "/dashboard"]}>
-        <Dashboard />
+        <Dashboard className="bg-secondary text-white" />
       </Route>
       <Route exact={true} path="/search">
         {/* <Search /> */}

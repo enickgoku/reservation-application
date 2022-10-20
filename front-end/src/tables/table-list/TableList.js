@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 import TableCard from "../table-card/TableCard"
+import Loading from "../../loading/Loading"
 
 // import list tables from utils/api
 
@@ -18,8 +19,7 @@ export default function TableList({ reservations, date }) {
   // }, [date])
 
   if (!tableList) {
-    return null
-    // make loading screen  component
+    return <Loading />
   }
 
   return (
