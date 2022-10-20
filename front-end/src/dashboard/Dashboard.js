@@ -4,7 +4,6 @@ import { listReservations } from "../utils/api"
 
 import CreateReservationForm from "../reservations/forms/CreateReservationForm"
 import EditReservationForm from "../reservations/forms/EditReservationsForm"
-import Header from "../layout/Header"
 import ReservationsList from "../reservations/reservations-list/ReservationsList"
 import CreateTableForm from "../tables/forms/CreateTableForm"
 
@@ -31,7 +30,6 @@ function Dashboard({ date }) {
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
         <Route exact={true} path={"/dashboard"}>
-          <Header />
             {/* <TablesList {...props} /> */}
             <ReservationsList />
         </Route>

@@ -5,7 +5,7 @@ import Dashboard from "../dashboard/Dashboard"
 import NotFound from "./NotFound"
 
 import { today } from "../utils/date-time"
-import { DateTime } from "luxon"
+
 
 /**
  * Defines all the routes for the application.
@@ -14,16 +14,23 @@ import { DateTime } from "luxon"
  *
  * @returns {JSX.Element}
  */
-function Routes() {
+function Routes(props) {
 
-  // implement date here
+  let {
+    currentDate,
+    dateSetting,
+    setDateSetting,
+    currentTime,
+    changeDate
+  } = props
+  
   return (
     <Switch>
       <Route exact={true} path="/">
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path={["/reservations", "/tables", "/dashboard"]}>
-        <Dashboard className="bg-secondary text-white" />
+        <Dashboard className="bg-secondary text-white" {...props} />
       </Route>
       <Route exact={true} path="/search">
         {/* <Search /> */}
