@@ -2,19 +2,19 @@ import { Link } from 'react-router-dom'
 
 import { Card, Button } from 'react-bootstrap'
 
-export default function ReservationCard(...props) {
+export default function ReservationCard(props) {
 
   let {
     currentDate,
-    reservation
+    reservations
   } = props
-
 
   return (
     <>
       <Card style={{ width: '18rem' }} className="bg-secondary text-white">
         <Card.Body>
-          <Card.Title>{reservation.first_name}</Card.Title>
+          <Card.Title>{reservations.first_name}</Card.Title>
+          <Card.Title>{reservations.last_name}</Card.Title>
           <Card.Text>
             Some quick example text to build on the card title and make up the
             bulk of the card's content.

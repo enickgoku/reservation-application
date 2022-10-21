@@ -3,22 +3,21 @@ import React, { useState, useEffect } from "react"
 import ReservationCard from "../reservations-card/ReservationCard"
 import Loading from "../../loading/Loading"
 
-import { listReservations } from "../../utils/api"
-
 export default function ReservationsList({ reservations, date }) {
 
   const [reservationsList, setReservationsList] = useState([])
   const [reservationsError, setReservationsError] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const abortController = new AbortController()
-    listReservations({ date }, abortController.signal)
-      .then(setReservationsList)
-      .catch(setReservationsError)
-    return () => abortController.abort()
-  }, [date])
+    setReservationsError(null)
+    setReservationsList(reservations)
+    setLoading(false)
+  }, [reservations])
 
-  if (!reservationsList) {
+  // date is undefined
+
+  if (loading || reservationsError) {
     return <Loading />
   }
 
@@ -27,7 +26,8 @@ export default function ReservationsList({ reservations, date }) {
       {reservationsList.map((reservation) => (
         <ReservationCard
           key={reservation.reservation_id}
-          reservation={reservation}
+          reservations={reservation}
+          date={date}
         />
       ))}
     </>
