@@ -6,24 +6,37 @@ import CreateReservationForm from "../reservations/forms/CreateReservationForm"
 import EditReservationForm from "../reservations/forms/EditReservationsForm"
 import ReservationsList from "../reservations/reservations-list/ReservationsList"
 import CreateTableForm from "../tables/forms/CreateTableForm"
-
 import Row from "react-bootstrap/Row"
+import Loading from "../loading/Loading"
 
 import "../layout/Layout.css"
 
-function Dashboard({ date }) {
+function Dashboard(props) {
+
+  let {
+    dateSetting
+  } = props
+
   const [reservations, setReservations] = useState([])
   const [reservationsError, setReservationsError] = useState(null)
+  // const [tables, setTables] = useState([])
 
-  useEffect(loadDashboard, [date])
+  useEffect(loadDashboard, [dateSetting])
 
   function loadDashboard() {
     const abortController = new AbortController()
     setReservationsError(null)
-    listReservations({ date }, abortController.signal)
+    listReservations({ date: dateSetting }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError)
+    //list tables here
     return () => abortController.abort()
+  }
+
+  //reservations are getting loaded.
+
+  if(!reservations){
+    return <Loading />
   }
 
   return (
@@ -31,7 +44,7 @@ function Dashboard({ date }) {
       <Switch>
         <Route exact={true} path={"/dashboard"}>
             {/* <TablesList {...props} /> */}
-            <ReservationsList />
+            <ReservationsList reservations={reservations} reservationsError={reservationsError} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <CreateReservationForm />
