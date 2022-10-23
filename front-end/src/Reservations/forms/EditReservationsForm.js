@@ -1,24 +1,33 @@
 import React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useHistory, useParams } from "react-router-dom"
 
 import ErrorAlert from "../../layout/ErrorAlert"
 
 import { Col, Form, Button, ButtonGroup, Modal } from "react-bootstrap"
 
-const { deleteReservation, updateReservation } = require("../../utils/api")
+const { deleteReservation, updateReservation, getReservation } = require("../../utils/api")
 
-function EditReservationForm(){
+function EditReservationForm({ currentDate }) {
 
   const history = useHistory()
   const { reservationId } = useParams()
 
   const [formData, setFormData] = useState({})
+  const [reservation, setReservation] = useState([])
   const [formError, setFormError] = useState(null)
   const [confirmation, setConfirmation] =  useState(false)
 
-  const handleClose = () => setConfirmation(false);
-  const handleShow = () => setConfirmation(true);  
+  const handleClose = () => setConfirmation(false)
+  const handleShow = () => setConfirmation(true)  
+
+  useEffect(() => {
+    const abortController = new AbortController()
+    getReservation(reservationId, abortController.signal)
+        .then(setReservation)
+        .catch(setFormError)
+    return () => abortController.abort()
+  }, [reservationId])
 
   const handleChange = ({ target }) => {
     setFormError(null)
@@ -48,6 +57,7 @@ function EditReservationForm(){
         .catch(setFormError)
   }
 
+  console.log(reservation)
 
   return (
     <>
@@ -55,7 +65,7 @@ function EditReservationForm(){
         <ErrorAlert error={formError} />
         <h1 className="d-flex justify-content-center">Create Reservation</h1>
         <Form onSubmit={handleUpdateSubmit}>
-          <Form.Group controlId="first_name">
+          <Form.Group>
             <Form.Label htmlFor="first_name">First Name</Form.Label>
             <Form.Control id="first_name"
               required={true} 
@@ -66,7 +76,7 @@ function EditReservationForm(){
             />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="last_name">
+          <Form.Group>
             <Form.Label>Last Name</Form.Label>
             <Form.Control id="last_name" 
               required={true} 
@@ -77,7 +87,7 @@ function EditReservationForm(){
             />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="mobile_number">
+          <Form.Group>
             <Form.Label htmlFor="mobile_number">Mobile Number</Form.Label>
             <Form.Control id="mobile_number" 
               required={true} 
@@ -88,7 +98,7 @@ function EditReservationForm(){
             />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="reservation_date">
+          <Form.Group>
             <Form.Label htmlFor="reservation_date">Reservation Date:</Form.Label>
             <Form.Control id="reservation_date"
                 type="date"
@@ -98,7 +108,7 @@ function EditReservationForm(){
               />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="reservation_time">
+          <Form.Group>
             <Form.Label htmlFor="reservation_time">Reservation Time:</Form.Label>
             <Form.Control id="reservation_time"
               type="time"

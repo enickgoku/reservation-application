@@ -14,6 +14,7 @@ import "../layout/Layout.css"
 function Dashboard(props) {
 
   let {
+    currentDate,
     dateSetting
   } = props
 
@@ -50,7 +51,7 @@ function Dashboard(props) {
           <CreateReservationForm />
         </Route>
         <Route exact={true} path={"/reservations/:reservationId/edit"}>
-          <EditReservationForm />
+          <EditReservationForm reservations={reservations} currentDate={currentDate} />
         </Route>
         <Route exact={true} path={"/reservations/:reservationId/seat"}>
           {/* <SeatReservationForm {...props} /> */}
