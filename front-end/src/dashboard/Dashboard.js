@@ -8,6 +8,8 @@ import ReservationsList from "../reservations/reservations-list/ReservationsList
 import CreateTableForm from "../tables/forms/CreateTableForm"
 import Row from "react-bootstrap/Row"
 import Loading from "../loading/Loading"
+import SeatTable from "../reservations/seat-table/SeatTable"
+import TableList from "../tables/table-list/TableList"
 
 import "../layout/Layout.css"
 
@@ -15,7 +17,8 @@ function Dashboard(props) {
 
   let {
     currentDate, // 2022-10-24
-    dateSetting // 2022-10-24
+    dateSetting, // 2022-10-24
+    setDateSetting
   } = props
 
   const [reservations, setReservations] = useState([])
@@ -36,8 +39,6 @@ function Dashboard(props) {
     return () => abortController.abort()
   }
 
-  console.log(reservations)
-
   if(!reservations){
     return <Loading />
   }
@@ -46,7 +47,7 @@ function Dashboard(props) {
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
         <Route exact={true} path={"/dashboard"}>
-            {/* <TablesList {...props} /> */}
+            <TableList {...props} tables={tables} />
             <ReservationsList reservations={reservations} reservationsError={reservationsError} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
@@ -56,7 +57,7 @@ function Dashboard(props) {
           <EditReservationForm reservations={reservations} currentDate={currentDate} />
         </Route>
         <Route exact={true} path={"/reservations/:reservationId/seat"}>
-          {/* <SeatReservationForm {...props} /> */}
+          <SeatTable {...props} />
         </Route>
         <Route exact={true} path={"/tables"}>
           <Redirect to={"/dashboard"} />

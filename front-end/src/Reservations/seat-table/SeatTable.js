@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Form, Col, Row, Button, ButtonGroup } from "react-bootstrap"
-import ErrorAlert from "../layout/ErrorAlert"
+import ErrorAlert from "../../layout/ErrorAlert"
 
 import { getReservation, listTables, seatTable } from "../../utils/api"
 

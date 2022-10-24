@@ -6,29 +6,22 @@ import Loading from "../../loading/Loading"
 // import list tables from utils/api
 import { listTables } from "../../utils/api"
 
-export default function TableList({ reservations, date }) {
+export default function TableList(props) {
 
-  const [tableList, setTableList] = useState([])
-  const [reservationsError, setReservationsError] = useState(null)
+  let {
+    tables
+  } = props
 
-  useEffect(() => {
-    const abortController = new AbortController()
-    listTables({ date }, abortController.signal)
-      .then(setTableList)
-      .catch(setReservationsError)
-    return () => abortController.abort()
-  }, [date])
-
-  if (!tableList) {
+  if (!tables) {
     return <Loading />
   }
 
   return (
     <>
-      {tableList.map((table) => (
+      {tables.map((table) => (
         <TableCard
-          key={table.reservation_id}
-          reservation={table}
+          key={table.table_id}
+          tables={tables}
         />
       ))}
     </>
