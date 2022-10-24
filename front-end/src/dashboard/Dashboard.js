@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Switch, Route, Redirect } from "react-router-dom"
-import { listReservations } from "../utils/api"
+import { listReservations, listTables } from "../utils/api"
 
 import CreateReservationForm from "../reservations/forms/CreateReservationForm"
 import EditReservationForm from "../reservations/forms/EditReservationsForm"
@@ -14,13 +14,13 @@ import "../layout/Layout.css"
 function Dashboard(props) {
 
   let {
-    currentDate,
-    dateSetting
+    currentDate, // 2022-10-24
+    dateSetting // 2022-10-24
   } = props
 
   const [reservations, setReservations] = useState([])
   const [reservationsError, setReservationsError] = useState(null)
-  // const [tables, setTables] = useState([])
+  const [tables, setTables] = useState([])
 
   useEffect(loadDashboard, [dateSetting])
 
@@ -30,9 +30,13 @@ function Dashboard(props) {
     listReservations({ date: dateSetting }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError)
-    //list tables here
+    listTables({ date: dateSetting }, abortController.signal)
+      .then(setTables)
+      .catch(setReservationsError)
     return () => abortController.abort()
   }
+
+  console.log(reservations)
 
   if(!reservations){
     return <Loading />

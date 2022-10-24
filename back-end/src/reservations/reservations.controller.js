@@ -8,11 +8,16 @@ Settings.defaultZoneName = "America/Michigan"
 // crud functions
 
 async function list(req, res) {
-  const { date, phase = "all" } = req.query
-  if (phase === "all") res.json({ data: await service.listAllReservations(date) })
-  if (phase === "booked" || phase === "seated" || phase === "finished") {
-    res.json({ data: await service.listReservationsByPhase(date, phase) })
-  }
+  // const { date, phase = "all" } = req.query
+  // if (phase === "all") res.json({ data: await service.listAllReservations(date) })
+  // if (phase === "booked" || phase === "seated" || phase === "finished") {
+  //   res.json({ data: await service.listReservationsByPhase(date, phase) })
+  //}
+
+  // return all reservations
+  const reservations = await service.listAllReservations()
+  res.json({ data: reservations })
+
 }
 
 async function read(req, res) {
@@ -76,7 +81,7 @@ async function hasValidProperties(req, res, next) {
 }
 
 async function hasValidDate(req, res, next) {
-  const { reservation_date } = res.locals.reservation
+  const { reservation_date } = req.body
   if (!DateTime.fromISO(reservation_date).isValid) {
     return next ({
       status: 400,
@@ -87,7 +92,7 @@ async function hasValidDate(req, res, next) {
 }
 
 async function hasValidTime(req, res, next) {
-  const { reservation_time } = res.locals.reservation
+  const { reservation_time } = req.body
   if (!DateTime.fromISO(reservation_time).isValid) {
     return next ({
       status: 400,
