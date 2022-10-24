@@ -1,7 +1,7 @@
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 const service = require("./reservations.service")
 
-import { DateTime, Settings } from "luxon"
+const { DateTime, Settings } = require("luxon")
 
 Settings.defaultZoneName = "America/Michigan"
 

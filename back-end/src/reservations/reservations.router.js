@@ -10,16 +10,16 @@ router.route("/")
 
 router.route("/:reservation_id")
   .get(controller.read)
-  .delete(controller.delete)
+  .delete(controller.destroy)
   .all(methodNotAllowed)
 
 router.route("/:reservation_id/edit")
-  .delete(controller.destroy)
   .put(controller.update)
+  .delete(controller.destroy)
   .all(methodNotAllowed)
 
 router.route("/:reservation_id/status")
-  .put(controller.finished)
+  .put(controller.finish)
   .all(methodNotAllowed)
 
 module.exports = router

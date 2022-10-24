@@ -61,7 +61,7 @@ const CreateReservationForm = () => {
         <ErrorAlert error={formError} />
         <h1 className="d-flex justify-content-center">Create Reservation</h1>
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="first_name">
+          <Form.Group>
             <Form.Label htmlFor="first_name">First Name</Form.Label>
             <Form.Control id="first_name"
               required={true} 
@@ -72,7 +72,7 @@ const CreateReservationForm = () => {
             />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="last_name">
+          <Form.Group>
             <Form.Label>Last Name</Form.Label>
             <Form.Control id="last_name" 
               required={true} 
@@ -83,7 +83,7 @@ const CreateReservationForm = () => {
             />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="mobile_number">
+          <Form.Group>
             <Form.Label htmlFor="mobile_number">Mobile Number</Form.Label>
             <Form.Control id="mobile_number" 
               required={true} 
@@ -94,7 +94,7 @@ const CreateReservationForm = () => {
             />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="reservation_date">
+          <Form.Group>
             <Form.Label htmlFor="reservation_date">Reservation Date:</Form.Label>
             <Form.Control id="reservation_date"
                 type="date"
@@ -104,7 +104,7 @@ const CreateReservationForm = () => {
               />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="reservation_time">
+          <Form.Group>
             <Form.Label htmlFor="reservation_time">Reservation Time:</Form.Label>
             <Form.Control id="reservation_time"
               type="time"
@@ -115,7 +115,7 @@ const CreateReservationForm = () => {
             />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="people">
+          <Form.Group>
             <Form.Label htmlFor="people">Number of Guests</Form.Label>
             <Form.Control id="people"
               type="number"

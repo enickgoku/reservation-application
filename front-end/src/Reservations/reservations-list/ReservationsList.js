@@ -3,7 +3,9 @@ import React, { useState, useEffect } from "react"
 import ReservationCard from "../reservations-card/ReservationCard"
 import Loading from "../../loading/Loading"
 
-export default function ReservationsList({ reservations, date }) {
+export default function ReservationsList(props) {
+
+  let { reservations, date } = props
 
   const [reservationsList, setReservationsList] = useState([])
   const [reservationsError, setReservationsError] = useState(null)
