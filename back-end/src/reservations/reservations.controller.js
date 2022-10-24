@@ -1,9 +1,11 @@
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
-const reservationsService = require("./reservations.service")
+const service = require("./reservations.service")
 
 import { DateTime, Settings } from "luxon"
 
 Settings.defaultZoneName = "America/Michigan"
+
+// crud functions
 
 async function list(req, res) {
   const { date, phase = "all" } = req.query
@@ -84,11 +86,74 @@ async function hasValidDate(req, res, next) {
   next()
 }
 
+async function hasValidTime(req, res, next) {
+  const { reservation_time } = res.locals.reservation
+  if (!DateTime.fromISO(reservation_time).isValid) {
+    return next ({
+      status: 400,
+      message: "A valid 'reservation_time' must be provided."
+    })
+  }
+  next()
+}
+
+async function dateIsNotOnTuesday(req, res, next) {
+  const { reservation_date } = res.locals.reservation
+  if (DateTime.fromISO(reservation_date).weekday === 2) {
+    return next({
+      status: 400,
+      message: "Reservations cannot be made on Tuesdays."
+    })
+  }
+  next()
+}
+
+async function dateIsNotInThePast(req, res, next) {
+  const { reservation_date, reservation_time } = res.locals.reservation
+  const reservationDateTime = DateTime.fromISO(`${reservation_date}T${reservation_time}`)
+  if (reservationDateTime < DateTime.now()) {
+    return next({
+      status: 400,
+      message: "Reservations cannot be made in the past."
+    })
+  }
+  next()
+}
+
+// verfies that 'people' is a number and is greater than 0
+
+async function hasValidPeople(req, res, next) {
+  const { people } = res.locals.reservation
+  if (typeof people !== "number" || people < 1) {
+    return next({
+      status: 400,
+      message: "A valid 'people' value must be provided."
+    })
+  }
+  next()
+}
+
+// Verifies that the `reservation_time` falls within the restaurant being open and within one hour of the restaurant closing.
+
+async function hasValidTimeRange(req, res, next) {
+  const { reservation_time } = res.locals.reservation
+  const reservationTime = DateTime.fromISO(reservation_time)
+  const restaurantOpenTime = DateTime.fromISO("10:30")
+  const restaurantCloseTime = DateTime.fromISO("21:30")
+  if (reservationTime < restaurantOpenTime || reservationTime > restaurantCloseTime) {
+    return next({
+      status: 400,
+      message: "Reservations must be made between 10:30 AM and 9:30 PM."
+    })
+  }
+  next()
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
-  read: asyncErrorBoundary(read),
-  create: asyncErrorBoundary(create),
-  update: asyncErrorBoundary(update),
-  destroy: asyncErrorBoundary(destroy),
+  read: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
+  create: [hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(create)],
+  update: [hasReservationId, asyncErrorBoundary(reservationExists), hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(update)],
+  destroy: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(destroy)],
   finish: asyncErrorBoundary(finish),
 }

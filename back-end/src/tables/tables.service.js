@@ -64,11 +64,11 @@ function assignReservation(reservationId, tableId) {
                   .update({
                       status: "seated",
                       current_table: tables[0].table_name
-                  });
+                  })
           })
-          .catch(console.error);
+          .catch(console.error)
   })
-  .catch(console.error);
+  .catch(console.error)
 }
 
 function dismissTable(tableId, reservationId) {
@@ -82,11 +82,11 @@ function dismissTable(tableId, reservationId) {
                   .update({
                       status: "finished",
                       current_table: null         
-                  });
+                  })
           })
-          .catch(console.error);
+          .catch(console.error)
   })
-  .catch(console.error);
+  .catch(console.error)
 }
 
 module.exports = {
