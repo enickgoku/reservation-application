@@ -1,9 +1,13 @@
 const knex = require("../db/connection")
 
-function list() {
-  return knex("reservations").select("*")
+const listAllReservations = (date) => {
+  return knex("reservations")
+      .select("*")
+      .where({ reservation_date: date })
+      .whereIn("status", ["booked", "seated"])
+      .orderBy("reservation_time")
 }
 
 module.exports = {
-  list,
+  listAllReservations,
 }
