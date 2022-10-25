@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useHistory, useParams } from "react-router-dom"
 
 import ErrorAlert from "../../layout/ErrorAlert"
 
 import { Col, Form, Button, ButtonGroup, Modal } from "react-bootstrap"
 
-import { editTable, deleteTable } from "../../utils/api"
+import { updateTable, deleteTable, getTable } from "../../utils/api"
 
 export default function EditTableForm() {
   
@@ -18,7 +18,13 @@ export default function EditTableForm() {
 
   const handleClose = () => setShowConfirmation(false)
   const handleShow = () => setShowConfirmation(true)
-  
+
+  useEffect(() =>{
+    getTable(tableId)
+      .then(setFormData)
+      .catch(setFormError)
+  }, [tableId])
+
   const handleChange = ({ target }) => {
     setFormError(null)
     setFormData({
@@ -34,7 +40,7 @@ export default function EditTableForm() {
   const handleSubmit = (event) => {
     event.preventDefault()
     const abortController = new AbortController()
-    editTable(formData, abortController.signal)
+    updateTable(formData, abortController.signal)
       .then(() => history.push(`/dashboard`))
       .catch(setFormError)
     return () => abortController.abort()
@@ -51,20 +57,20 @@ export default function EditTableForm() {
     <>
       <Col sm={8} md={6} lg={5} xl={5} className="mb-5">
         <ErrorAlert error={formError} />
-        <h1 className="d-flex justify-content-center">Create Table</h1>
+        <h1 className="d-flex justify-content-center">Edit Table</h1>
         <Form>
-          <Form.Group controlId="table_name">
+          <Form.Group>
             <Form.Label htmlFor="table_name">Table Name: </Form.Label>
             <Form.Control id="table_name"
               required={true} 
               name="table_name" 
               type="table_name" 
-              placeholder="Ex. Table 1"
+              value={formData.table_name}
               onChange={handleChange} 
             />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="capacity">
+          <Form.Group>
             <Form.Label>Last Name</Form.Label>
             <Form.Control id="capacity" 
               required={true} 
@@ -94,6 +100,7 @@ export default function EditTableForm() {
                 variant="success"
                 size="lg"
                 type="submit"
+                onClick={handleSubmit}
             >
                 Submit
             </Button>

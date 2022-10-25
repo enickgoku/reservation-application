@@ -5,17 +5,17 @@ import { Card, Button } from 'react-bootstrap'
 export default function TableCard(props) {
 
   let {
-    tables
+    table
   } = props
 
   return (
     <>
       <Card style={{ width: '18rem' }}>
-        <Card.Body>
-          <Card.Title>Table Name: {tables?.table_name}</Card.Title>
-          <Card.Title>Capacity: {tables?.capacity}</Card.Title>
+        <Card.Body className="text-dark">
+          <Card.Title>Table Name: {table?.table_name}</Card.Title>
+          <Card.Title>Capacity: {table?.capacity}</Card.Title>
           <Card.Title>Status: </Card.Title>
-          <Button variant="primary text-white"><Link to="/tables/:tableId/edit">Edit</Link></Button>
+          <Button variant="primary"><Link className="text-white links" to={`/tables/${table.table_id}/edit`}>Edit</Link></Button>
         </Card.Body>
       </Card>
     </>

@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row"
 import Loading from "../loading/Loading"
 import SeatTable from "../reservations/seat-table/SeatTable"
 import TableList from "../tables/table-list/TableList"
+import EditTableForm from "../tables/forms/EditTableForm"
 
 import "../layout/Layout.css"
 
@@ -47,8 +48,8 @@ function Dashboard(props) {
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
         <Route exact={true} path={"/dashboard"}>
-            <TableList {...props} tables={tables} />
-            <ReservationsList reservations={reservations} reservationsError={reservationsError} />
+          <TableList {...props} tables={tables} />
+          <ReservationsList reservations={reservations} reservationsError={reservationsError} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <CreateReservationForm />
@@ -66,7 +67,7 @@ function Dashboard(props) {
           <CreateTableForm />
         </Route>
         <Route exact={true} path={"/tables/:tableId/edit"}>
-          {/* <EditTableForm /> */}
+          <EditTableForm />
         </Route>
       </Switch>
     </Row>

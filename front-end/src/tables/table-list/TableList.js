@@ -21,7 +21,7 @@ export default function TableList(props) {
       {tables.map((table) => (
         <TableCard
           key={table.table_id}
-          tables={tables}
+          table={table}
         />
       ))}
     </>

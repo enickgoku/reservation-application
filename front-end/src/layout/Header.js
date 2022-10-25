@@ -28,10 +28,12 @@ function Header(props) {
   const style = dateSetting < currentDate ? "text-muted" : null
 
   return (
-    <Col className="d-flex flex-row align-items-end justify-content-between">
+    <Col className="d-flex flex-row align-items-between justify-content-between">
       <Link className="links" to="/dashboard"><h1 className="menu-h1">The Canopy Lounge: Reservations</h1></Link>
-      <span style={{ fontSize: "2rem" }}>{formalTime}</span>
-      <span className={style}>{formalDate}</span>
+      <div className="flex-col">
+        <span style={{ fontSize: "2rem" }}>{formalTime}</span>
+        <span className={style}>{formalDate}</span>
+      </div>
     </Col>
   )
 }
