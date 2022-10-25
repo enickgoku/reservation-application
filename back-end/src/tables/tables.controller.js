@@ -51,6 +51,14 @@ async function dismissTable(req, res){
 
 //middleware
 
+async function hasTableId(req, res, next){
+  const { tableId } = req.params
+  if (tableId) {
+    return next()
+  }
+  next({ status: 400, message: "table_id is required." })
+}
+
 async function tableExists(req, res, next){
   const table = await service.getTableById(req.params.tableId)
   if (table) {
@@ -66,14 +74,6 @@ async function hasReservationId(req, res, next){
     return next()
   }
   next({ status: 400, message: "reservation_id is required." })
-}
-
-async function hasTableId(req, res, next){
-  const { table_id } = req.params
-  if (table_id) {
-    return next()
-  }
-  next({ status: 400, message: "table_id is required." })
 }
 
 async function reservationExists(req, res, next) {

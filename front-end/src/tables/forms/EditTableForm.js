@@ -12,7 +12,8 @@ export default function EditTableForm() {
   const history = useHistory()
   const { tableId } = useParams()
 
-  const [formData, setFormData] = useState({})
+  const [table, setTable] = useState({})
+  const [formData, setFormData] = useState(table)
   const [formError, setFormError] = useState(null)
   const [showConfirmation, setShowConfirmation] = useState(false)
 
@@ -20,9 +21,11 @@ export default function EditTableForm() {
   const handleShow = () => setShowConfirmation(true)
 
   useEffect(() =>{
-    getTable(tableId)
-      .then(setFormData)
+    const abortController = new AbortController()
+    getTable(tableId, abortController.signal)
+      .then(setTable)
       .catch(setFormError)
+    return () => abortController.abort()
   }, [tableId])
 
   const handleChange = ({ target }) => {
@@ -40,7 +43,7 @@ export default function EditTableForm() {
   const handleSubmit = (event) => {
     event.preventDefault()
     const abortController = new AbortController()
-    updateTable(formData, abortController.signal)
+    updateTable(formData, tableId, abortController.signal)
       .then(() => history.push(`/dashboard`))
       .catch(setFormError)
     return () => abortController.abort()
@@ -65,18 +68,18 @@ export default function EditTableForm() {
               required={true} 
               name="table_name" 
               type="table_name" 
-              value={formData.table_name}
+              value={table?.table_name}
               onChange={handleChange} 
             />
           </Form.Group>
           <br></br>
           <Form.Group>
-            <Form.Label>Last Name</Form.Label>
+            <Form.Label>Capacity</Form.Label>
             <Form.Control id="capacity" 
               required={true} 
               name="capacity" 
-              type="number" 
-              placeholder="6"
+              type="textr" 
+              value={table?.capacity}
               onChange={handleChange} 
             />
           </Form.Group>
