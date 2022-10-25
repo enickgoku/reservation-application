@@ -1,13 +1,18 @@
 import { Link } from 'react-router-dom'
 
+import Loading from '../../loading/Loading'
 import { Card, Button } from 'react-bootstrap'
 
 export default function ReservationCard(props) {
 
   let {
     currentDate,
-    reservations
+    reservations,
   } = props
+
+  if (!reservations) {
+    return <Loading />
+  }
 
   return (
     <>
@@ -19,7 +24,7 @@ export default function ReservationCard(props) {
             Some quick example text to build on the card title and make up the
             bulk of the card's content.
           </Card.Text>
-          <Button variant="primary"><Link to="/reservations/:reservationId/edit">Edit</Link></Button>
+          <Button variant="primary"><Link className="links text-white" to={`/reservations/${reservations.reservation_id}/edit`}>Edit</Link></Button>
         </Card.Body>
       </Card>
     </>

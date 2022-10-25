@@ -1,4 +1,4 @@
-const service= require("./tables.service")
+const service = require("./tables.service")
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 
 async function list(req, res) {
@@ -21,6 +21,7 @@ async function read(req, res) {
 
 async function create(req, res) {
   const data = req.body.data
+  console.log(data)
   const newTable = await service.create(data)
   res.status(201).json({ data: newTable })
 }

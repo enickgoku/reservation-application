@@ -12,7 +12,7 @@ async function list(req, res) {
   // if (phase === "all") res.json({ data: await service.listAllReservations(date) })
   // if (phase === "booked" || phase === "seated" || phase === "finished") {
   //   res.json({ data: await service.listReservationsByPhase(date, phase) })
-  //}
+  // }
 
   // return all reservations
   const reservations = await service.listAllReservations()
@@ -62,6 +62,7 @@ async function reservationExists(req, res, next) {
 
 async function hasReservationId(req, res, next) {
   const { reservationId } = req.params
+  console.log(reservationId)
   if (!reservationId) {
     return next({
       status: 404,
@@ -73,7 +74,7 @@ async function hasReservationId(req, res, next) {
 }
 
 async function hasValidProperties(req, res, next) {
-  const { data: { first_name, last_name, mobile_number, reservation_date, reservation_time, people } = {} } = req.body
+  const { first_name, last_name, mobile_number, reservation_date, reservation_time, people } = res.locals.reservation
   if (first_name && last_name && mobile_number && reservation_date && reservation_time && people) {
     return next()
   }
@@ -158,7 +159,7 @@ module.exports = {
   list: asyncErrorBoundary(list),
   read: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
   create: [hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(create)],
-  update: [hasReservationId, asyncErrorBoundary(reservationExists), hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(update)],
+  update: [asyncErrorBoundary(reservationExists), hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(update)],
   destroy: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(destroy)],
   finish: asyncErrorBoundary(finish),
 }

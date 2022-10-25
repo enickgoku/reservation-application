@@ -12,7 +12,11 @@ export default function EditTableForm() {
   const history = useHistory()
   const { tableId } = useParams()
 
-  const [table, setTable] = useState({})
+  const [table, setTable] = useState({
+    table_name: "",
+    capacity: "",
+    reservation_id: null,
+  })
   const [formData, setFormData] = useState(table)
   const [formError, setFormError] = useState(null)
   const [showConfirmation, setShowConfirmation] = useState(false)
@@ -27,6 +31,8 @@ export default function EditTableForm() {
       .catch(setFormError)
     return () => abortController.abort()
   }, [tableId])
+
+  console.log(table.capacity)
 
   const handleChange = ({ target }) => {
     setFormError(null)
@@ -52,7 +58,7 @@ export default function EditTableForm() {
   const handleTableDelete = (event) => {
     event.preventDefault()
     deleteTable(tableId)
-        .then(() => history.push("/"))
+        .then(() => history.push("/dashboard"))
         .catch(setFormError)
   }
 
@@ -61,14 +67,14 @@ export default function EditTableForm() {
       <Col sm={8} md={6} lg={5} xl={5} className="mb-5">
         <ErrorAlert error={formError} />
         <h1 className="d-flex justify-content-center">Edit Table</h1>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Form.Group>
             <Form.Label htmlFor="table_name">Table Name: </Form.Label>
             <Form.Control id="table_name"
               required={true} 
               name="table_name" 
               type="table_name" 
-              value={table?.table_name}
+              defaultValue={table?.table_name}
               onChange={handleChange} 
             />
           </Form.Group>
@@ -78,37 +84,35 @@ export default function EditTableForm() {
             <Form.Control id="capacity" 
               required={true} 
               name="capacity" 
-              type="textr" 
-              value={table?.capacity}
+              type="number" 
+              defaultValue={table?.capacity}
               onChange={handleChange} 
             />
           </Form.Group>
           <ButtonGroup className="mt-4 w-100">
             <Button
-                variant="dark"
-                size="lg"
-                className="col-3"
-                onClick={handleCancelClick}
+              variant="dark"
+              size="lg"
+              className="col-3"
+              onClick={handleCancelClick}
             >
-                Cancel
+              Cancel
             </Button>
             <Button
-                variant="danger"
-                size="lg"
-                onClick={handleShow}
+              variant="danger"
+              size="lg"
+              onClick={handleShow}
             >
-                Delete
+              Delete
             </Button>
             <Button
-                variant="success"
-                size="lg"
-                type="submit"
-                onClick={handleSubmit}
+              variant="success"
+              size="lg"
+              type="submit"
             >
                 Submit
             </Button>
           </ButtonGroup>
-          <br></br>
         </Form>
       </Col>
       <Modal show={showConfirmation} onHide={handleClose}>

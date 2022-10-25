@@ -4,9 +4,10 @@ const methodNotAllowed = require("../errors/methodNotAllowed")
 
 router.route("/")
   .get(controller.list)
+  .post(controller.create)
   .all(methodNotAllowed)
 
-  router.route("/:tableId")
+router.route("/:tableId")
   .get(controller.read)
   .delete(controller.destroy)
   .all(methodNotAllowed)

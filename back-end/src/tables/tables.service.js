@@ -23,6 +23,7 @@ function listSeatedTables() {
 function createTable(data) {
   return knex("tables")
     .insert(data, "*")
+    .then((tables) => tables[0])
 }
 
 function getTableById(tableId){

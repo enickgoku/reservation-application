@@ -18,10 +18,6 @@ export default function CreateTableForm() {
 
   const [formData, setFormData] = useState({})
   const [formError, setFormError] = useState(null)
-  const [showConfirmation, setShowConfirmation] = useState(false)
-
-  const handleClose = () => setShowConfirmation(false)
-  const handleShow = () => setShowConfirmation(true)
 
   const handleChange = ({ target }) => {
     setFormError(null)
@@ -32,7 +28,7 @@ export default function CreateTableForm() {
   }
 
   const handleCancelClick = () => {
-    history.goBack()
+    history.push("/dashboard")
   }
   
   const handleSubmit = (event) => {
@@ -51,7 +47,7 @@ export default function CreateTableForm() {
         <ErrorAlert error={formError} />
         <h1 className="d-flex justify-content-center">Create Table</h1>
         <Form>
-          <Form.Group controlId="table_name">
+          <Form.Group>
             <Form.Label htmlFor="table_name">Table Name: </Form.Label>
             <Form.Control id="table_name"
               required={true} 
@@ -62,7 +58,7 @@ export default function CreateTableForm() {
             />
           </Form.Group>
           <br></br>
-          <Form.Group controlId="capacity">
+          <Form.Group>
             <Form.Label>Last Name</Form.Label>
             <Form.Control id="capacity" 
               required={true} 
@@ -85,6 +81,7 @@ export default function CreateTableForm() {
                 variant="success"
                 size="lg"
                 type="submit"
+                onClick={handleSubmit}
             >
                 Submit
             </Button>

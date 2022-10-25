@@ -3,17 +3,17 @@ import { useState, useEffect } from "react"
 import { useHistory, useParams } from "react-router-dom"
 
 import ErrorAlert from "../../layout/ErrorAlert"
+import Loading from "../../loading/Loading"
 
 import { Col, Form, Button, ButtonGroup, Modal } from "react-bootstrap"
 
-const { deleteReservation, updateReservation, getReservation } = require("../../utils/api")
+const { deleteReservation, updateReservation } = require("../../utils/api")
 
-function EditReservationForm({ currentDate }) {
+function EditReservationForm({ currentDate, reservations }) {
 
   const history = useHistory()
   const { reservationId } = useParams()
 
-  const [formData, setFormData] = useState({})
   const [reservation, setReservation] = useState([])
   const [formError, setFormError] = useState(null)
   const [confirmation, setConfirmation] =  useState(false)
@@ -22,12 +22,10 @@ function EditReservationForm({ currentDate }) {
   const handleShow = () => setConfirmation(true)  
 
   useEffect(() => {
-    const abortController = new AbortController()
-    getReservation(reservationId, abortController.signal)
-        .then(setReservation)
-        .catch(setFormError)
-    return () => abortController.abort()
-  }, [reservationId])
+    setReservation(reservations.find((reservation) => reservation.reservation_id === Number(reservationId)))
+  }, [reservationId, reservations])
+
+  const [formData, setFormData] = useState(reservation)
 
   const handleChange = ({ target }) => {
     setFormError(null)
@@ -40,7 +38,7 @@ function EditReservationForm({ currentDate }) {
   const handleUpdateSubmit = (event) => {
     event.preventDefault()
     const abortController = new AbortController()
-    updateReservation(formData, abortController.signal)
+    updateReservation(formData, reservationId, abortController.signal)
       .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
       .catch(setFormError)
     return () => abortController.abort()
@@ -57,13 +55,15 @@ function EditReservationForm({ currentDate }) {
         .catch(setFormError)
   }
 
-  console.log(reservation)
+  if(!reservation) {
+    return <Loading />
+  }
 
   return (
     <>
       <Col sm={8} md={6} lg={5} xl={5} className="mb-5">
         <ErrorAlert error={formError} />
-        <h1 className="d-flex justify-content-center">Create Reservation</h1>
+        <h1 className="d-flex justify-content-center">Edit Reservation</h1>
         <Form onSubmit={handleUpdateSubmit}>
           <Form.Group>
             <Form.Label htmlFor="first_name">First Name</Form.Label>
@@ -71,7 +71,7 @@ function EditReservationForm({ currentDate }) {
               required={true} 
               name="first_name" 
               type="first_name" 
-              placeholder="First Name"
+              defaultValue={reservation?.first_name}
               onChange={handleChange} 
             />
           </Form.Group>
@@ -82,7 +82,7 @@ function EditReservationForm({ currentDate }) {
               required={true} 
               name="last_name" 
               type="last_name" 
-              placeholder="Last Name"
+              defaultValue={reservation?.last_name}
               onChange={handleChange} 
             />
           </Form.Group>
@@ -93,7 +93,7 @@ function EditReservationForm({ currentDate }) {
               required={true} 
               name="mobile_number" 
               type="tel" 
-              placeholder="Mobile Number"
+              defaultValue={reservation?.mobile_number}
               onChange={handleChange} 
             />
           </Form.Group>
@@ -104,6 +104,7 @@ function EditReservationForm({ currentDate }) {
                 type="date"
                 name="reservation_date"
                 required={true}
+                defaultValue={reservation?.reservation_date}
                 onChange={handleChange}
               />
           </Form.Group>
@@ -115,6 +116,19 @@ function EditReservationForm({ currentDate }) {
               name="reservation_time"
               size="lg"
               required={true}
+              defaultValue={reservation?.reservation_time}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <br></br>
+          <Form.Group>
+            <Form.Label htmlFor="people">Number of Guests</Form.Label>
+            <Form.Control id="people"
+              type="number"
+              name="people"
+              size="lg"
+              required={true}
+              defaultValue={reservation?.people}
               onChange={handleChange}
             />
           </Form.Group>
