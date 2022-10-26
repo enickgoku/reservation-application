@@ -7,7 +7,7 @@ import { Col, Form, Button, ButtonGroup, Modal } from "react-bootstrap"
 
 import { updateTable, deleteTable, getTable } from "../../utils/api"
 
-export default function EditTableForm() {
+export default function EditTableForm({ setTables }) {
   
   const history = useHistory()
   const { tableId } = useParams()
@@ -31,8 +31,6 @@ export default function EditTableForm() {
       .catch(setFormError)
     return () => abortController.abort()
   }, [tableId])
-
-  console.log(table.capacity)
 
   const handleChange = ({ target }) => {
     setFormError(null)
@@ -58,8 +56,16 @@ export default function EditTableForm() {
   const handleTableDelete = (event) => {
     event.preventDefault()
     deleteTable(tableId)
-        .then(() => history.push("/dashboard"))
-        .catch(setFormError)
+      // delete table from tables array
+      .then(() => {
+        setTables(prev => {
+          const index = prev.findIndex(table => table.table_id === tableId)
+          prev.splice(index, 1)
+          return prev
+        })
+      })
+      .then(() => history.push("/dashboard"))
+      .catch(setFormError)
   }
 
   return (

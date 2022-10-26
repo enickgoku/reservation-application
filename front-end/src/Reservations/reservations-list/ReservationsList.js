@@ -24,19 +24,17 @@ export default function ReservationsList(props) {
   if (loading || reservationsError) {
     return <Loading />
   }
-
+  
   return (
     <>
       <ReservationToolBar {...props} />
       <ErrorAlert error={reservationsError} />
-      {reservationsList.map((reservation, index) => (
-        <>
+      {reservationsList.map((reservation) => (
           <ReservationCard
             key={reservation.reservation_id}
             reservations={reservation}
             date={date}
           />
-        </>
       ))}
     </>
   )

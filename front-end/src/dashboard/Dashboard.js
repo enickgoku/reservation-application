@@ -19,7 +19,6 @@ function Dashboard(props) {
   let {
     currentDate, // 2022-10-24
     dateSetting, // 2022-10-24
-    setDateSetting
   } = props
 
   const [reservations, setReservations] = useState([])
@@ -64,10 +63,10 @@ function Dashboard(props) {
           <Redirect to={"/dashboard"} />
         </Route>
         <Route exact={true} path={"/tables/new"}>
-          <CreateTableForm />
+          <CreateTableForm setTables={setTables} />
         </Route>
         <Route exact={true} path={"/tables/:tableId/edit"}>
-          <EditTableForm />
+          <EditTableForm setTables={setTables} />
         </Route>
       </Switch>
     </Row>

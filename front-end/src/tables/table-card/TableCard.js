@@ -9,7 +9,7 @@ export default function TableCard(props) {
   } = props
 
   const showFreeStatus = (table) => {
-    if (table.reservation_id === null) {
+    if (table.reservation_id == null) {
       return "Free"
     } else {
       return "Occupied"

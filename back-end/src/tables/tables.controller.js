@@ -22,13 +22,13 @@ async function read(req, res) {
 async function create(req, res) {
   const data = req.body.data
   console.log(data)
-  const newTable = await service.create(data)
+  const newTable = await service.createTable(data)
   res.status(201).json({ data: newTable })
 }
 
 async function update(req, res){
   const updatedTable = await service.updateTable(req.body.data)
-  res.json({ data: updatedTable})
+  res.json({ data: updatedTable })
 }
 
 async function destroy(req, res){
@@ -91,7 +91,7 @@ async function reservationExists(req, res, next) {
 }
 
 async function tablePropertiesExist(req, res, next){
-  const { data: { table_name, capacity } } = req.body
+  const { table_name, capacity } = req.body.data
   if (table_name && capacity) {
     return next()
   }
@@ -107,8 +107,9 @@ async function tableIsFree(req, res, next){
 }
 
 async function tableNameLengthIsMoreThanOne(req, res, next){
-  const { table_name } = req.body.data
-  if (table_name.length > 1) {
+  console.log(req.body)
+  const { data: { table_name } } = req.body
+  if (table_name.length >= 2) {
     return next()
   }
   next({ status: 400, message: "Table name must be at least 2 characters." })
