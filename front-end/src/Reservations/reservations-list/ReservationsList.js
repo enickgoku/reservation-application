@@ -24,7 +24,7 @@ export default function ReservationsList(props) {
   if (loading || reservationsError) {
     return <Loading />
   }
-  
+
   return (
     <>
       <ReservationToolBar {...props} />

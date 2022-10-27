@@ -17,7 +17,6 @@ async function list(req, res) {
   // return all reservations
   const reservations = await service.listAllReservations()
   res.json({ data: reservations })
-
 }
 
 async function read(req, res) {
@@ -61,15 +60,14 @@ async function reservationExists(req, res, next) {
 }
 
 async function hasReservationId(req, res, next) {
-  const { reservationId } = req.params
-  console.log(reservationId)
-  if (!reservationId) {
+  const { reservation_id } = req.params
+  if (!reservation_id) {
     return next({
       status: 404,
       message: `The following 'reservation_id' could not be found: ${reservationId}`
     })
   }
-  res.locals.reservationId = reservationId
+  res.locals.reservation_id = reservation_id
   next()
 }
 
@@ -83,6 +81,7 @@ async function hasValidProperties(req, res, next) {
 
 async function hasValidDate(req, res, next) {
   const { reservation_date } = req.body
+  console.log(reservation_date)
   if (!DateTime.fromISO(reservation_date).isValid) {
     return next ({
       status: 400,

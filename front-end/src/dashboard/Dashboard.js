@@ -54,7 +54,7 @@ function Dashboard(props) {
           <CreateReservationForm />
         </Route>
         <Route exact={true} path={"/reservations/:reservationId/edit"}>
-          <EditReservationForm reservations={reservations} currentDate={currentDate} />
+          <EditReservationForm setReservations={setReservations} reservations={reservations} currentDate={currentDate} />
         </Route>
         <Route exact={true} path={"/reservations/:reservationId/seat"}>
           <SeatTable {...props} />

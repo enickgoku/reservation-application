@@ -21,8 +21,7 @@ export default function ReservationCard(props) {
           <Card.Title>{reservations.first_name}</Card.Title>
           <Card.Title>{reservations.last_name}</Card.Title>
           <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            Set for {reservations.reservation_date} at {reservations.reservation_time}
           </Card.Text>
           <Button variant="primary"><Link className="links text-white" to={`/reservations/${reservations.reservation_id}/edit`}>Edit</Link></Button>
         </Card.Body>

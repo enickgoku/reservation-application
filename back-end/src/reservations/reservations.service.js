@@ -21,10 +21,9 @@ const create = (reservation) => {
       .then((createdRecords) => createdRecords[0])
 }
 
-const read = (reservation_id) => {
+const read = (reservationId) => {
   return knex("reservations")
-      .select("*")
-      .where({ reservation_id })
+      .where({ reservation_id: reservationId })
       .first()
 }
 

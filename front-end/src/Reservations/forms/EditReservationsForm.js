@@ -2,14 +2,16 @@ import React from "react"
 import { useState, useEffect } from "react"
 import { useHistory, useParams } from "react-router-dom"
 
+import { DateTime } from "luxon"
+
 import ErrorAlert from "../../layout/ErrorAlert"
 import Loading from "../../loading/Loading"
 
 import { Col, Form, Button, ButtonGroup, Modal } from "react-bootstrap"
 
-const { deleteReservation, updateReservation } = require("../../utils/api")
+const { deleteReservation, updateReservation, getReservation } = require("../../utils/api")
 
-function EditReservationForm({ currentDate, reservations }) {
+function EditReservationForm({ currentDate, reservations, setReservations }) {
 
   const history = useHistory()
   const { reservationId } = useParams()
@@ -17,21 +19,25 @@ function EditReservationForm({ currentDate, reservations }) {
   const [reservation, setReservation] = useState([])
   const [formError, setFormError] = useState(null)
   const [confirmation, setConfirmation] =  useState(false)
+  const [formData, setFormData] = useState({})
 
   const handleClose = () => setConfirmation(false)
   const handleShow = () => setConfirmation(true)  
 
   useEffect(() => {
-    setReservation(reservations.find((reservation) => reservation.reservation_id === Number(reservationId)))
-  }, [reservationId, reservations])
+    const abortController = new AbortController()
+    getReservation(reservationId, abortController.signal)
+      .then(setReservation)
+      .then(setFormData(reservation))
+      .catch(setFormError)
+    return () => abortController.abort()
+  }, [reservation, reservationId])
 
-  const [formData, setFormData] = useState(reservation)
-
-  const handleChange = ({ target }) => {
+  const handleChange = ({ currentTarget }) => {
     setFormError(null)
     setFormData({
       ...formData,
-      [target.name]: target.value,
+      [currentTarget.name]: currentTarget.value,
     })
   }
 
@@ -39,7 +45,7 @@ function EditReservationForm({ currentDate, reservations }) {
     event.preventDefault()
     const abortController = new AbortController()
     updateReservation(formData, reservationId, abortController.signal)
-      .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
+      .then(() => history.push(`/dashboard`))
       .catch(setFormError)
     return () => abortController.abort()
   }
@@ -51,8 +57,8 @@ function EditReservationForm({ currentDate, reservations }) {
   const handleReservationDelete = (event) => {
     event.preventDefault()
     deleteReservation(reservationId)
-        .then(() => history.push("/"))
-        .catch(setFormError)
+      .then(() => history.push("/"))
+      .catch(setFormError)
   }
 
   if(!reservation) {
@@ -82,7 +88,7 @@ function EditReservationForm({ currentDate, reservations }) {
               required={true} 
               name="last_name" 
               type="last_name" 
-              defaultValue={reservation?.last_name}
+              defaultValue={formData?.last_name}
               onChange={handleChange} 
             />
           </Form.Group>
@@ -104,7 +110,7 @@ function EditReservationForm({ currentDate, reservations }) {
                 type="date"
                 name="reservation_date"
                 required={true}
-                defaultValue={reservation?.reservation_date}
+                defaultValue={DateTime.fromISO(reservation.reservation_date).toFormat("yyyy-MM-dd").toString()}
                 onChange={handleChange}
               />
           </Form.Group>

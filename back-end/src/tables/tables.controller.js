@@ -21,7 +21,6 @@ async function read(req, res) {
 
 async function create(req, res) {
   const data = req.body.data
-  console.log(data)
   const newTable = await service.createTable(data)
   res.status(201).json({ data: newTable })
 }
@@ -107,7 +106,6 @@ async function tableIsFree(req, res, next){
 }
 
 async function tableNameLengthIsMoreThanOne(req, res, next){
-  console.log(req.body)
   const { data: { table_name } } = req.body
   if (table_name.length >= 2) {
     return next()
