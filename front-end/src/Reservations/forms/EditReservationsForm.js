@@ -27,11 +27,10 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
   useEffect(() => {
     const abortController = new AbortController()
     getReservation(reservationId, abortController.signal)
-      .then(setReservation)
-      .then(setFormData(reservation))
+      .then(setFormData)
       .catch(setFormError)
     return () => abortController.abort()
-  }, [reservation, reservationId])
+  }, [reservationId])
 
   const handleChange = ({ currentTarget }) => {
     setFormError(null)
@@ -64,6 +63,10 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
   if(!reservation) {
     return <Loading />
   }
+  
+  const reservationDate = formData?.reservation_date
+    ? DateTime.fromISO(formData.reservation_date).toFormat("yyyy-MM-dd")
+    : ""
 
   return (
     <>
@@ -77,7 +80,7 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
               required={true} 
               name="first_name" 
               type="first_name" 
-              defaultValue={reservation?.first_name}
+              defaultValue={formData.first_name}
               onChange={handleChange} 
             />
           </Form.Group>
@@ -99,7 +102,7 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
               required={true} 
               name="mobile_number" 
               type="tel" 
-              defaultValue={reservation?.mobile_number}
+              defaultValue={formData?.mobile_number}
               onChange={handleChange} 
             />
           </Form.Group>
@@ -110,7 +113,7 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
                 type="date"
                 name="reservation_date"
                 required={true}
-                defaultValue={DateTime.fromISO(reservation.reservation_date).toFormat("yyyy-MM-dd").toString()}
+                defaultValue={reservationDate}
                 onChange={handleChange}
               />
           </Form.Group>
@@ -122,7 +125,7 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
               name="reservation_time"
               size="lg"
               required={true}
-              defaultValue={reservation?.reservation_time}
+              defaultValue={formData?.reservation_time}
               onChange={handleChange}
             />
           </Form.Group>
@@ -134,7 +137,7 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
               name="people"
               size="lg"
               required={true}
-              defaultValue={reservation?.people}
+              defaultValue={formData?.people}
               onChange={handleChange}
             />
           </Form.Group>

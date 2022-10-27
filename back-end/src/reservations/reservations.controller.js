@@ -81,7 +81,6 @@ async function hasValidProperties(req, res, next) {
 
 async function hasValidDate(req, res, next) {
   const { reservation_date } = req.body
-  console.log(reservation_date)
   if (!DateTime.fromISO(reservation_date).isValid) {
     return next ({
       status: 400,
