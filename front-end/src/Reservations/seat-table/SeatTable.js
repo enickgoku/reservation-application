@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Form, Col, Row, Button, ButtonGroup } from "react-bootstrap"
+import { Form, Col, Button, ButtonGroup } from "react-bootstrap"
 import ErrorAlert from "../../layout/ErrorAlert"
 
 import { getReservation, listTables, seatTable } from "../../utils/api"
@@ -13,7 +13,7 @@ export default function SeatTable(props){
   } = props
 
   const history = useHistory()
-  const { reservation_id } = useParams()
+  const { reservationId } = useParams()
 
   const [freeTables, setFreeTables] = useState([])
   const [formError, setFormError] = useState(null)
@@ -23,7 +23,7 @@ export default function SeatTable(props){
   useEffect(() => {
     function loadReservation() {
         const abortController = new AbortController()
-        getReservation(reservation_id, abortController.signal)
+        getReservation(reservationId, abortController.signal)
             .then((response) => {
                 setReservation(response)
                 setDateSetting(response.reservation_date)
@@ -40,15 +40,15 @@ export default function SeatTable(props){
     }
     loadReservation()
     loadFreeTables()
-  }, [reservation_id, setDateSetting])
+  }, [reservationId, setDateSetting])
 
   const handleCancel = () => {
     history.goBack()
   }
 
-  const handleSubmit = (event) => {
+  const handleSeatSubmit = (event) => {
     event.preventDefault()
-    seatTable(reservation_id, formData.table_id)
+    seatTable(reservationId, formData.table_id)
         .then(() => {
             setDateSetting(reservation.reservation_date)
             history.push(`/`)
@@ -57,6 +57,7 @@ export default function SeatTable(props){
   }
 
   const handleChange = ({ target }) => {
+    setFormError(null)
     setFormData({
       ...formData,
       [target.name]: target.value,
@@ -72,7 +73,39 @@ export default function SeatTable(props){
   return (
     <Col className="col col-sm-8 col-md-6 col-lg-5 col-xl-4">
       <ErrorAlert error={formError} />
-      <h1>Seat Table</h1>
+      <Form onSubmit={handleSeatSubmit}>
+        <Form.Group controlId="table_id">
+            <Form.Label>Select Table:</Form.Label>
+            <Form.Control
+                as="select"
+                name="table_id"
+                size="lg"
+                placeholder="Select Table"
+                required={true}
+                onChange={handleChange}
+            >
+                <option value="" defaultValue>---</option>
+                {freeTableOptions}
+            </Form.Control>
+        </Form.Group>
+        <ButtonGroup className="mt-4 w-100">
+            <Button
+                variant="dark"
+                size="lg"
+                className="col-3"
+                onClick={handleCancel}
+            >
+                Cancel
+            </Button>
+            <Button
+                variant="success"
+                size="lg"
+                type="submit"
+            >
+                Submit
+            </Button>
+        </ButtonGroup>
+      </Form>
     </Col>
   )
 }

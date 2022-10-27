@@ -64,7 +64,7 @@ async function hasReservationId(req, res, next) {
   if (!reservation_id) {
     return next({
       status: 404,
-      message: `The following 'reservation_id' could not be found: ${reservationId}`
+      message: `The following 'reservation_id' could not be found: ${reservation_id}`
     })
   }
   res.locals.reservation_id = reservation_id

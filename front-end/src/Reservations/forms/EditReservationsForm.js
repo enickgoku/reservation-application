@@ -16,7 +16,6 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
   const history = useHistory()
   const { reservationId } = useParams()
 
-  const [reservation, setReservation] = useState([])
   const [formError, setFormError] = useState(null)
   const [confirmation, setConfirmation] =  useState(false)
   const [formData, setFormData] = useState({})
@@ -60,10 +59,10 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
       .catch(setFormError)
   }
 
-  if(!reservation) {
+  if(!formData) {
     return <Loading />
   }
-  
+
   const reservationDate = formData?.reservation_date
     ? DateTime.fromISO(formData.reservation_date).toFormat("yyyy-MM-dd")
     : ""

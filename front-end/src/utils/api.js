@@ -150,28 +150,28 @@ export async function deleteTable(tableId, signal) {
   return await fetchJson(url, options)
 }
 
-export async function seatTable(reservation_id, tableId){
+export async function seatTable(reservationId, tableId){
   const url = new URL(`${API_BASE_URL}/tables/${tableId}/seat`)
   const options = {
     method: "PUT",
     headers,
-    body: JSON.stringify({ data: { reservation_id} }),
+    body: JSON.stringify({ data: { reservationId} }),
   }
   return await fetchJson(url, options)
 }
 
-export async function removeReservation(tableId, reservation_id){
+export async function removeReservation(tableId, reservationId){
   const url = new URL(`${API_BASE_URL}/tables/${tableId}/seat`)
   const options = {
     method: "DELETE",
     headers,
-    body: JSON.stringify({ data: { reservation_id} }),
+    body: JSON.stringify({ data: { reservationId} }),
   }
   return await fetchJson(url, options)
 }
 
-export async function finishReso(reservation_id, status){
-  const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/status`)
+export async function finishReso(reservationId, status){
+  const url = new URL(`${API_BASE_URL}/reservations/${reservationId}/status`)
   const options = {
     method: "PUT",
     headers,
