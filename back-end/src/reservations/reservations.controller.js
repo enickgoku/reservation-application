@@ -13,7 +13,12 @@ async function list(req, res) {
   // if (phase === "booked" || phase === "seated" || phase === "finished") {
   //   res.json({ data: await service.listReservationsByPhase(date, phase) })
   // }
-
+  // const { date, mobileNumber } = req.query
+  // const data = mobileNumber
+  //   ? await service.searchList(mobileNumber)
+  //   : await service.list(date)
+  // res.json({ data })
+  
   // return all reservations
   const reservations = await service.listAllReservations()
   res.json({ data: reservations })
@@ -153,6 +158,26 @@ async function hasValidTimeRange(req, res, next) {
   next()
 }
 
+async function searchForReservationByMobileNumber(req, res, next) {
+  const { mobile_number } = req.query
+  if (!mobile_number) {
+    return next({
+      status: 400,
+      message: "A valid 'mobile_number' must be provided."
+    })
+  }
+  res.locals.mobile_number = mobile_number
+  next()
+}
+
+async function returnReservationByMobileNumber(req, res, next) {
+  const { mobile_number } = res.locals
+  const data = await service.search(mobile_number)
+  res.json({ data })
+}
+
+
+
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
@@ -160,4 +185,5 @@ module.exports = {
   update: [asyncErrorBoundary(reservationExists), hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(update)],
   destroy: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(destroy)],
   finish: asyncErrorBoundary(finish),
+  search: [searchForReservationByMobileNumber, asyncErrorBoundary(returnReservationByMobileNumber)],
 }

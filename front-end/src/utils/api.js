@@ -179,3 +179,10 @@ export async function finishReso(reservation_id, status){
   }
   return await fetchJson(url, options)
 }
+
+export async function search(mobile_number){
+  const url = new URL(`${API_BASE_URL}/reservations?mobile_number=${mobile_number}`)
+  return await fetchJson(url, { headers }, [])
+    .then(formatReservationDate)
+    .then(formatReservationTime)
+}

@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom'
+import React from "react"
 
 import { DateTime } from 'luxon'
 
 import ResercationCardSeatOptions from './ReservationCardSeatOption'
 import Loading from '../../loading/Loading'
-import { Card, Button } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 
 export default function ReservationCard(props) {
 
