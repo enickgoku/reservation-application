@@ -2,6 +2,7 @@ import React from "react"
 
 import { Redirect, Route, Switch } from "react-router-dom"
 import Dashboard from "../dashboard/Dashboard"
+import SearchForm from "../search/SearchForm"
 import NotFound from "./NotFound"
 
 /**
@@ -14,6 +15,7 @@ import NotFound from "./NotFound"
 function Routes(props) {
 
   let {
+    handleChangeDateSetting,
     currentDate,
     dateSetting,
     setDateSetting,
@@ -30,7 +32,7 @@ function Routes(props) {
         <Dashboard className="bg-secondary text-white" {...props} />
       </Route>
       <Route exact={true} path="/search">
-        {/* <Search /> */}
+        <SearchForm />
       </Route>
       <Route>
         <NotFound />

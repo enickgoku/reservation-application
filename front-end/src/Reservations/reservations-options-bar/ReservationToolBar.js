@@ -1,18 +1,24 @@
-// add a refresh button to the toolbar
-// add an add button to the toolbar
-// add a filter for all booked or seated reservations
-// add a filter for all reservations that are not seated
+import React from "react"
+
+import { DateTime } from 'luxon'
+
+import { useHistory } from "react-router"
 import { Button, Dropdown } from 'react-bootstrap'
 
 export default function ReservationToolBar(props) {
-  const { date, setDate, reservations, setReservations } = props
+
+  let {
+    currentDate,
+    dateSetting,
+  } = props
+  
+  const history = useHistory()
 
   return (
     <div>
-      <Button>back arrow</Button>
-      <Button>Today</Button>
-      <Button>Forward arrow</Button>
-      <Button>Refresh</Button>
+      <Button ><i className="ri-arrow-left-s-line" /></Button>
+      <Button ><i className="ri-home-line" /></Button>
+      <Button ><i className="ri-arrow-right-s-line" /></Button>
       <Dropdown className="mt-10 d-flex justify-content-start">
         <Dropdown.Toggle
           className="btn btn-secondary dropdown-toggle mt-2 mb-2"

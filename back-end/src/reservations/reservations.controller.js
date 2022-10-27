@@ -40,7 +40,7 @@ async function update(req, res) {
     reservation_id: req.params.reservation_id,
   }
   const data = await service.update(updatedReservation)
-  res.json({ data })
+  res.json({ data: data })
 }
 
 async function destroy(req, res){

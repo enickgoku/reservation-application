@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Form, Col, Button, ButtonGroup } from 'react-bootstrap'
-import ErrorAlert from '../../layout/ErrorAlert'
+import ErrorAlert from '../layout/ErrorAlert'
 
-import { search } from '../../utils/api'
+import { search } from '../utils/api'
 
 export default function SearchForm(props) {
   const history = useHistory()
@@ -44,7 +44,7 @@ export default function SearchForm(props) {
 
   return (
     <>
-      
+
     </>
   )
   

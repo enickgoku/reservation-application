@@ -17,38 +17,39 @@ import "../layout/Layout.css"
 function Dashboard(props) {
 
   let {
+    handleChangeDateSetting,
     currentDate, // 2022-10-24
     dateSetting, // 2022-10-24
   } = props
 
   const [reservations, setReservations] = useState([])
   const [reservationsError, setReservationsError] = useState(null)
+  const [reservationsFilter, setReservationsFilter] = useState("all")
   const [tables, setTables] = useState([])
+  const [tablesError, setTablesError] = useState(null)
 
   useEffect(loadDashboard, [dateSetting])
 
   function loadDashboard() {
     const abortController = new AbortController()
     setReservationsError(null)
-    listReservations({ date: dateSetting }, abortController.signal)
+    listReservations({ date: dateSetting, phase: reservationsFilter }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError)
     listTables({ date: dateSetting }, abortController.signal)
       .then(setTables)
-      .catch(setReservationsError)
+      .catch(setTablesError)
     return () => abortController.abort()
   }
 
-  if(!reservations){
-    return <Loading />
-  }
+  if(!reservations || !tables) return <Loading />
 
   return (
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
         <Route exact={true} path={"/dashboard"}>
           <TableList {...props} tables={tables} />
-          <ReservationsList reservations={reservations} reservationsError={reservationsError} />
+          <ReservationsList dateSetting={dateSetting} handleChangeDateSetting={handleChangeDateSetting} reservations={reservations} reservationsError={reservationsError} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <CreateReservationForm />
