@@ -97,8 +97,8 @@ export async function createReservation(reservation, signal) {
   return await fetchJson(url, options, reservation);
 }
 
-export async function updateReservation(reservation, reservationId, signal) {
-  const url = new URL(`${API_BASE_URL}/reservations/${reservationId}/edit`);
+export async function updateReservation(reservation, reservation_id, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/edit`);
   const options = {
     method: "PUT",
     headers,
@@ -108,8 +108,8 @@ export async function updateReservation(reservation, reservationId, signal) {
   return await fetchJson(url, options);
 }
 
-export async function deleteReservation(reservationId, signal) {
-  const url = new URL(`${API_BASE_URL}/reservations/${reservationId}`)
+export async function deleteReservation(reservation_id, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}`)
   const options = {
     method: "DELETE",
     headers,
@@ -129,8 +129,8 @@ export async function createTable(table, signal) {
   return await fetchJson(url, options, table)
 }
 
-export async function updateTable(table, tableId, signal) {
-  const url = new URL(`${API_BASE_URL}/tables/${tableId}/edit`)
+export async function updateTable(table, table_id, signal) {
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}/edit`)
   const options = {
     method: "PUT",
     headers,
@@ -140,8 +140,8 @@ export async function updateTable(table, tableId, signal) {
   return await fetchJson(url, options)
 }
 
-export async function deleteTable(tableId, signal) {
-  const url = new URL(`${API_BASE_URL}/tables/${tableId}`)
+export async function deleteTable(table_id, signal) {
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}`)
   const options = {
     method: "DELETE",
     headers,
@@ -150,28 +150,28 @@ export async function deleteTable(tableId, signal) {
   return await fetchJson(url, options)
 }
 
-export async function seatTable(reservationId, tableId){
-  const url = new URL(`${API_BASE_URL}/tables/${tableId}/seat`)
+export async function seatTable(reservation_id, table_id){
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`)
   const options = {
     method: "PUT",
     headers,
-    body: JSON.stringify({ data: { reservationId} }),
+    body: JSON.stringify({ data: { reservation_id } }),
   }
   return await fetchJson(url, options)
 }
 
-export async function removeReservation(tableId, reservationId){
-  const url = new URL(`${API_BASE_URL}/tables/${tableId}/seat`)
+export async function removeReservation(table_id, reservation_id){
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`)
   const options = {
     method: "DELETE",
     headers,
-    body: JSON.stringify({ data: { reservationId} }),
+    body: JSON.stringify({ data: { reservation_id } }),
   }
   return await fetchJson(url, options)
 }
 
-export async function finishReso(reservationId, status){
-  const url = new URL(`${API_BASE_URL}/reservations/${reservationId}/status`)
+export async function finishReso(reservation_id, status){
+  const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/status`)
   const options = {
     method: "PUT",
     headers,

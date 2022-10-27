@@ -64,9 +64,9 @@ export default function SeatTable(props){
     })
   }
 
-  const freeTableOptions = freeTables.map((table, index) => {
+  const freeTableOptions = freeTables.map((table) => {
     return (
-    <option key={index} value={table.table_id}>{table.table_name - table.capacity}</option>
+    <option key={table.table_id}>{`Table: ${table.table_name} || Capacity: ${table.capacity}`}</option>
     )
   })
  
@@ -84,7 +84,7 @@ export default function SeatTable(props){
                 required={true}
                 onChange={handleChange}
             >
-                <option value="" defaultValue>---</option>
+                <option value="" defaultValue={freeTableOptions}>---</option>
                 {freeTableOptions}
             </Form.Control>
         </Form.Group>

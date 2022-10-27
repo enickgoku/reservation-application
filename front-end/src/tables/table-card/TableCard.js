@@ -23,7 +23,7 @@ export default function TableCard(props) {
           <Card.Title>Table Name: {table?.table_name}</Card.Title>
           <Card.Title>Capacity: {table?.capacity}</Card.Title>
           <Card.Title>Status: {showFreeStatus(table)}</Card.Title>
-          <Button variant="primary"><Link className="text-white links" to={`/tables/${table.table_id}/edit`}>Edit</Link></Button>
+          <Button variant="primary"><Link className="text-white links" to={`/tables/${table.table_id}/edit`}><i className="ri-pencil-line" /></Link></Button>
         </Card.Body>
       </Card>
     </>

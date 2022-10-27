@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { DateTime } from 'luxon'
 
+import ResercationCardSeatOptions from './ReservationCardSeatOption'
 import Loading from '../../loading/Loading'
 import { Card, Button } from 'react-bootstrap'
 
@@ -29,7 +30,12 @@ export default function ReservationCard(props) {
           <Card.Text>
             Set for {formattedDate} at {formattedTime}
           </Card.Text>
-          <Button variant="primary"><Link className="links text-white" to={`/reservations/${reservations.reservation_id}/edit`}>Edit</Link></Button>
+          {/* <Button variant="primary"><Link className="links text-white" to={`/reservations/${reservations.reservation_id}/edit`}>Edit</Link></Button> */}
+          <Card.Footer className="d-flex justify-content-center p-0">
+            <ResercationCardSeatOptions
+              {...props}
+            />
+          </Card.Footer>
         </Card.Body>
       </Card>
     </>
