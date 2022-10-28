@@ -14,8 +14,9 @@ async function list(req, res) {
   }
 }
 
-async function read(table_id) {
-  return knex("tables").select("*").where({ table_id: table_id }).first()
+async function read(req, res) {
+  const { table } = res.locals
+  res.json({ data: table })
 }
 
 async function create(req, res) {
