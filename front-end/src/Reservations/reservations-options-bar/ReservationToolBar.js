@@ -11,11 +11,9 @@ export default function ReservationToolBar(props) {
     currentDate,
     dateSetting,
     setDateSetting,
+    setReservationsFilter
   } = props
 
-  /**
-   * Adjust the `dateSetting` for displaying reservations.
-   */
   const incrementDate = (value) => {
     DateTime.fromISO(dateSetting).plus({ days: value }).toISODate()
   }
@@ -28,9 +26,9 @@ export default function ReservationToolBar(props) {
 
   return (
     <div>
-      <Button ><i className="ri-arrow-left-s-line" /></Button>
-      <Button ><i className="ri-home-line" /></Button>
-      <Button ><i className="ri-arrow-right-s-line" /></Button>
+      <Button onClick={handleChangeDateSetting(-1)}><i className="ri-arrow-left-s-line" /></Button>
+      <Button onClick={handleChangeDateSetting(currentDate)}><i className="ri-home-line" /></Button>
+      <Button onClick={handleChangeDateSetting(1)}><i className="ri-arrow-right-s-line" /></Button>
       <Dropdown className="mt-10 d-flex justify-content-start">
         <Dropdown.Toggle
           className="btn btn-secondary dropdown-toggle mt-2 mb-2"
@@ -42,7 +40,15 @@ export default function ReservationToolBar(props) {
         </svg>
         </Dropdown.Toggle>
           <Dropdown.Menu>
-              
+            <Dropdown.Item className="text-muted">Filter</Dropdown.Item>
+            <Dropdown.Item href="">All</Dropdown.Item>
+            <Dropdown.Item href="">Booked</Dropdown.Item>
+            <Dropdown.Item href="">Seated</Dropdown.Item>
+            <Dropdown.Divider></Dropdown.Divider>
+            <Dropdown.Header>History</Dropdown.Header>
+            <Dropdown.Item onSelect={() => setReservationsFilter("finished")}>
+                Finished
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
     </div>
