@@ -9,7 +9,8 @@ import { listTables } from "../../utils/api"
 export default function TableList(props) {
 
   let {
-    tables
+    tables,
+    tablesError,
   } = props
 
   if (!tables) {

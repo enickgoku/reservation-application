@@ -26,12 +26,13 @@ async function create(req, res) {
 }
 
 async function update(req, res){
-  const updatedTable = await service.updateTable(req.body.data)
+  const { table_id } = req.params
+  const updatedTable = await service.updateTable(req.body, table_id)
   res.json({ data: updatedTable })
 }
 
 async function destroy(req, res){
-  const deletedTable = await service.deleteTable(req.params.tableId)
+  const deletedTable = await service.deleteTable(req.params.table_id)
   res.sendStatus(204)
 }
 
@@ -53,7 +54,6 @@ async function dismissTable(req, res){
 
 async function hasTableId(req, res, next){
   const table_id = req.params.table_id
-  console.log(table_id)
   if (table_id) {
     res.locals.table_id = table_id
     return next()
@@ -62,7 +62,7 @@ async function hasTableId(req, res, next){
 }
 
 async function tableExists(req, res, next){
-  const table_id = req.params.table_id
+  const table_id = res.locals.table_id
   const table = await service.getTableById(table_id)
   if (table) {
     res.locals.table = table
@@ -93,7 +93,7 @@ async function reservationExists(req, res, next) {
 }
 
 async function tablePropertiesExist(req, res, next){
-  const { table_name, capacity } = req.body
+  const { table_name, capacity } = res.locals.table
   if (table_name && capacity) {
     return next()
   }
@@ -140,7 +140,7 @@ module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(hasTableId), asyncErrorBoundary(tableExists), asyncErrorBoundary(read)],
   create: [tablePropertiesExist, tableNameLengthIsMoreThanOne, asyncErrorBoundary(create)],
-  update: [hasTableId, asyncErrorBoundary(tableExists), asyncErrorBoundary(tablePropertiesExist), tableNameLengthIsMoreThanOne, tableIsFree, asyncErrorBoundary(update)],
+  update: [hasTableId, asyncErrorBoundary(tableExists), asyncErrorBoundary(tablePropertiesExist), tableNameLengthIsMoreThanOne, asyncErrorBoundary(update)],
   assign: [hasTableId, asyncErrorBoundary(tableExists), hasReservationId, asyncErrorBoundary(reservationExists), tableIsFree, tableHasSufficientCapacity, asyncErrorBoundary(seatTable)],
   dismiss: [hasTableId, asyncErrorBoundary(tableExists), tableIsOccupied, asyncErrorBoundary(dismissTable)],
   destroy: [hasTableId, asyncErrorBoundary(tableExists), tableIsFree, asyncErrorBoundary(destroy)],

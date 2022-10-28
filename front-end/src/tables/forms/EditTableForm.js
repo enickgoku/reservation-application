@@ -57,7 +57,8 @@ export default function EditTableForm({ setTables }) {
     event.preventDefault()
     const abortController = new AbortController()
     updateTable(formData, table_id, abortController.signal)
-      .then(() => history.push(`/dashboard`))
+      .then(setTables)
+      .then(() => history.push("/"))
       .catch(setFormError)
     return () => abortController.abort()
   }

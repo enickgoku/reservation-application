@@ -48,7 +48,7 @@ function Dashboard(props) {
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
         <Route exact={true} path={"/dashboard"}>
-          <TableList {...props} tables={tables} />
+          <TableList tables={tables} tablesError={tablesError} />
           <ReservationsList dateSetting={dateSetting} reservations={reservations} reservationsError={reservationsError} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>

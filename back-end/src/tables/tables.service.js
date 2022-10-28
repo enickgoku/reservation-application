@@ -32,13 +32,11 @@ function getTableById(table_id){
     .first()
 }
 
-function updateTable(table){
+function updateTable(table, table_id){
   return knex("tables")
-    .where({ table_id: table.table_id })
-    .update({
-      table_name: table.table_name,
-      capacity: table.capacity
-    })
+    .where({ table_id: table_id })
+    .update(table, "*")
+    .then((tables) => tables[0])
 }
 
 function deleteTable(table_id){
