@@ -49,15 +49,15 @@ function Dashboard(props) {
       <Switch>
         <Route exact={true} path={"/dashboard"}>
           <TableList {...props} tables={tables} />
-          <ReservationsList dateSetting={dateSetting} handleChangeDateSetting={handleChangeDateSetting} reservations={reservations} reservationsError={reservationsError} />
+          <ReservationsList dateSetting={dateSetting} reservations={reservations} reservationsError={reservationsError} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <CreateReservationForm />
         </Route>
-        <Route exact={true} path={"/reservations/:reservationId/edit"}>
+        <Route exact={true} path={"/reservations/:reservation_id/edit"}>
           <EditReservationForm setReservations={setReservations} reservations={reservations} currentDate={currentDate} />
         </Route>
-        <Route exact={true} path={"/reservations/:reservationId/seat"}>
+        <Route exact={true} path={"/reservations/:reservation_id/seat"}>
           <SeatTable {...props} />
         </Route>
         <Route exact={true} path={"/tables"}>
@@ -66,7 +66,7 @@ function Dashboard(props) {
         <Route exact={true} path={"/tables/new"}>
           <CreateTableForm setTables={setTables} />
         </Route>
-        <Route exact={true} path={"/tables/:tableId/edit"}>
+        <Route exact={true} path={"/tables/:table_id/edit"}>
           <EditTableForm setTables={setTables} />
         </Route>
       </Switch>

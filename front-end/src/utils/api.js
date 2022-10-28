@@ -135,7 +135,7 @@ export async function updateTable(table, table_id, signal) {
     method: "PUT",
     headers,
     body: JSON.stringify(table),
-    signal
+    signal,
   }
   return await fetchJson(url, options)
 }

@@ -27,20 +27,6 @@ Settings.defaultZoneName = "America/Michigan"
     setCurrentDate(DateTime.local().toISODate())
     setCurrentTime(DateTime.local().toFormat("T"))
   }, 1000)
-
-  /**
-   * Adjust the `dateSetting` for displaying reservations.
-   */
-  const handleChangeDateSetting = (value) =>
-    typeof value === "number"
-      ? setDateSetting(incrementDate(value))
-      : setDateSetting(currentDate)
-
-  /**
-   * Helper function for `handleChangeDateSetting`.
-   */
-  const incrementDate = (value) => 
-    DateTime.fromISO(dateSetting).plus({ days: value }).toISODate()
  
   return (
     <Container fluid className="layout bg-secondary text-white">
@@ -61,7 +47,6 @@ Settings.defaultZoneName = "America/Michigan"
             dateSetting={dateSetting}
             setDateSetting={setDateSetting}
             currentTime={currentTime}
-            changeDate={handleChangeDateSetting}
           />
         </Col>
       </Row>

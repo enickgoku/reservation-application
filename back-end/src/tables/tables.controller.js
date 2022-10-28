@@ -14,9 +14,8 @@ async function list(req, res) {
   }
 }
 
-async function read(req, res) {
-  const { table } = res.locals
-  res.json({ data: table })
+async function read(table_id) {
+  return knex("tables").select("*").where({ table_id: table_id }).first()
 }
 
 async function create(req, res) {
@@ -52,20 +51,23 @@ async function dismissTable(req, res){
 //middleware
 
 async function hasTableId(req, res, next){
-  const { tableId } = req.params
-  if (tableId) {
+  const table_id = req.params.table_id
+  console.log(table_id)
+  if (table_id) {
+    res.locals.table_id = table_id
     return next()
   }
   next({ status: 400, message: "table_id is required." })
 }
 
 async function tableExists(req, res, next){
-  const table = await service.getTableById(req.params.tableId)
+  const table_id = req.params.table_id
+  const table = await service.getTableById(table_id)
   if (table) {
     res.locals.table = table
     return next()
   }
-  next({ status: 404, message: `Table ${req.params.tableId} does not exist.` })
+  next({ status: 404, message: `Table ${req.params.table_id} does not exist.` })
 }
 
 async function hasReservationId(req, res, next){
@@ -85,12 +87,12 @@ async function reservationExists(req, res, next) {
       message: `Reservation '${reservationId}' does not exist.`
     })
   }
-  res.locals.reservation = reservation;
+  res.locals.reservation = reservation
   next()
 }
 
 async function tablePropertiesExist(req, res, next){
-  const { table_name, capacity } = req.body.data
+  const { table_name, capacity } = req.body
   if (table_name && capacity) {
     return next()
   }
@@ -106,7 +108,7 @@ async function tableIsFree(req, res, next){
 }
 
 async function tableNameLengthIsMoreThanOne(req, res, next){
-  const { data: { table_name } } = req.body
+  const { table_name } = req.body
   if (table_name.length >= 2) {
     return next()
   }
@@ -135,9 +137,9 @@ async function tableIsOccupied(req, res, next) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  read: [hasTableId, asyncErrorBoundary(tableExists), asyncErrorBoundary(read)],
+  read: [asyncErrorBoundary(hasTableId), asyncErrorBoundary(tableExists), asyncErrorBoundary(read)],
   create: [tablePropertiesExist, tableNameLengthIsMoreThanOne, asyncErrorBoundary(create)],
-  update: [hasTableId, asyncErrorBoundary(tableExists), tablePropertiesExist, tableNameLengthIsMoreThanOne, tableIsFree, asyncErrorBoundary(update)],
+  update: [hasTableId, asyncErrorBoundary(tableExists), asyncErrorBoundary(tablePropertiesExist), tableNameLengthIsMoreThanOne, tableIsFree, asyncErrorBoundary(update)],
   assign: [hasTableId, asyncErrorBoundary(tableExists), hasReservationId, asyncErrorBoundary(reservationExists), tableIsFree, tableHasSufficientCapacity, asyncErrorBoundary(seatTable)],
   dismiss: [hasTableId, asyncErrorBoundary(tableExists), tableIsOccupied, asyncErrorBoundary(dismissTable)],
   destroy: [hasTableId, asyncErrorBoundary(tableExists), tableIsFree, asyncErrorBoundary(destroy)],

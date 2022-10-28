@@ -10,33 +10,42 @@ import { updateTable, deleteTable, getTable } from "../../utils/api"
 export default function EditTableForm({ setTables }) {
   
   const history = useHistory()
-  const { tableId } = useParams()
+  const { table_id } = useParams()
 
   const [table, setTable] = useState({
     table_name: "",
     capacity: "",
     reservation_id: null,
   })
-  const [formData, setFormData] = useState(table)
+
+  const [formData, setFormData] = useState({})
   const [formError, setFormError] = useState(null)
   const [showConfirmation, setShowConfirmation] = useState(false)
 
   const handleClose = () => setShowConfirmation(false)
   const handleShow = () => setShowConfirmation(true)
-
+  
   useEffect(() =>{
     const abortController = new AbortController()
-    getTable(tableId, abortController.signal)
+    getTable(table_id, abortController.signal)
       .then(setTable)
       .catch(setFormError)
     return () => abortController.abort()
-  }, [tableId])
+  }, [table.capacity, table.table_name, table_id])
+  
+  useEffect(() => {
+    setFormData({
+      table_name: table.table_name,
+      capacity: table.capacity,
+      reservation_id: null,
+    })
+  }, [table])
 
-  const handleChange = ({ target }) => {
+  const handleChange = ({ currentTarget }) => {
     setFormError(null)
     setFormData({
       ...formData,
-      [target.name]: target.value,
+      [currentTarget.name]: currentTarget.value,
     })
   }
 
@@ -47,7 +56,7 @@ export default function EditTableForm({ setTables }) {
   const handleSubmit = (event) => {
     event.preventDefault()
     const abortController = new AbortController()
-    updateTable(formData, tableId, abortController.signal)
+    updateTable(formData, table_id, abortController.signal)
       .then(() => history.push(`/dashboard`))
       .catch(setFormError)
     return () => abortController.abort()
@@ -55,11 +64,11 @@ export default function EditTableForm({ setTables }) {
 
   const handleTableDelete = (event) => {
     event.preventDefault()
-    deleteTable(tableId)
+    deleteTable(table_id)
       // delete table from tables array
       .then(() => {
         setTables(prev => {
-          const index = prev.findIndex(table => table.table_id === tableId)
+          const index = prev.findIndex(table => table.table_id === table_id)
           prev.splice(index, 1)
           return prev
         })
@@ -79,8 +88,8 @@ export default function EditTableForm({ setTables }) {
             <Form.Control id="table_name"
               required={true} 
               name="table_name" 
-              type="table_name" 
-              defaultValue={table?.table_name}
+              type="text" 
+              defaultValue={table.table_name}
               onChange={handleChange} 
             />
           </Form.Group>
@@ -91,7 +100,7 @@ export default function EditTableForm({ setTables }) {
               required={true} 
               name="capacity" 
               type="number" 
-              defaultValue={table?.capacity}
+              defaultValue={table.capacity}
               onChange={handleChange} 
             />
           </Form.Group>

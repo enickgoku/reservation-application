@@ -10,9 +10,21 @@ export default function ReservationToolBar(props) {
   let {
     currentDate,
     dateSetting,
+    setDateSetting,
   } = props
+
+  /**
+   * Adjust the `dateSetting` for displaying reservations.
+   */
+  const incrementDate = (value) => {
+    DateTime.fromISO(dateSetting).plus({ days: value }).toISODate()
+  }
   
-  const history = useHistory()
+  const handleChangeDateSetting = (value) => {
+  typeof value === "number"
+    ? setDateSetting(incrementDate(value))
+    : setDateSetting(currentDate)
+  }
 
   return (
     <div>

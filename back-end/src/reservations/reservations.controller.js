@@ -8,11 +8,11 @@ Settings.defaultZoneName = "America/Michigan"
 // crud functions
 
 async function list(req, res) {
-  // const { date, phase = "all" } = req.query
-  // if (phase === "all") res.json({ data: await service.listAllReservations(date) })
-  // if (phase === "booked" || phase === "seated" || phase === "finished") {
-  //   res.json({ data: await service.listReservationsByPhase(date, phase) })
-  // }
+  const { date, phase = "all" } = req.query
+  if (phase === "all") res.json({ data: await service.listAllReservations(date) })
+  if (phase === "booked" || phase === "seated" || phase === "finished") {
+    res.json({ data: await service.listReservationsByPhase(date, phase) })
+  }
   // const { date, mobileNumber } = req.query
   // const data = mobileNumber
   //   ? await service.searchList(mobileNumber)
@@ -20,8 +20,8 @@ async function list(req, res) {
   // res.json({ data })
   
   // return all reservations
-  const reservations = await service.listAllReservations()
-  res.json({ data: reservations })
+  // const reservations = await service.listAllReservations()
+  // res.json({ data: reservations })
 }
 
 async function read(req, res) {

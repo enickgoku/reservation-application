@@ -11,7 +11,6 @@ export default function ReservationsList(props) {
 
   const [reservationsList, setReservationsList] = useState([])
   const [reservationsError, setReservationsError] = useState(null)
-  const [reservationsFilter, setReservationsFilter] = useState("all")
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
