@@ -3,6 +3,7 @@ import React from "react"
 import { Redirect, Route, Switch } from "react-router-dom"
 import Dashboard from "../dashboard/Dashboard"
 import NotFound from "./NotFound"
+import SearchForm from "../search/SearchForm"
 
 /**
  * Defines all the routes for the application.
@@ -30,6 +31,9 @@ function Routes(props) {
       </Route>
       <Route path={["/reservations", "/tables", "/dashboard"]}>
         <Dashboard className="bg-secondary text-white" {...props} />
+      </Route>
+      <Route exact={true} path="/search">
+        <SearchForm />
       </Route>
       <Route>
         <NotFound />

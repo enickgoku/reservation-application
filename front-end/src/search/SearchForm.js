@@ -9,15 +9,14 @@ import { search } from '../utils/api'
 
 export default function SearchForm(props) {
 
-  let {
-    setReservations,
-  } = props
-
   const history = useHistory()
 
   const [formError, setFormError] = useState(null)
   const [formData, setFormData] = useState({})
   const [searched, setSearched] = useState(false)
+  const [searchError, setSearchError] = useState(null)
+  const [reservations, setReservations] = useState("")
+  const [displayReservations, setDisplayReservations] = useState("")
 
   const handleChange = ({ target }) => {
     setFormError(null)
@@ -46,8 +45,8 @@ export default function SearchForm(props) {
           <InputGroup.Text id="mobile_number" className='w-100 bg-dark text-white'>Search</InputGroup.Text>
           <Form.Control
             type="text"
-            placeholder="Username"
-            aria-label="Username"
+            placeholder="Mobile Number"
+            aria-label="Mobile Number"
             aria-describedby="basic-addon1"
             name="mobile_number"
             onChange={handleChange}

@@ -13,7 +13,7 @@ export default function SeatTable(props){
   } = props
 
   const history = useHistory()
-  const { reservationId } = useParams()
+  const { reservation_id } = useParams()
 
   const [freeTables, setFreeTables] = useState([])
   const [formError, setFormError] = useState(null)
@@ -23,7 +23,7 @@ export default function SeatTable(props){
   useEffect(() => {
     function loadReservation() {
         const abortController = new AbortController()
-        getReservation(reservationId, abortController.signal)
+        getReservation(reservation_id, abortController.signal)
             .then((response) => {
                 setReservation(response)
                 setDateSetting(response.reservation_date)
@@ -40,7 +40,7 @@ export default function SeatTable(props){
     }
     loadReservation()
     loadFreeTables()
-  }, [reservationId, setDateSetting])
+  }, [reservation_id, setDateSetting])
 
   const handleCancel = () => {
     history.goBack()
@@ -48,7 +48,7 @@ export default function SeatTable(props){
 
   const handleSeatSubmit = (event) => {
     event.preventDefault()
-    seatTable(reservationId, formData.table_id)
+    seatTable(reservation_id, formData.table_id)
         .then(() => {
             setDateSetting(reservation.reservation_date)
             history.push(`/`)

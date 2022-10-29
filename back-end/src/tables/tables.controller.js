@@ -80,12 +80,12 @@ async function hasReservationId(req, res, next){
 }
 
 async function reservationExists(req, res, next) {
-  const { reservationId } = res.locals
-  const reservation = await service.getReservationSize(reservationId)
+  const { reservation_id } = res.locals
+  const reservation = await service.getReservationSize(reservation_id)
   if (!reservation) {
     return next({
       status: 404,
-      message: `Reservation '${reservationId}' does not exist.`
+      message: `Reservation '${reservation_id}' does not exist.`
     })
   }
   res.locals.reservation = reservation

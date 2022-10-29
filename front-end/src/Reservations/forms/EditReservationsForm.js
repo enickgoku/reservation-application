@@ -14,7 +14,7 @@ const { deleteReservation, updateReservation, getReservation } = require("../../
 function EditReservationForm({ currentDate, reservations, setReservations }) {
 
   const history = useHistory()
-  const { reservationId } = useParams()
+  const { reservation_id } = useParams()
 
   const [formError, setFormError] = useState(null)
   const [confirmation, setConfirmation] =  useState(false)
@@ -25,11 +25,11 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
 
   useEffect(() => {
     const abortController = new AbortController()
-    getReservation(reservationId, abortController.signal)
+    getReservation(reservation_id, abortController.signal)
       .then(setFormData)
       .catch(setFormError)
     return () => abortController.abort()
-  }, [reservationId])
+  }, [reservation_id])
 
   const handleChange = ({ currentTarget }) => {
     setFormError(null)
@@ -42,7 +42,7 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
   const handleUpdateSubmit = (event) => {
     event.preventDefault()
     const abortController = new AbortController()
-    updateReservation(formData, reservationId, abortController.signal)
+    updateReservation(formData, reservation_id, abortController.signal)
       .then(() => history.push(`/dashboard`))
       .catch(setFormError)
     return () => abortController.abort()
@@ -54,7 +54,7 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
 
   const handleReservationDelete = (event) => {
     event.preventDefault()
-    deleteReservation(reservationId)
+    deleteReservation(reservation_id)
       .then(() => history.push("/"))
       .catch(setFormError)
   }

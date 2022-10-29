@@ -45,21 +45,21 @@ function deleteTable(table_id){
     .del()
 }
 
-function getSizeOfReservation(reservationId){
+function getSizeOfReservation(reservation_id){
   return knex("reservations")
-    .where({ reservation_id: reservationId })
+    .where({ reservation_id: reservation_id })
     .select("people")
     .first()
 }
 
-function assignReservation(reservationId, table_id) {
+function assignReservation(reservation_id, table_id) {
   return knex.transaction((trx) => {
       return trx("tables")
           .where({ table_id: table_id })
-          .update({ reservation_id: reservationId }, ["table_name"])
+          .update({ reservation_id: reservation_id }, ["table_name"])
           .then((tables) => {
               return trx("reservations")
-                  .where({ reservation_id: reservationId })
+                  .where({ reservation_id: reservation_id })
                   .update({
                       status: "seated",
                       current_table: tables[0].table_name
@@ -70,14 +70,14 @@ function assignReservation(reservationId, table_id) {
   .catch(console.error)
 }
 
-function dismissTable(table_id, reservationId) {
+function dismissTable(table_id, reservation_id) {
   return knex.transaction((trx) => {
       return trx("tables")
           .where({ table_id: table_id })
           .update({ reservation_id: null })
           .then(() => {
               return trx("reservations")
-                  .where({ reservation_id: reservationId })
+                  .where({ reservation_id: reservation_id })
                   .update({
                       status: "finished",
                       current_table: null         

@@ -71,9 +71,6 @@ function Dashboard(props) {
         <Route exact={true} path={"/tables/:table_id/edit"}>
           <EditTableForm setTables={setTables} />
         </Route>
-        <Route exact={true} path="/search">
-          <SearchForm setReservations={setReservations} />
-        </Route>
       </Switch>
     </Row>
   )
