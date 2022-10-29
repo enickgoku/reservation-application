@@ -41,7 +41,7 @@ Settings.defaultZoneName = "America/Michigan"
         </Col>
       </Row>
       <Row className="bg-secondary text-white">
-        <Col className="d-flex justify-content-center align-items-center bg-secondary text-white p-0">
+        <Col xs={12} className="d-flex justify-content-center align-items-center bg-secondary text-white p-0">
           <Routes
             currentDate={currentDate}
             dateSetting={dateSetting}
@@ -52,6 +52,6 @@ Settings.defaultZoneName = "America/Michigan"
       </Row>
     </Container>
   )
-  }
+}
  
- export default Layout
+export default Layout

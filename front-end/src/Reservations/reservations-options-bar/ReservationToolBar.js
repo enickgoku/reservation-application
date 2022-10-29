@@ -1,32 +1,36 @@
 import React from "react"
-import { useHistory } from "react-router-dom"
+
 import { DateTime } from "luxon"
 
 import { Button, Dropdown } from 'react-bootstrap'
 
 export default function ReservationToolBar(props) {
 
-  let { setDateSetting, setReservationsFilter, dateSetting, currentDate } = props
+  let { setDateSetting, setReservationsFilter, dateSetting, loadDashboard } = props
 
-  const history = useHistory()
-
-  const handleChangeDateSetting = (value) => {
-  typeof value === "number"
-    ? setDateSetting(incrementDate(value))
-    : setDateSetting(currentDate)
+  const addOneDay = () => {
+    setDateSetting(DateTime.fromISO(dateSetting).plus({ days: 1 }).toISODate())
+    loadDashboard()
   }
 
-  const incrementDate = (value) => {
-    DateTime.fromISO(dateSetting).plus({ days: value }).toISODate()
+  const subtractOneDay = () => {
+    setDateSetting(DateTime.fromISO(dateSetting).minus({ days: 1 }).toISODate())
+    loadDashboard()
   }
 
-  console.log("dateSetting", dateSetting, "currentDate", currentDate)
+  const setToday = () => {
+    setDateSetting(DateTime.local().toISODate())
+    loadDashboard()
+  }
+
+  console.log(dateSetting)
+
 
   return (
     <div>
-      <Button onClick={() => handleChangeDateSetting(-1)}><i className="ri-arrow-left-s-line" /></Button>
-      <Button onClick={() => handleChangeDateSetting()}><i className="ri-home-line" /></Button>
-      <Button onClick={() => handleChangeDateSetting(1)}><i className="ri-arrow-right-s-line" /></Button>
+      <Button onClick={() => subtractOneDay()}><i className="ri-arrow-left-s-line" /></Button>
+      <Button onClick={() => setToday()}><i className="ri-home-line" /></Button>
+      <Button onClick={() => addOneDay()}><i className="ri-arrow-right-s-line" /></Button>
       <Dropdown className="mt-10 d-flex justify-content-start">
         <Dropdown.Toggle
           className="btn btn-secondary dropdown-toggle mt-2 mb-2"

@@ -27,6 +27,7 @@ function Dashboard(props) {
   const [reservationsFilter, setReservationsFilter] = useState("all")
   const [tables, setTables] = useState([])
   const [tablesError, setTablesError] = useState(null)
+  const [tablesFilter, setTablesFilter] = useState("all")
 
   useEffect(loadDashboard, [dateSetting, reservationsFilter])
 
@@ -49,7 +50,7 @@ function Dashboard(props) {
       <Switch>
         <Route exact={true} path={"/dashboard"}>
           <TableList tables={tables} tablesError={tablesError} />
-          <ReservationsList dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} />
+          <ReservationsList dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} loadDashboard={loadDashboard} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <CreateReservationForm />

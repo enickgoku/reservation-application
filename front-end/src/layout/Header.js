@@ -7,9 +7,6 @@ import { DateTime } from "luxon"
 // React Bootstrap Components
 import { Col } from "react-bootstrap"
 
-/**
- * Defines the main header.
- */
 function Header(props) {
 
   let {
