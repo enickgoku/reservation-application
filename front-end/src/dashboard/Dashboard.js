@@ -11,6 +11,7 @@ import Loading from "../loading/Loading"
 import SeatTable from "../reservations/seat-table/SeatTable"
 import TableList from "../tables/table-list/TableList"
 import EditTableForm from "../tables/forms/EditTableForm"
+import SearchForm from "../search/SearchForm"
 
 import "../layout/Layout.css"
 
@@ -69,6 +70,9 @@ function Dashboard(props) {
         </Route>
         <Route exact={true} path={"/tables/:table_id/edit"}>
           <EditTableForm setTables={setTables} />
+        </Route>
+        <Route exact={true} path="/search">
+          <SearchForm setReservations={setReservations} />
         </Route>
       </Switch>
     </Row>

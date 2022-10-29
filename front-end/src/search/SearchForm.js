@@ -8,11 +8,15 @@ import ErrorAlert from '../layout/ErrorAlert'
 import { search } from '../utils/api'
 
 export default function SearchForm(props) {
+
+  let {
+    setReservations,
+  } = props
+
   const history = useHistory()
 
   const [formError, setFormError] = useState(null)
   const [formData, setFormData] = useState({})
-  const [reservations, setReservations] = useState([])
   const [searched, setSearched] = useState(false)
 
   const handleChange = ({ target }) => {
