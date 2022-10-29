@@ -20,9 +20,10 @@ function Routes(props) {
     dateSetting,
     setDateSetting,
     currentTime,
-    changeDate
+    changeDate,
+    today
   } = props
-  
+
   return (
     <Switch>
       <Route exact={true} path="/">

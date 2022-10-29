@@ -18,10 +18,6 @@ async function list(req, res) {
   //   ? await service.searchList(mobileNumber)
   //   : await service.list(date)
   // res.json({ data })
-  
-  // return all reservations
-  // const reservations = await service.listAllReservations()
-  // res.json({ data: reservations })
 }
 
 async function read(req, res) {

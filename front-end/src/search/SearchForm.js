@@ -38,7 +38,8 @@ export default function SearchForm(props) {
       <ErrorAlert error={formError} />
       <Form onSubmit={handleSubmit}>
         <InputGroup className="mb-3">
-          <InputGroup.Text id="mobile_number">Search Reservations with a phone number</InputGroup.Text>
+          <label>Search Reservations with a phone number</label>
+          <InputGroup.Text id="mobile_number" className='w-100 bg-dark text-white'>Search</InputGroup.Text>
           <Form.Control
             type="text"
             placeholder="Username"

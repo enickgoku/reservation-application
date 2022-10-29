@@ -17,7 +17,7 @@ import "../layout/Layout.css"
 function Dashboard(props) {
 
   let {
-    handleChangeDateSetting,
+    setDateSetting,
     currentDate, // 2022-10-24
     dateSetting, // 2022-10-24
   } = props
@@ -28,7 +28,7 @@ function Dashboard(props) {
   const [tables, setTables] = useState([])
   const [tablesError, setTablesError] = useState(null)
 
-  useEffect(loadDashboard, [dateSetting])
+  useEffect(loadDashboard, [dateSetting, reservationsFilter])
 
   function loadDashboard() {
     const abortController = new AbortController()
@@ -49,7 +49,7 @@ function Dashboard(props) {
       <Switch>
         <Route exact={true} path={"/dashboard"}>
           <TableList tables={tables} tablesError={tablesError} />
-          <ReservationsList dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} />
+          <ReservationsList dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <CreateReservationForm />

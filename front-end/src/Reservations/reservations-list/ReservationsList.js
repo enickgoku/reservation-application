@@ -7,7 +7,7 @@ import ReservationToolBar from "../reservations-options-bar/ReservationToolBar"
 
 export default function ReservationsList(props) {
 
-  let { reservations, date, handleChangeDateSetting, dateSetting, currentDate, setReservationsFilter } = props
+  let { reservations, date, dateSetting, currentDate, setReservationsFilter, setDateSetting } = props
 
   const [reservationsList, setReservationsList] = useState([])
   const [reservationsError, setReservationsError] = useState(null)
@@ -25,7 +25,7 @@ export default function ReservationsList(props) {
 
   return (
     <>
-      <ReservationToolBar {...props} />
+      <ReservationToolBar currentDate={currentDate} dateSetting={dateSetting} setDateSetting={setDateSetting} setReservationsFilter={setReservationsFilter} />
       <ErrorAlert error={reservationsError} />
       {reservationsList.map((reservation) => (
           <ReservationCard

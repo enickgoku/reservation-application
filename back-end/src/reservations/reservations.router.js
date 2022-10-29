@@ -19,6 +19,7 @@ router.route("/:reservation_id/status")
 
 router.route("/")
   .get(controller.list)
+  .get(controller.search)
   .post(controller.create)
   .all(methodNotAllowed)
 

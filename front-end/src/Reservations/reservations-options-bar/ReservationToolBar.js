@@ -1,34 +1,32 @@
 import React from "react"
+import { useHistory } from "react-router-dom"
+import { DateTime } from "luxon"
 
-import { DateTime } from 'luxon'
-
-import { useHistory } from "react-router"
 import { Button, Dropdown } from 'react-bootstrap'
 
 export default function ReservationToolBar(props) {
 
-  let {
-    currentDate,
-    dateSetting,
-    setDateSetting,
-    setReservationsFilter
-  } = props
+  let { setDateSetting, setReservationsFilter, dateSetting, currentDate } = props
 
-  const incrementDate = (value) => {
-    DateTime.fromISO(dateSetting).plus({ days: value }).toISODate()
-  }
-  
+  const history = useHistory()
+
   const handleChangeDateSetting = (value) => {
   typeof value === "number"
     ? setDateSetting(incrementDate(value))
     : setDateSetting(currentDate)
   }
 
+  const incrementDate = (value) => {
+    DateTime.fromISO(dateSetting).plus({ days: value }).toISODate()
+  }
+
+  console.log("dateSetting", dateSetting, "currentDate", currentDate)
+
   return (
     <div>
-      <Button onClick={handleChangeDateSetting(-1)}><i className="ri-arrow-left-s-line" /></Button>
-      <Button onClick={handleChangeDateSetting(currentDate)}><i className="ri-home-line" /></Button>
-      <Button onClick={handleChangeDateSetting(1)}><i className="ri-arrow-right-s-line" /></Button>
+      <Button onClick={() => handleChangeDateSetting(-1)}><i className="ri-arrow-left-s-line" /></Button>
+      <Button onClick={() => handleChangeDateSetting()}><i className="ri-home-line" /></Button>
+      <Button onClick={() => handleChangeDateSetting(1)}><i className="ri-arrow-right-s-line" /></Button>
       <Dropdown className="mt-10 d-flex justify-content-start">
         <Dropdown.Toggle
           className="btn btn-secondary dropdown-toggle mt-2 mb-2"
@@ -41,12 +39,12 @@ export default function ReservationToolBar(props) {
         </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item className="text-muted">Filter</Dropdown.Item>
-            <Dropdown.Item href="">All</Dropdown.Item>
-            <Dropdown.Item href="">Booked</Dropdown.Item>
-            <Dropdown.Item href="">Seated</Dropdown.Item>
+            <Dropdown.Item onClick={() => setReservationsFilter("all")}>All</Dropdown.Item>
+            <Dropdown.Item onClick={() => setReservationsFilter("booked")}>Booked</Dropdown.Item>
+            <Dropdown.Item onClick={() => setReservationsFilter("seated")}>Seated</Dropdown.Item>
             <Dropdown.Divider></Dropdown.Divider>
             <Dropdown.Header>History</Dropdown.Header>
-            <Dropdown.Item onSelect={() => setReservationsFilter("finished")}>
+            <Dropdown.Item onClick={() => setReservationsFilter("finished")}>
                 Finished
             </Dropdown.Item>
           </Dropdown.Menu>
