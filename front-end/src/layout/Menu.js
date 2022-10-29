@@ -26,8 +26,12 @@ function Menu() {
     {
       name: "New Table",
       url: "/tables/new",
+    },
+    {
+      name: "Search",
+      url: "/search",
     }
-]
+  ] 
 
   /**
    * Defines the menu that displays on all pages.
