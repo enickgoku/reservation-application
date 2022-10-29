@@ -37,7 +37,7 @@ function Dashboard(props) {
     listReservations({ date: dateSetting, phase: reservationsFilter }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError)
-    listTables({ date: dateSetting }, abortController.signal)
+    listTables({ date: dateSetting, status: tablesFilter }, abortController.signal)
       .then(setTables)
       .catch(setTablesError)
     return () => abortController.abort()
@@ -49,7 +49,7 @@ function Dashboard(props) {
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
         <Route exact={true} path={"/dashboard"}>
-          <TableList tables={tables} tablesError={tablesError} />
+          <TableList tables={tables} tablesError={tablesError} setTablesFilter={setReservationsFilter} />
           <ReservationsList dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} loadDashboard={loadDashboard} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
