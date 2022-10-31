@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { Form, Button, ButtonGroup, InputGroup } from 'react-bootstrap'
+import ReservationCard from '../reservations/reservations-card/ReservationCard'
 import ErrorAlert from '../layout/ErrorAlert'
 
-import { search } from '../utils/api'
+import { listReservations } from '../utils/api'
 
 export default function SearchForm(props) {
 
   const history = useHistory()
 
   const [formError, setFormError] = useState(null)
-  const [formData, setFormData] = useState({})
-  const [searched, setSearched] = useState(false)
-  const [searchError, setSearchError] = useState(null)
-  const [reservations, setReservations] = useState("")
+  const [formData, setFormData] = useState("")
+  const [reservations, setReservations] = useState([])
   const [displayReservations, setDisplayReservations] = useState("")
+
 
   const handleChange = ({ target }) => {
     setFormError(null)
@@ -24,16 +24,29 @@ export default function SearchForm(props) {
   }
 
   const handleSubmit = (event) => {
+    const abortController = new AbortController()
     event.preventDefault()
-    setSearched(true)
-    search(formData.mobile_number)
+    listReservations({ mobile_number: formData }, abortController.signal)
       .then(setReservations)
       .catch(setFormError)
-      setFormData({})
+    return () => abortController.abort()
   } 
 
   const handleCancel = () => {
     history.goBack()
+  }
+
+  if (reservations.length > 0){
+    return (
+      <div>
+        <h2>Reservations</h2>
+        <div className="d-md-flex flex-wrap">
+          {reservations.map((reservation) => (
+            <ReservationCard key={reservation.reservation_id} reservation={reservation} />
+          ))}
+        </div>
+      </div>
+    )
   }
 
   return (

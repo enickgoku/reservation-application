@@ -11,7 +11,6 @@ import Loading from "../loading/Loading"
 import SeatTable from "../reservations/seat-table/SeatTable"
 import TableList from "../tables/table-list/TableList"
 import EditTableForm from "../tables/forms/EditTableForm"
-import SearchForm from "../search/SearchForm"
 
 import "../layout/Layout.css"
 

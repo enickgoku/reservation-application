@@ -154,24 +154,31 @@ async function hasValidTimeRange(req, res, next) {
   next()
 }
 
-async function searchForReservationByMobileNumber(req, res, next) {
-  const { mobile_number } = req.query
-  if (!mobile_number) {
-    return next({
-      status: 400,
-      message: "A valid 'mobile_number' must be provided."
-    })
-  }
-  res.locals.mobile_number = mobile_number
-  next()
-}
+// async function searchForReservationByMobileNumber(req, res, next) {
+//   const { mobile_number } = req.query
+//   if (!mobile_number) {
+//     return next({
+//       status: 400,
+//       message: "A valid 'mobile_number' must be provided."
+//     })
+//   }
+//   res.locals.mobile_number = mobile_number
+//   next()
+// }
 
-async function returnReservationByMobileNumber(req, res, next) {
-  const { mobile_number } = res.locals
-  const data = await service.search(mobile_number)
+// async function returnReservationByMobileNumber(req, res, next) {
+//   const { mobile_number } = res.locals
+//   const data = await service.search(mobile_number)
+//   res.json({ data })
+// }
+
+async function listByNumber(req, res) {
+  const { date, mobile_number } = res.locals
+  const data = mobile_number
+    ? await service.search(mobile_number)
+    : await service.listAllReservations(date)
   res.json({ data })
 }
-
 
 
 module.exports = {
@@ -181,5 +188,5 @@ module.exports = {
   update: [asyncErrorBoundary(reservationExists), hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(update)],
   destroy: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(destroy)],
   finish: asyncErrorBoundary(finish),
-  search: [searchForReservationByMobileNumber, asyncErrorBoundary(returnReservationByMobileNumber)],
+  search: [asyncErrorBoundary(listByNumber)],
 }
