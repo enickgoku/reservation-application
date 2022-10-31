@@ -9,7 +9,6 @@ import { Card } from 'react-bootstrap'
 export default function ReservationCard(props) {
 
   let {
-    currentDate,
     reservations,
   } = props
 
@@ -17,7 +16,7 @@ export default function ReservationCard(props) {
     return <Loading />
   }
 
-  // format the date and time for display in the card
+  // format date
   const formattedDate = DateTime.fromISO(reservations.reservation_date).toFormat('DDD')
   const formattedTime = DateTime.fromISO(reservations.reservation_time).toFormat('t')
 

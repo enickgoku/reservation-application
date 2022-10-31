@@ -23,9 +23,6 @@ export default function ReservationToolBar(props) {
     loadDashboard()
   }
 
-  console.log(dateSetting)
-
-
   return (
     <div>
       <Button onClick={() => subtractOneDay()}><i className="ri-arrow-left-s-line" /></Button>

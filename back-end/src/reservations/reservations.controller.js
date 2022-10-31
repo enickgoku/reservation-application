@@ -8,17 +8,18 @@ Settings.defaultZoneName = "America/Michigan"
 // crud functions
 
 async function list(req, res) {
-  const { date, phase = "all" } = req.query
-  if (phase === "all") res.json({ data: await service.listAllReservations(date) })
-  if (phase === "booked" || phase === "seated" || phase === "finished") {
-    res.json({ data: await service.listReservationsByPhase(date, phase) })
+  if (req.query.mobile_number) {
+    const { mobile_number } = req.query
+    return res.json({ data: await service.search(mobile_number)})
+  } else {
+    const { date, phase = "all" } = req.query
+    if (phase === "all") res.json({ data: await service.listAllReservations(date) })
+    if (phase === "booked" || phase === "seated" || phase === "finished") {
+      res.json({ data: await service.listReservationsByPhase(date, phase) })
+    }
   }
-  // const { date, mobileNumber } = req.query
-  // const data = mobileNumber
-  //   ? await service.searchList(mobileNumber)
-  //   : await service.list(date)
-  // res.json({ data })
 }
+
 
 async function read(req, res) {
   const reservation = await service.read(req.params.reservation_id)
@@ -154,32 +155,13 @@ async function hasValidTimeRange(req, res, next) {
   next()
 }
 
-// async function searchForReservationByMobileNumber(req, res, next) {
-//   const { mobile_number } = req.query
-//   if (!mobile_number) {
-//     return next({
-//       status: 400,
-//       message: "A valid 'mobile_number' must be provided."
-//     })
-//   }
-//   res.locals.mobile_number = mobile_number
-//   next()
-// }
-
-// async function returnReservationByMobileNumber(req, res, next) {
-//   const { mobile_number } = res.locals
-//   const data = await service.search(mobile_number)
-//   res.json({ data })
-// }
-
 async function listByNumber(req, res) {
-  const { date, mobile_number } = res.locals
+  const { mobile_number } = req.query
   const data = mobile_number
     ? await service.search(mobile_number)
     : await service.listAllReservations(date)
   res.json({ data })
 }
-
 
 module.exports = {
   list: asyncErrorBoundary(list),

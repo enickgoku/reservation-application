@@ -51,10 +51,8 @@ const finish = (reservation_id) => {
 
 const search = (mobile_number) => {
   return knex("reservations")
-    .whereRaw(
-    "translate(mobile_number, '() -', '') like ?",
-    `%${mobile_number.replace(/\D/g, "")}%`
-    )
+    .select("*")
+    .where("mobile_number", "like", `%${mobile_number}%`)
     .orderBy("reservation_date")
 }
 

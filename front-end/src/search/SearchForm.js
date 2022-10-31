@@ -1,20 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
 import { Form, Button, ButtonGroup, InputGroup } from 'react-bootstrap'
 import ReservationCard from '../reservations/reservations-card/ReservationCard'
 import ErrorAlert from '../layout/ErrorAlert'
+import Loading from '../loading/Loading'
 
 import { listReservations } from '../utils/api'
 
-export default function SearchForm(props) {
+export default function SearchForm() {
 
   const history = useHistory()
 
   const [formError, setFormError] = useState(null)
-  const [formData, setFormData] = useState("")
-  const [reservations, setReservations] = useState([])
+  const [formData, setFormData] = useState({})
+  const [reservations, setReservations] = useState("")
   const [displayReservations, setDisplayReservations] = useState("")
 
 
@@ -24,9 +25,10 @@ export default function SearchForm(props) {
   }
 
   const handleSubmit = (event) => {
+    setDisplayReservations(<Loading />)
     const abortController = new AbortController()
     event.preventDefault()
-    listReservations({ mobile_number: formData }, abortController.signal)
+    listReservations(formData, abortController.signal)
       .then(setReservations)
       .catch(setFormError)
     return () => abortController.abort()
@@ -36,18 +38,27 @@ export default function SearchForm(props) {
     history.goBack()
   }
 
-  if (reservations.length > 0){
-    return (
-      <div>
-        <h2>Reservations</h2>
-        <div className="d-md-flex flex-wrap">
-          {reservations.map((reservation) => (
-            <ReservationCard key={reservation.reservation_id} reservation={reservation} />
-          ))}
+  console.log(reservations)
+
+  useEffect(() => {
+    if (reservations.length) {
+      setDisplayReservations(
+        reservations.map((reservation, index) => {
+          return (
+            <div key={reservation.reservation_id}>
+              <ReservationCard reservations={reservation} />
+            </div>
+          )
+        })
+      )
+    } else if (reservations !== "") {
+      setDisplayReservations(
+        <div>
+          <h3>No reservations found</h3>
         </div>
-      </div>
-    )
-  }
+      )
+    }
+  }, [reservations])
 
   return (
     <>
@@ -73,7 +84,11 @@ export default function SearchForm(props) {
             Cancel
           </Button>
         </ButtonGroup>
-      </Form> 
+      </Form>
+
+      <div className="d-flex">
+        {displayReservations}
+      </div> 
     </>
   )
 }
