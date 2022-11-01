@@ -92,20 +92,20 @@ export default function ResercationCardSeatOptions({ reservations }){
         onHide={handleClose}
         backdrop="static"
       >
-        <Modal.Header>
-        <Modal.Title>Finish Reservation</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          You are about to mark this reservation as finished. This cannot be undone. Continue?
-        </Modal.Body>
-        <Modal.Footer>
-        <Button variant="dark" onClick={handleClose}>
-            Cancel
-        </Button>
-        <Button variant="danger" onClick={handleFinish}>
-            Continue
-        </Button>
-        </Modal.Footer>
+          <Modal.Header>
+          <Modal.Title>Finish Reservation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            You are about to mark this reservation as finished. This cannot be undone. Continue?
+          </Modal.Body>
+          <Modal.Footer>
+          <Button variant="dark" onClick={handleClose}>
+              Cancel
+          </Button>
+          <Button variant="danger" onClick={handleFinish}>
+              Continue
+          </Button>
+          </Modal.Footer>
         </Modal>
     </>
   )

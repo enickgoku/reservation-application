@@ -16,7 +16,6 @@ export default function ReservationCard(props) {
     return <Loading />
   }
 
-  // format date
   const formattedDate = DateTime.fromISO(reservations.reservation_date).toFormat('DDD')
   const formattedTime = DateTime.fromISO(reservations.reservation_time).toFormat('t')
 
@@ -29,7 +28,6 @@ export default function ReservationCard(props) {
           <Card.Text>
             Set for {formattedDate} at {formattedTime}
           </Card.Text>
-          {/* <Button variant="primary"><Link className="links text-white" to={`/reservations/${reservations.reservation_id}/edit`}>Edit</Link></Button> */}
           <Card.Footer className="d-flex justify-content-center p-0">
             <ResercationCardSeatOptions
               {...props}

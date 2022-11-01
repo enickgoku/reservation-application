@@ -84,7 +84,7 @@ export default function SeatTable(props){
                 required={true}
                 onChange={handleChange}
             >
-                <option value="" defaultValue={freeTableOptions}>---</option>
+                <option value="" defaultValue>---</option>
                 {freeTableOptions}
             </Form.Control>
         </Form.Group>

@@ -32,8 +32,9 @@ async function create(req, res) {
 }
 
 async function update(req, res) {
+  console.log(req.body)
   const updatedReservation = {
-    ...req.body.data,
+    ...req.body,
     reservation_id: req.params.reservation_id,
   }
   const data = await service.update(updatedReservation)
@@ -41,7 +42,8 @@ async function update(req, res) {
 }
 
 async function destroy(req, res){
-  await service.destroy(req.params.reservation_id)
+  const { reservation_id } = req.params
+  await service.destroy(reservation_id)
   res.sendStatus(204)
 }
 
@@ -155,13 +157,13 @@ async function hasValidTimeRange(req, res, next) {
   next()
 }
 
-async function listByNumber(req, res) {
-  const { mobile_number } = req.query
-  const data = mobile_number
-    ? await service.search(mobile_number)
-    : await service.listAllReservations(date)
-  res.json({ data })
-}
+// async function listByNumber(req, res) {
+//   const { mobile_number } = req.query
+//   const data = mobile_number
+//     ? await service.search(mobile_number)
+//     : await service.listAllReservations(date)
+//   res.json({ data })
+// }
 
 module.exports = {
   list: asyncErrorBoundary(list),
@@ -170,5 +172,4 @@ module.exports = {
   update: [asyncErrorBoundary(reservationExists), hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(update)],
   destroy: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(destroy)],
   finish: asyncErrorBoundary(finish),
-  search: [asyncErrorBoundary(listByNumber)],
 }
