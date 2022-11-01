@@ -41,12 +41,15 @@ const destroy = (reservation_id) => {
       .del()
 }
 
-const finish = (reservation_id) => {
-  return knex("reservations")
-      .select("*")
-      .where({ reservation_id })
-      .update({ status: "finished" }, "*")
-      .then((updatedRecords) => updatedRecords[0])
+function finish(reservation_id) {
+  return knex.transaction(async (trx) => {
+    await trx("reservations")
+        .where({ reservation_id })
+        .update({ status: "finished" })
+    await trx("tables")
+        .where({ reservation_id })
+        .update({ reservation_id: null })
+  })
 }
 
 const search = (mobile_number) => {

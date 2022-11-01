@@ -156,14 +156,6 @@ async function hasValidTimeRange(req, res, next) {
   next()
 }
 
-// async function listByNumber(req, res) {
-//   const { mobile_number } = req.query
-//   const data = mobile_number
-//     ? await service.search(mobile_number)
-//     : await service.listAllReservations(date)
-//   res.json({ data })
-// }
-
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
