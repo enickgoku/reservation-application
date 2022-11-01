@@ -74,6 +74,7 @@ async function tableExists(req, res, next){
 async function hasReservationId(req, res, next){
   const { reservation_id } = req.body.data
   if (reservation_id) {
+    res.locals.reservation_id = reservation_id
     return next()
   }
   next({ status: 400, message: "reservation_id is required." })
@@ -81,7 +82,7 @@ async function hasReservationId(req, res, next){
 
 async function reservationExists(req, res, next) {
   const { reservation_id } = res.locals
-  const reservation = await service.getReservationSize(reservation_id)
+  const reservation = await service.getSizeOfReservation(reservation_id)
   if (!reservation) {
     return next({
       status: 404,

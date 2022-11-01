@@ -53,39 +53,31 @@ function getSizeOfReservation(reservation_id){
 }
 
 function assignReservation(reservation_id, table_id) {
-  return knex.transaction((trx) => {
-      return trx("tables")
-          .where({ table_id: table_id })
-          .update({ reservation_id: reservation_id }, ["table_name"])
-          .then((tables) => {
-              return trx("reservations")
-                  .where({ reservation_id: reservation_id })
-                  .update({
-                      status: "seated",
-                      current_table: tables[0].table_name
-                  })
-          })
-          .catch(console.error)
+  return knex.transaction(async (trx) => {
+    await trx("reservations")
+      .where({ reservation_id: reservation_id })
+      .update({ status: "seated" })
+    await trx("tables")
+      .where({ table_id: table_id })
+      .update({ reservation_id: reservation_id })
+    return trx("tables")
+      .where({ table_id: table_id })
+      .first()
   })
-  .catch(console.error)
 }
 
 function dismissTable(table_id, reservation_id) {
-  return knex.transaction((trx) => {
-      return trx("tables")
-          .where({ table_id: table_id })
-          .update({ reservation_id: null })
-          .then(() => {
-              return trx("reservations")
-                  .where({ reservation_id: reservation_id })
-                  .update({
-                      status: "finished",
-                      current_table: null         
-                  })
-          })
-          .catch(console.error)
+  return knex.transaction(async (trx) => {
+    await trx("reservations")
+      .where({ reservation_id: reservation_id })
+      .update({ status: "finished" })
+    await trx("tables")
+      .where({ table_id: table_id })
+      .update({ reservation_id: null })
+    return trx("tables")
+      .where({ table_id: table_id })
+      .first()
   })
-  .catch(console.error)
 }
 
 module.exports = {

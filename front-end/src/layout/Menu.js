@@ -1,12 +1,12 @@
 // React + Hooks
-import React from "react";
+import React from "react"
 
 // React Bootstrap Components
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Dropdown from "react-bootstrap/Dropdown";
+import Col from "react-bootstrap/Col"
+import Row from "react-bootstrap/Row"
+import Dropdown from "react-bootstrap/Dropdown"
 
-import "./Layout.css";
+import "./Layout.css"
 
 /**
  * Defines the menu for this application.

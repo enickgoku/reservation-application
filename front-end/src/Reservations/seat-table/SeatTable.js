@@ -46,6 +46,8 @@ export default function SeatTable(props){
     history.goBack()
   }
 
+  console.log(formData)
+
   const handleSeatSubmit = (event) => {
     event.preventDefault()
     seatTable(reservation_id, formData.table_id)
@@ -59,14 +61,13 @@ export default function SeatTable(props){
   const handleChange = ({ target }) => {
     setFormError(null)
     setFormData({
-      ...formData,
       [target.name]: target.value,
     })
   }
 
-  const freeTableOptions = freeTables.map((table) => {
+  const freeTableOptions = freeTables.map((table, index) => {
     return (
-    <option key={table.table_id}>{`Table: ${table.table_name} || Capacity: ${table.capacity}`}</option>
+    <option key={index} value={table.table_id}>{`Table: ${table.table_name} || Capacity: ${table.capacity}`}</option>
     )
   })
  
