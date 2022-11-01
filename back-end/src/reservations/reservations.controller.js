@@ -32,7 +32,6 @@ async function create(req, res) {
 }
 
 async function update(req, res) {
-  console.log(req.body)
   const updatedReservation = {
     ...req.body,
     reservation_id: req.params.reservation_id,

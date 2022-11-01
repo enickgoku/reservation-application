@@ -7,21 +7,24 @@ import { DateTime } from "luxon"
 import ErrorAlert from "../../layout/ErrorAlert"
 import Loading from "../../loading/Loading"
 
-import { Col, Form, Button, ButtonGroup, Modal } from "react-bootstrap"
+import { Col, Form, Button, ButtonGroup } from "react-bootstrap"
+import Modal from "react-bootstrap/Modal"
 
 const { deleteReservation, updateReservation, getReservation } = require("../../utils/api")
 
-function EditReservationForm({ currentDate, reservations, setReservations }) {
+function EditReservationForm(props) {
 
   const history = useHistory()
   const { reservation_id } = useParams()
 
   const [formError, setFormError] = useState(null)
-  const [confirmation, setConfirmation] =  useState(false)
+  const [showConfirmation, setShowConfirmation] =  useState(false)
   const [formData, setFormData] = useState({})
 
-  const handleClose = () => setConfirmation(false)
-  const handleShow = () => setConfirmation(true)  
+  const handleClose = () => setShowConfirmation(false)
+  const handleShow = () => setShowConfirmation(true)  
+
+  console.log(showConfirmation)
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -141,16 +144,16 @@ function EditReservationForm({ currentDate, reservations, setReservations }) {
             />
           </Form.Group>
           <ButtonGroup aria-label="Basic example" className="mt-4 w-100">
-            <Button variant="dark" type="cancel" onClick={handleCancel}>Cancel</Button>
-            <Button variant="danger" type="delete" onClick={handleShow}>Delete</Button>
+            <Button variant="dark" onClick={handleCancel}>Cancel</Button>
+            <Button variant="danger" onClick={handleShow}>Delete</Button>
             <Button variant="success" type="submit">Save</Button>
           </ButtonGroup>
         </Form>
       </Col>
-      <Modal show={confirmation} onHide={handleClose}>
+      <Modal show={showConfirmation} onHide={handleClose}>
         <Modal.Header>
           <Modal.Title>Delete Reservation</Modal.Title>
-          </Modal.Header>
+        </Modal.Header>
           <Modal.Body>
           You are about to delete the reservation. This cannot be undone. Continue?
           </Modal.Body>
