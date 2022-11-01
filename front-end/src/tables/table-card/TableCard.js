@@ -16,9 +16,11 @@ export default function TableCard(props) {
     }
   }
 
+  const border = table.reservation_id === true ? "border border-danger" : ""
+
   return (
     <>
-      <Card style={{ width: '18rem' }}>
+      <Card style={{ width: '18rem' }} className={border}>
         <Card.Body className="text-dark">
           <Card.Title>Table Name: {table?.table_name}</Card.Title>
           <Card.Title>Capacity: {table?.capacity}</Card.Title>
