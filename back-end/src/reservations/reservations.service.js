@@ -4,14 +4,14 @@ const listAllReservations = (date) => {
   return knex("reservations")
       .select("*")
       .where({ reservation_date: date })
+      .whereIn("status", ["booked", "seated"])
       .orderBy("reservation_time")
 }
 
 const listReservationsByPhase = (date, phase) => {
   return knex("reservations")
       .select("*")
-      .where({ reservation_date: date })
-      .where("status", phase)
+      .where({ reservation_date: date, status: phase })
       .orderBy("reservation_time")
 }
 

@@ -31,6 +31,7 @@ export default function ReservationsList(props) {
           <ReservationCard
             key={reservation.reservation_id}
             reservations={reservation}
+            loadDashboard={loadDashboard}
           />
       ))}
     </>

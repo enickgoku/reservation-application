@@ -50,7 +50,7 @@ function Dashboard(props) {
       <Switch>
         <Route exact={true} path={"/dashboard"}>
           <TableList tables={tables} tablesError={tablesError} setTablesFilter={setTablesFilter} />
-          <ReservationsList dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} loadDashboard={loadDashboard} />
+          <ReservationsList loadDashboard={loadDashboard} dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} reservationsFilter={reservationsFilter} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <CreateReservationForm />

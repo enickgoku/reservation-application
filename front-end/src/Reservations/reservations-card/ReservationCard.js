@@ -9,6 +9,7 @@ import { Card } from 'react-bootstrap'
 export default function ReservationCard(props) {
 
   let {
+    loadDashboard,
     reservations,
   } = props
 
@@ -19,9 +20,11 @@ export default function ReservationCard(props) {
   const formattedDate = DateTime.fromISO(reservations.reservation_date).toFormat('DDD')
   const formattedTime = DateTime.fromISO(reservations.reservation_time).toFormat('t')
 
+  const border = reservations.status === 'seated' ? "border border-danger border-5" : ""
+
   return (
     <>
-      <Card style={{ width: '18rem' }} className="bg-secondary text-white">
+      <Card style={{ width: '18rem' }} className={`bg-secondary text-white ${border}`}>
         <Card.Body>
           <Card.Title>{reservations.first_name}</Card.Title>
           <Card.Title>{reservations.last_name}</Card.Title>
@@ -30,7 +33,8 @@ export default function ReservationCard(props) {
           </Card.Text>
           <Card.Footer className="d-flex justify-content-center p-0">
             <ResercationCardSeatOptions
-              {...props}
+              reservations={reservations}
+              loadDashboard={loadDashboard}
             />
           </Card.Footer>
         </Card.Body>

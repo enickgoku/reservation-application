@@ -13,13 +13,15 @@ async function list(req, res) {
     return res.json({ data: await service.search(mobile_number)})
   } else {
     const { date, phase = "all" } = req.query
-    if (phase === "all") res.json({ data: await service.listAllReservations(date) })
+    console.log(date, phase)
+    if (phase === "all") {
+      res.json({ data: await service.listAllReservations(date) }) 
+    }
     if (phase === "booked" || phase === "seated" || phase === "finished") {
       res.json({ data: await service.listReservationsByPhase(date, phase) })
     }
   }
 }
-
 
 async function read(req, res) {
   const reservation = await service.read(req.params.reservation_id)

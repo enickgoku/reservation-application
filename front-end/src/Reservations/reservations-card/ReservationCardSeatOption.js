@@ -9,7 +9,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 
 import { finishReso } from "../../utils/api"
 
-export default function ResercationCardSeatOptions({ reservations }){
+export default function ResercationCardSeatOptions({ reservations, loadDashboard }) {
 
   const history = useHistory()
 
@@ -24,6 +24,7 @@ export default function ResercationCardSeatOptions({ reservations }){
       .then(() => {
         handleClose()
         history.push(`/dashboard`)
+        loadDashboard()
       })
       .catch((error) => {
         console.log(error)

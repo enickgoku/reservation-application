@@ -46,8 +46,6 @@ export default function SeatTable(props){
     history.goBack()
   }
 
-  console.log(formData)
-
   const handleSeatSubmit = (event) => {
     event.preventDefault()
     seatTable(reservation_id, formData.table_id)
