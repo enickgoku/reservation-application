@@ -13,7 +13,6 @@ async function list(req, res) {
     return res.json({ data: await service.search(mobile_number)})
   } else {
     const { date, phase = "all" } = req.query
-    console.log(date, phase)
     if (phase === "all") {
       res.json({ data: await service.listAllReservations(date) }) 
     }
@@ -77,7 +76,7 @@ async function hasReservationId(req, res, next) {
 }
 
 async function hasValidProperties(req, res, next) {
-  const { first_name, last_name, mobile_number, reservation_date, reservation_time, people } = res.locals.reservation
+  const { first_name, last_name, mobile_number, reservation_date, reservation_time, people } = req.body
   if (first_name && last_name && mobile_number && reservation_date && reservation_time && people) {
     return next()
   }

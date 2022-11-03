@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import ErrorAlert from "../../layout/ErrorAlert"
 
 import Form from 'react-bootstrap/Form'
-import Col from "react-bootstrap/esm/Col"
+import Col from "react-bootstrap/Col"
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from "react-bootstrap/ButtonGroup"
 
