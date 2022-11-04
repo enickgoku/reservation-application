@@ -14,7 +14,7 @@ import Col from "react-bootstrap/Col"
 import "../../layout/Layout.css"
 
 
-const CreateReservationForm = () => {
+const CreateReservationForm = ({ loadDashboard }) => {
 
   const history = useHistory()
 
@@ -45,8 +45,9 @@ const CreateReservationForm = () => {
 
     createReservation(reservation, abortController.signal)
       .then(() => history.push("/dashboard"))
+      // reload reservations after create reservation
+      .then(loadDashboard)
       .catch(setFormError)
-
     return () => abortController.abort()
   }
 

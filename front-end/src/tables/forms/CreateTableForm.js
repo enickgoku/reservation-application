@@ -56,14 +56,14 @@ export default function CreateTableForm({ setTables }) {
             <Form.Control id="table_name"
               required={true} 
               name="table_name" 
-              type="table_name" 
+              type="text" 
               placeholder="Ex. Table 1"
               onChange={handleChange} 
             />
           </Form.Group>
           <br></br>
           <Form.Group>
-            <Form.Label>Last Name</Form.Label>
+            <Form.Label htmlFor="capacity">Capacity: </Form.Label>
             <Form.Control id="capacity" 
               required={true} 
               name="capacity" 

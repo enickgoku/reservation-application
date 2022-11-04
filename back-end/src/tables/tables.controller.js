@@ -94,7 +94,7 @@ async function reservationExists(req, res, next) {
 }
 
 async function tablePropertiesExist(req, res, next){
-  const { table_name, capacity } = req.body
+  const { table_name, capacity } = req.body.data
   if (table_name && capacity) {
     return next()
   }

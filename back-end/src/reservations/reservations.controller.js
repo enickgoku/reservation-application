@@ -106,7 +106,7 @@ async function hasValidTime(req, res, next) {
 }
 
 async function dateIsNotOnTuesday(req, res, next) {
-  const { reservation_date } = res.locals.reservation
+  const { reservation_date } = req.body.data
   if (DateTime.fromISO(reservation_date).weekday === 2) {
     return next({
       status: 400,
@@ -117,7 +117,7 @@ async function dateIsNotOnTuesday(req, res, next) {
 }
 
 async function dateIsNotInThePast(req, res, next) {
-  const { reservation_date, reservation_time } = res.locals.reservation
+  const { reservation_date, reservation_time } = req.body.data
   const reservationDateTime = DateTime.fromISO(`${reservation_date}T${reservation_time}`)
   if (reservationDateTime < DateTime.now()) {
     return next({
@@ -131,7 +131,7 @@ async function dateIsNotInThePast(req, res, next) {
 // verfies that 'people' is a number and is greater than 0
 
 async function hasValidPeople(req, res, next) {
-  const { people } = res.locals.reservation
+  const { people } = req.body.data
   if (typeof people !== "number" || people < 1) {
     return next({
       status: 400,
@@ -144,7 +144,7 @@ async function hasValidPeople(req, res, next) {
 // Verifies that the `reservation_time` falls within the restaurant being open and within one hour of the restaurant closing.
 
 async function hasValidTimeRange(req, res, next) {
-  const { reservation_time } = res.locals.reservation
+  const { reservation_time } = req.body.data
   const reservationTime = DateTime.fromISO(reservation_time)
   const restaurantOpenTime = DateTime.fromISO("10:30")
   const restaurantCloseTime = DateTime.fromISO("21:30")
