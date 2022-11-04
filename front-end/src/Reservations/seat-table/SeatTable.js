@@ -46,6 +46,7 @@ export default function SeatTable(props){
     history.goBack()
   }
 
+  console.log(formData.table_id)
   const handleSeatSubmit = (event) => {
     event.preventDefault()
     seatTable(reservation_id, formData.table_id)
@@ -83,7 +84,7 @@ export default function SeatTable(props){
                 required={true}
                 onChange={handleChange}
             >
-                <select name="table_id" defaultValue>---</select>
+                <option name="table_id" value="" defaultValue>---</option>
                 {freeTableOptions}
             </Form.Control>
         </Form.Group>

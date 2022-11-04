@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { Modal, Button, ButtonGroup, OverlayTrigger, Tooltip } from "react-bootstrap"
+import { Button, ButtonGroup, OverlayTrigger, Tooltip } from "react-bootstrap"
 
 import { removeReservation } from '../../utils/api'
 
 
 
 export default function TableCardOptions(props) {
-
   
   let {
     table,
@@ -17,15 +16,15 @@ export default function TableCardOptions(props) {
 
   const history = useHistory()
 
-  const [showConfirmation, setShowConfirmation] = useState(false)
-
-  const handleClose = () => setShowConfirmation(false)
-  const handleShow = () => setShowConfirmation(true)
-
   function handleDismissReservation() {
-    removeReservation(table.table_id, table.reservation_id)
-      .then(() => history.push("/"))
-      .catch(() => setTablesError())
+    const message = "Is this table ready to seat new guests? This cannot be undone."
+    if (window.confirm(message)) {
+      const abortController = new AbortController()
+      removeReservation(table.table_id, table.reservation_id, abortController.signal)
+        .then(() => history.push("/"))
+        .catch(setTablesError)
+      return () => abortController.abort()
+    }
   }
 
   return (
@@ -42,7 +41,7 @@ export default function TableCardOptions(props) {
                 className="d-flex align-items-center text-muted border border-list-bg"
                 data-table-id-finish={table.table_id}
                 style={{ fontSize: "1.2rem" }}
-                onClick={handleShow}
+                onClick={handleDismissReservation}
               >
                 <i className="ri-user-unfollow-fill" />
               </Button>
@@ -63,27 +62,6 @@ export default function TableCardOptions(props) {
           </Button>
         </OverlayTrigger>
       </ButtonGroup>
-      <Modal
-        animation={false}
-        show={showConfirmation}
-        onHide={handleClose}
-        backdrop="static"
-      >
-        <Modal.Header>
-          <Modal.Title>Dismiss Reservation</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Is this table ready to seat new guests? This will mark the reservation as finished and cannot be undone. Continue?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="dark" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="danger" data-table-id-finish={table.table_id} autoFocus={true} onClick={handleDismissReservation}>
-            Continue
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </>
   )
 }

@@ -27,7 +27,7 @@ async function create(req, res) {
 
 async function update(req, res){
   const { table_id } = req.params
-  const updatedTable = await service.updateTable(req.body, table_id)
+  const updatedTable = await service.updateTable(req.body.data, table_id)
   res.json({ data: updatedTable })
 }
 

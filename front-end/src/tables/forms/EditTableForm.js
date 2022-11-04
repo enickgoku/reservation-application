@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom"
 
 import ErrorAlert from "../../layout/ErrorAlert"
 
-import { Col, Form, Button, ButtonGroup, Modal } from "react-bootstrap"
+import { Col, Form, Button, ButtonGroup } from "react-bootstrap"
 
 import { updateTable, deleteTable, getTable } from "../../utils/api"
 
@@ -20,10 +20,6 @@ export default function EditTableForm({ setTables }) {
 
   const [formData, setFormData] = useState({})
   const [formError, setFormError] = useState(null)
-  const [showConfirmation, setShowConfirmation] = useState(false)
-
-  const handleClose = () => setShowConfirmation(false)
-  const handleShow = () => setShowConfirmation(true)
   
   useEffect(() =>{
     const abortController = new AbortController()
@@ -52,11 +48,15 @@ export default function EditTableForm({ setTables }) {
   const handleCancelClick = () => {
     history.goBack()
   }
+
+  const data = {
+    data: formData,
+  }
   
   const handleSubmit = (event) => {
     event.preventDefault()
     const abortController = new AbortController()
-    updateTable(formData, table_id, abortController.signal)
+    updateTable(data, table_id, abortController.signal)
       .then(setTables)
       .then(() => history.push("/"))
       .catch(setFormError)
@@ -65,17 +65,15 @@ export default function EditTableForm({ setTables }) {
 
   const handleTableDelete = (event) => {
     event.preventDefault()
-    deleteTable(table_id)
-      // delete table from tables array
-      .then(() => {
-        setTables(prev => {
-          const index = prev.findIndex(table => table.table_id === table_id)
-          prev.splice(index, 1)
-          return prev
-        })
-      })
-      .then(() => history.push("/dashboard"))
-      .catch(setFormError)
+    const message = `Are you sure you want to delete table ${table.table_name}?`
+    if (window.confirm(message)) {
+      const abortController = new AbortController()
+      deleteTable(table_id, abortController.signal)
+        .then(setTables)
+        .then(() => history.push("/"))
+        .catch(setFormError)
+      return () => abortController.abort()
+    }
   }
 
   return (
@@ -117,7 +115,7 @@ export default function EditTableForm({ setTables }) {
             <Button
               variant="danger"
               size="lg"
-              onClick={handleShow}
+              onClick={handleTableDelete}
             >
               Delete
             </Button>
@@ -131,22 +129,6 @@ export default function EditTableForm({ setTables }) {
           </ButtonGroup>
         </Form>
       </Col>
-      <Modal show={showConfirmation} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title>Delete Reservation</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-          You are about to delete this Table. This cannot be undone. Continue?
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="dark" onClick={handleClose}>
-                Cancel
-            </Button>
-            <Button variant="danger" onClick={handleTableDelete}>
-                Delete
-            </Button>
-          </Modal.Footer>
-      </Modal>
     </>
   )
 }

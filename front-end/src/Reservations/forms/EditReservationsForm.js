@@ -8,7 +8,6 @@ import ErrorAlert from "../../layout/ErrorAlert"
 import Loading from "../../loading/Loading"
 
 import { Col, Form, Button, ButtonGroup } from "react-bootstrap"
-import Modal from "react-bootstrap/Modal"
 
 const { deleteReservation, updateReservation, getReservation, finishReso } = require("../../utils/api")
 
@@ -18,16 +17,7 @@ function EditReservationForm(props) {
   const { reservation_id } = useParams()
 
   const [formError, setFormError] = useState(null)
-  const [showConfirmation, setShowConfirmation] =  useState(false)
-  const [showSecondConfirmation, setSecondShowConfirmation] =  useState(false)
-  const [formData, setFormData] = useState({})
-
-  const handleClose = () => setShowConfirmation(false)
-  const handleShow = () => setShowConfirmation(true)
-  const handleSecondClose = () => setSecondShowConfirmation(false)
-  const handleSecondShow = () => setSecondShowConfirmation(true)    
-
-  console.log(showConfirmation)
+  const [formData, setFormData] = useState({})   
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -68,21 +58,31 @@ function EditReservationForm(props) {
 
   const handleReservationDelete = (event) => {
     event.preventDefault()
-    deleteReservation(reservation_id)
-      .then(() => history.push("/"))
-      .catch(setFormError)
+    const message = `Do you want to delete this reservation? This cannot be undone.`
+    if (window.confirm(message)) {
+      const abortController = new AbortController()
+      deleteReservation(reservation_id, abortController.signal)
+        .then(() => history.push(`/dashboard`))
+        .catch(setFormError)
+      return () => abortController.abort()
+    }
   }
 
   const handleReservationCancel = (event) => {
     event.preventDefault()
-    finishReso(reservation_id, "cancelled")
-      .then(() => history.push("/"))
-      .catch(setFormError)
+    const message = "Do you want to cancel this reservation? This cannot be undone."
+    if (window.confirm(message)) {
+      finishReso(reservation_id, "cancelled")
+        .then(() => history.push("/"))
+        .catch(setFormError)
+    }
   }
 
   if(!formData) {
     return <Loading />
   }
+
+  let reservation = formData
 
   const reservationDate = formData?.reservation_date
     ? DateTime.fromISO(formData.reservation_date).toFormat("yyyy-MM-dd")
@@ -163,44 +163,13 @@ function EditReservationForm(props) {
           </Form.Group>
           <ButtonGroup aria-label="Basic example" className="mt-4 w-100">
             <Button variant="dark" onClick={handleCancel}>Cancel</Button>
-            <Button variant="danger" onClick={handleShow}>Delete</Button>
-            <Button variant="secondary" onClick={handleSecondShow}>Cancel Reservation</Button>
+            <Button variant="danger" onClick={handleReservationDelete}>Delete</Button>
+            <Button variant="secondary" data-reservation-id-cancel={reservation.reservation_id} onClick={handleReservationCancel}>Cancel Reservation</Button>
             <Button variant="success" type="submit">Save</Button>
           </ButtonGroup>
         </Form>
       </Col>
-      <Modal show={showConfirmation} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title>Delete Reservation</Modal.Title>
-        </Modal.Header>
-          <Modal.Body>
-          You are about to delete the reservation. This cannot be undone. Continue?
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="dark" onClick={handleClose}>
-                Cancel
-            </Button>
-            <Button variant="danger" onClick={handleReservationDelete}>
-                Continue
-            </Button>
-          </Modal.Footer>
-      </Modal>
-      <Modal show={showSecondConfirmation} onHide={handleSecondClose}>
-        <Modal.Header>
-          <Modal.Title>Cancel Reservation</Modal.Title>
-        </Modal.Header>
-          <Modal.Body>
-          You are about to cancel the reservation. This cannot be undone. Continue?
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="dark" onClick={handleSecondClose}>
-                Cancel
-            </Button>
-            <Button variant="danger" data-reservation-id-cancel={formData.reservation_id} onClick={handleReservationCancel}>
-                Continue
-            </Button>
-          </Modal.Footer>
-      </Modal>
+      
     </>
   )
 }
