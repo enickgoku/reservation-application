@@ -76,7 +76,7 @@ async function hasReservationId(req, res, next) {
 }
 
 async function hasValidProperties(req, res, next) {
-  const { first_name, last_name, mobile_number, reservation_date, reservation_time, people } = req.body
+  const { first_name, last_name, mobile_number, reservation_date, reservation_time, people } = req.body.data
   if (first_name && last_name && mobile_number && reservation_date && reservation_time && people) {
     return next()
   }
@@ -84,7 +84,7 @@ async function hasValidProperties(req, res, next) {
 }
 
 async function hasValidDate(req, res, next) {
-  const { reservation_date } = req.body
+  const { reservation_date } = req.body.data
   if (!DateTime.fromISO(reservation_date).isValid) {
     return next ({
       status: 400,
@@ -95,7 +95,7 @@ async function hasValidDate(req, res, next) {
 }
 
 async function hasValidTime(req, res, next) {
-  const { reservation_time } = req.body
+  const { reservation_time } = req.body.data
   if (!DateTime.fromISO(reservation_time).isValid) {
     return next ({
       status: 400,
