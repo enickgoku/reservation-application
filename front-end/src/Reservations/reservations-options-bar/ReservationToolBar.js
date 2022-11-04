@@ -48,6 +48,9 @@ export default function ReservationToolBar(props) {
             <Dropdown.Item onClick={() => setReservationsFilter("finished")}>
                 Finished
             </Dropdown.Item>
+            <Dropdown.Item onClick={() => setReservationsFilter("cancelled")}>
+                Cancelled
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
     </div>

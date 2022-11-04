@@ -14,15 +14,15 @@ import SearchForm from "../search/SearchForm"
  */
 function Routes(props) {
 
-  let {
-    handleChangeDateSetting,
-    currentDate,
-    dateSetting,
-    setDateSetting,
-    currentTime,
-    changeDate,
-    today
-  } = props
+  // let {
+  //   handleChangeDateSetting,
+  //   currentDate,
+  //   dateSetting,
+  //   setDateSetting,
+  //   currentTime,
+  //   changeDate,
+  //   today
+  // } = props
 
   return (
     <Switch>

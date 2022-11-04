@@ -16,7 +16,7 @@ async function list(req, res) {
     if (phase === "all") {
       res.json({ data: await service.listAllReservations(date) }) 
     }
-    if (phase === "booked" || phase === "seated" || phase === "finished") {
+    if (phase === "booked" || phase === "seated" || phase === "finished" || phase === "cancelled") {
       res.json({ data: await service.listReservationsByPhase(date, phase) })
     }
   }
@@ -48,7 +48,8 @@ async function destroy(req, res){
 }
 
 async function finish(req, res){
-  const data = await service.finish(req.params.reservation_id)
+  const { status } = req.body.data
+  const data = await service.finish(req.params.reservation_id, status)
   res.json({ data })
 }
 

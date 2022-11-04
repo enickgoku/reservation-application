@@ -31,6 +31,12 @@ export default function ReservationCard(props) {
           <Card.Text>
             Set for {formattedDate} at {formattedTime}
           </Card.Text>
+          <Card.Text>
+            Party of {reservations.people}
+          </Card.Text>
+          <Card.Text data-reservation-id-status={reservations.reservation_id}>
+            Status: {reservations.status}
+          </Card.Text>
           <Card.Footer className="d-flex justify-content-center p-0">
             <ResercationCardSeatOptions
               reservations={reservations}

@@ -39,7 +39,7 @@ export default function CreateTableForm({ setTables }) {
         prev.push(formData)
         return prev
       }))
-      .then(() => history.push(`/dashboard`))
+      .then(() => history.push(`/reservations/new`))
       .catch(setFormError)
     return () => abortController.abort()
   }

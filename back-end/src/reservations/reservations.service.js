@@ -1,3 +1,4 @@
+const e = require("express")
 const knex = require("../db/connection")
 
 const listAllReservations = (date) => {
@@ -41,15 +42,21 @@ const destroy = (reservation_id) => {
       .del()
 }
 
-function finish(reservation_id) {
+function finish(reservation_id, status) {
+  if(status === "finished") {
   return knex.transaction(async (trx) => {
     await trx("reservations")
         .where({ reservation_id })
-        .update({ status: "finished" })
+        .update({ status: status })
     await trx("tables")
         .where({ reservation_id })
         .update({ reservation_id: null })
   })
+  } else {
+    return knex("reservations")
+        .where({ reservation_id })
+        .update({ status: status })
+  }
 }
 
 const search = (mobile_number) => {

@@ -40,6 +40,7 @@ export default function TableCardOptions(props) {
               <Button
                 variant="dark"
                 className="d-flex align-items-center text-muted border border-list-bg"
+                data-table-id-finish={table.table_id}
                 style={{ fontSize: "1.2rem" }}
                 onClick={handleShow}
               >
@@ -78,7 +79,7 @@ export default function TableCardOptions(props) {
           <Button variant="dark" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="danger" autoFocus={true} onClick={handleDismissReservation}>
+          <Button variant="danger" data-table-id-finish={table.table_id} autoFocus={true} onClick={handleDismissReservation}>
             Continue
           </Button>
         </Modal.Footer>

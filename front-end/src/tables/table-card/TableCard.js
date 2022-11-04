@@ -26,7 +26,7 @@ export default function TableCard(props) {
         <Card.Body className="text-dark">
           <Card.Title>Table Name: {table?.table_name}</Card.Title>
           <Card.Title>Capacity: {table?.capacity}</Card.Title>
-          <Card.Title>Status: {showFreeStatus(table)}</Card.Title>
+          <Card.Title data-table-id-status={table.table_id}>Status: {showFreeStatus(table)}</Card.Title>
           <TableCardOptions table={table} />
         </Card.Body>
       </Card>

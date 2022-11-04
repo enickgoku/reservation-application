@@ -101,7 +101,7 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
           <Button variant="dark" onClick={handleClose}>
               Cancel
           </Button>
-          <Button variant="danger" onClick={handleFinish}>
+          <Button variant="danger" data-reservation-id-status={reservations.reservation_id} onClick={handleFinish}>
               Continue
           </Button>
           </Modal.Footer>
