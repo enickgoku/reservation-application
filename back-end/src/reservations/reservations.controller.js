@@ -34,7 +34,7 @@ async function create(req, res) {
 
 async function update(req, res) {
   const updatedReservation = {
-    ...req.body,
+    ...req.body.data,
     reservation_id: req.params.reservation_id,
   }
   const data = await service.update(updatedReservation)

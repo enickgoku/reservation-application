@@ -110,7 +110,7 @@ async function tableIsFree(req, res, next){
 }
 
 async function tableNameLengthIsMoreThanOne(req, res, next){
-  const { table_name } = req.body
+  const { table_name } = req.body.data
   if (table_name.length >= 2) {
     return next()
   }

@@ -45,7 +45,15 @@ function EditReservationForm(props) {
   const handleUpdateSubmit = (event) => {
     event.preventDefault()
     const abortController = new AbortController()
-    updateReservation(formData, reservation_id, abortController.signal)
+    const data = {
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      mobile_number: formData.mobile_number,
+      reservation_date: formData.reservation_date,
+      reservation_time: formData.reservation_time,
+      people: parseInt(formData.people),
+    }
+    updateReservation({ data }, reservation_id, abortController.signal)
       .then(() => history.push(`/dashboard`))
       .catch(setFormError)
     return () => abortController.abort()
