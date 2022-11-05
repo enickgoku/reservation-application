@@ -165,7 +165,7 @@ function EditReservationForm(props) {
             <Button variant="dark" onClick={handleCancel}>Cancel</Button>
             <Button variant="danger" onClick={handleReservationDelete}>Delete</Button>
             <Button variant="secondary" data-reservation-id-cancel={reservation.reservation_id} onClick={handleReservationCancel}>Cancel Reservation</Button>
-            <Button variant="success" type="submit">Save</Button>
+            <Button variant="success" type="submit">Submit</Button>
           </ButtonGroup>
         </Form>
       </Col>
