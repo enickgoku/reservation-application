@@ -11,7 +11,8 @@ export default function TableCardOptions(props) {
   
   let {
     table,
-    setTablesError
+    setTablesError,
+    loadDashboard,
   } = props
 
   const history = useHistory()
@@ -21,7 +22,8 @@ export default function TableCardOptions(props) {
     if (window.confirm(message)) {
       const abortController = new AbortController()
       removeReservation(table.table_id, table.reservation_id, abortController.signal)
-        .then(() => history.push("/"))
+        .then(() => history.push("/tables"))
+        .then(loadDashboard)
         .catch(setTablesError)
       return () => abortController.abort()
     }

@@ -19,11 +19,13 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
       const abortController = new AbortController()
       finishReso(reservations.reservation_id, "finished", abortController.signal)
         .then(loadDashboard)
-        .then(() => history.push(`/dashboard`))
+        .then(() => history.push(`/tables`))
         .catch(console.log)
     }
 
   }
+
+  const { reservation_id } = reservations
 
   return(
     <>
@@ -38,7 +40,7 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
                 variant="dark"
                 className="d-flex align-items-center text-muted"
                 style={{ fontSize: "1.2rem" }}
-                href={`/reservations/${reservations.reservation_id}/seat`}
+                href={`/reservations/${reservation_id}/seat`}
               >
                 <i className="ri-map-pin-user-fill" />
               </Button>
@@ -74,7 +76,7 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
             variant="dark"
             className="d-flex align-items-center text-muted"
             style={{ fontSize: "1.2rem" }}
-            href={`/reservations/${reservations.reservation_id}/edit`}
+            href={`/reservations/${reservation_id}/edit`}
           >
             <i className="ri-pencil-line" />
           </Button>

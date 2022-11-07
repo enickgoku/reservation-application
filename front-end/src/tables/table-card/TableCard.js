@@ -7,7 +7,8 @@ import { Card } from 'react-bootstrap'
 export default function TableCard(props) {
 
   let {
-    table
+    table,
+    loadDashboard,
   } = props
 
   const showFreeStatus = (table) => {
@@ -27,7 +28,7 @@ export default function TableCard(props) {
           <Card.Title>Table Name: {table?.table_name}</Card.Title>
           <Card.Title>Capacity: {table?.capacity}</Card.Title>
           <Card.Title data-table-id-status={table.table_id}>Status: {showFreeStatus(table)}</Card.Title>
-          <TableCardOptions table={table} />
+          <TableCardOptions table={table} loadDashboard={loadDashboard} />
         </Card.Body>
       </Card>
     </>

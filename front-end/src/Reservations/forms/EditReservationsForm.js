@@ -13,6 +13,10 @@ const { deleteReservation, updateReservation, getReservation, finishReso } = req
 
 function EditReservationForm(props) {
 
+  let {
+    loadDashboard,
+  } = props
+
   const history = useHistory()
   const { reservation_id } = useParams()
 
@@ -63,6 +67,7 @@ function EditReservationForm(props) {
       const abortController = new AbortController()
       deleteReservation(reservation_id, abortController.signal)
         .then(() => history.push(`/dashboard`))
+        .then(loadDashboard)
         .catch(setFormError)
       return () => abortController.abort()
     }
@@ -74,6 +79,7 @@ function EditReservationForm(props) {
     if (window.confirm(message)) {
       finishReso(reservation_id, "cancelled")
         .then(() => history.push("/"))
+        .then(loadDashboard)
         .catch(setFormError)
     }
   }

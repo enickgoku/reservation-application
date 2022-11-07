@@ -49,14 +49,14 @@ function Dashboard(props) {
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
         <Route exact={true} path={"/dashboard"}>
-          <TableList tables={tables} tablesError={tablesError} setTablesFilter={setTablesFilter} />
+          <TableList tables={tables} tablesError={tablesError} setTablesFilter={setTablesFilter} loadDashboard={loadDashboard} />
           <ReservationsList loadDashboard={loadDashboard} dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} reservationsFilter={reservationsFilter} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <CreateReservationForm loadDashboard={loadDashboard} />
         </Route>
         <Route exact={true} path={"/reservations/:reservation_id/edit"}>
-          <EditReservationForm setReservations={setReservations} reservations={reservations} currentDate={currentDate} />
+          <EditReservationForm setReservations={setReservations} reservations={reservations} currentDate={currentDate} loadDashboard={loadDashboard} />
         </Route>
         <Route exact={true} path={"/reservations/:reservation_id/seat"}>
           <SeatTable {...props} />

@@ -11,6 +11,7 @@ export default function TableList(props) {
     tables,
     tablesError,
     setTablesFilter,
+    loadDashboard
   } = props
 
   if (!tables) {
@@ -25,6 +26,7 @@ export default function TableList(props) {
         <TableCard
           key={table.table_id}
           table={table}
+          loadDashboard={loadDashboard}
         />
       ))}
     </>
