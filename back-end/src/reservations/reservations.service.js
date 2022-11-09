@@ -63,7 +63,7 @@ const search = (mobile_number) => {
   return knex("reservations")
     .select("*")
     .where("mobile_number", "like", `%${mobile_number}%`)
-    .orderBy("reservation_date")
+    .orderBy("reservation_time")
 }
 
 module.exports = {

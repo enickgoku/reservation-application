@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react"
 import { Switch, Route, Redirect } from "react-router-dom"
 import { listReservations, listTables } from "../utils/api"
 
-import CreateReservationForm from "../reservations/forms/CreateReservationForm"
-import EditReservationForm from "../reservations/forms/EditReservationsForm"
+// import CreateReservationForm from "../reservations/forms/CreateReservationForm"
+// import EditReservationsForm from "../reservations/forms/EditReservationsForm"
+import FormReservations from "../form-reservations/FormReservations"
 import ReservationsList from "../reservations/reservations-list/ReservationsList"
 import CreateTableForm from "../tables/forms/CreateTableForm"
 import Row from "react-bootstrap/Row"
@@ -53,10 +54,10 @@ function Dashboard(props) {
           <ReservationsList loadDashboard={loadDashboard} dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} reservationsFilter={reservationsFilter} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
-          <CreateReservationForm loadDashboard={loadDashboard} />
+          <FormReservations loadDashboard={loadDashboard} />
         </Route>
         <Route exact={true} path={"/reservations/:reservation_id/edit"}>
-          <EditReservationForm setReservations={setReservations} reservations={reservations} currentDate={currentDate} loadDashboard={loadDashboard} />
+          <FormReservations setReservations={setReservations} reservations={reservations} currentDate={currentDate} loadDashboard={loadDashboard} />
         </Route>
         <Route exact={true} path={"/reservations/:reservation_id/seat"}>
           <SeatTable {...props} />

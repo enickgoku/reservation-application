@@ -22,6 +22,13 @@ async function list(req, res) {
   }
 }
 
+// returns only reservations matching date query parameter
+async function listAllReservations(req, res, next) {
+  const { date } = req.query
+  const data = await service.listAllReservations(date)
+  res.json({ data })
+}
+
 async function read(req, res) {
   const reservation = await service.read(req.params.reservation_id)
   res.json({ data: reservation })
@@ -77,11 +84,18 @@ async function hasReservationId(req, res, next) {
 }
 
 async function hasValidProperties(req, res, next) {
-  const { first_name, last_name, mobile_number, reservation_date, reservation_time, people } = req.body.data
-  if (first_name && last_name && mobile_number && reservation_date && reservation_time && people) {
-    return next()
+  const { data = {} } = req.body
+  if(!data) {
+    return next({
+      status: 400,
+      message: `The following 'data' could not be found: ${data}`
+    })
   }
-  next({ status: 400, message: "Reservation must include first_name, last_name, mobile_number, reservation_date, reservation_time, and people." })
+  const { data: { first_name, last_name, mobile_number, reservation_date, reservation_time, people } } = req.body
+  if (!first_name || !last_name || !mobile_number || !reservation_date || !reservation_time || !people) {
+    return next({ status: 400, message: "Reservation must include first_name, last_name, mobile_number, reservation_date, reservation_time, and people." })
+  }
+  next()
 }
 
 async function hasValidDate(req, res, next) {
@@ -159,7 +173,7 @@ async function hasValidTimeRange(req, res, next) {
 }
 
 module.exports = {
-  list: asyncErrorBoundary(list),
+  list: [listAllReservations, asyncErrorBoundary(list)],
   read: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
   create: [hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(create)],
   update: [asyncErrorBoundary(reservationExists), hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(update)],

@@ -11,7 +11,7 @@ import { Col, Form, Button, ButtonGroup } from "react-bootstrap"
 
 const { deleteReservation, updateReservation, getReservation, finishReso } = require("../../utils/api")
 
-function EditReservationForm(props) {
+function EditReservationsForm(props) {
 
   let {
     loadDashboard,
@@ -180,4 +180,4 @@ function EditReservationForm(props) {
   )
 }
 
-export default EditReservationForm
+export default EditReservationsForm
