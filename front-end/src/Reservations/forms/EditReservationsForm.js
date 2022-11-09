@@ -15,6 +15,7 @@ function EditReservationsForm(props) {
 
   let {
     loadDashboard,
+    reservations
   } = props
 
   const history = useHistory()
@@ -29,7 +30,7 @@ function EditReservationsForm(props) {
       .then(setFormData)
       .catch(setFormError)
     return () => abortController.abort()
-  }, [reservation_id])
+  }, [reservation_id, reservations])
 
   const handleChange = ({ currentTarget }) => {
     setFormError(null)
@@ -50,8 +51,9 @@ function EditReservationsForm(props) {
       reservation_time: formData.reservation_time,
       people: parseInt(formData.people),
     }
-    updateReservation({ data }, reservation_id, abortController.signal)
-      .then(() => history.push(`/dashboard`))
+    updateReservation(data , reservation_id, abortController.signal)
+      .then(loadDashboard)
+      .then(() => history.push(`/`))
       .catch(setFormError)
     return () => abortController.abort()
   }

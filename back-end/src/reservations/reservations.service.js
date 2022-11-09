@@ -6,14 +6,15 @@ const listAllReservations = (date) => {
       .select("*")
       .where({ reservation_date: date })
       .whereIn("status", ["booked", "seated"])
-      .orderBy("reservation_time")
+      .orderBy('reservation_time')
+      
 }
 
 const listReservationsByPhase = (date, phase) => {
   return knex("reservations")
       .select("*")
       .where({ reservation_date: date, status: phase })
-      .orderBy("reservation_time")
+      .orderBy('reservation_time')
 }
 
 const create = (reservation) => {
@@ -63,7 +64,7 @@ const search = (mobile_number) => {
   return knex("reservations")
     .select("*")
     .where("mobile_number", "like", `%${mobile_number}%`)
-    .orderBy("reservation_time")
+    .orderBy("reservation_time", "desc")
 }
 
 module.exports = {

@@ -27,7 +27,7 @@ Settings.defaultZoneName = "America/Michigan"
     setCurrentDate(DateTime.local().toISODate())
     setCurrentTime(DateTime.local().toFormat("T"))
   }, 1000)
- 
+
   return (
     <Container fluid className="layout bg-secondary text-white">
       <Row className="bg-secondary text-white">

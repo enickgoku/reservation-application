@@ -22,13 +22,6 @@ async function list(req, res) {
   }
 }
 
-// returns only reservations matching date query parameter
-async function listAllReservations(req, res, next) {
-  const { date } = req.query
-  const data = await service.listAllReservations(date)
-  res.json({ data })
-}
-
 async function read(req, res) {
   const reservation = await service.read(req.params.reservation_id)
   res.json({ data: reservation })
@@ -84,7 +77,7 @@ async function hasReservationId(req, res, next) {
 }
 
 async function hasValidProperties(req, res, next) {
-  const { data = {} } = req.body
+  const { data } = req.body
   if(!data) {
     return next({
       status: 400,
@@ -125,7 +118,7 @@ async function dateIsNotOnTuesday(req, res, next) {
   if (DateTime.fromISO(reservation_date).weekday === 2) {
     return next({
       status: 400,
-      message: "Reservations cannot be made on Tuesdays."
+      message: "closed"
     })
   }
   next()
@@ -137,7 +130,7 @@ async function dateIsNotInThePast(req, res, next) {
   if (reservationDateTime < DateTime.now()) {
     return next({
       status: 400,
-      message: "Reservations cannot be made in the past."
+      message: "future"
     })
   }
   next()
@@ -173,7 +166,7 @@ async function hasValidTimeRange(req, res, next) {
 }
 
 module.exports = {
-  list: [listAllReservations, asyncErrorBoundary(list)],
+  list: asyncErrorBoundary(list),
   read: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
   create: [hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(create)],
   update: [asyncErrorBoundary(reservationExists), hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(update)],

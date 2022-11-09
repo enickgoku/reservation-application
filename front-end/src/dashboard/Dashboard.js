@@ -20,7 +20,7 @@ function Dashboard(props) {
   let {
     setDateSetting,
     currentDate, // 2022-10-24
-    dateSetting, // 2022-10-24
+    dateSetting, 
   } = props
 
   const [reservations, setReservations] = useState([])
