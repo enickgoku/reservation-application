@@ -51,7 +51,7 @@ function EditReservationsForm(props) {
       reservation_time: formData.reservation_time,
       people: parseInt(formData.people),
     }
-    updateReservation(data , reservation_id, abortController.signal)
+    updateReservation(data, reservation_id, abortController.signal)
       .then(loadDashboard)
       .then(() => history.push(`/`))
       .catch(setFormError)

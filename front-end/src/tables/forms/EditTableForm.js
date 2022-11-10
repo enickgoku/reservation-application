@@ -50,7 +50,9 @@ export default function EditTableForm({ setTables }) {
   }
 
   const data = {
-    data: formData,
+    table_name: formData.table_name,
+    capacity: formData.capacity,
+    reservation_id: table.reservation_id
   }
   
   const handleSubmit = (event) => {

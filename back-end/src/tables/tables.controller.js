@@ -21,6 +21,7 @@ async function read(req, res) {
 
 async function create(req, res) {
   const data = req.body.data
+  console.log(data)
   const newTable = await service.createTable(data)
   res.status(201).json({ data: newTable })
 }
@@ -40,7 +41,7 @@ async function seatTable(req, res){
   const { table_id } = req.params
   const { reservation_id } = req.body.data
   const seatedTable = await service.assignReservation(reservation_id, table_id)
-  res.json({ data: seatedTable })
+  res.status(200).json({ data: seatedTable })
 }
 
 async function dismissTable(req, res){
@@ -72,12 +73,24 @@ async function tableExists(req, res, next){
 }
 
 async function hasReservationId(req, res, next){
+  const { data } = req.body
+  if(!data){
+    next({
+      status: 400, message: "a data key is required."
+    })
+  }
+
   const { reservation_id } = req.body.data
+
+  if(!reservation_id){
+    return next({ status: 400, message: "reservation_id is required." })
+  }
+
   if (reservation_id) {
     res.locals.reservation_id = reservation_id
     return next()
   }
-  next({ status: 400, message: "reservation_id is required." })
+  next({ status: 404, message: "reservation_id is required." })
 }
 
 async function reservationExists(req, res, next) {
@@ -94,7 +107,22 @@ async function reservationExists(req, res, next) {
 }
 
 async function tablePropertiesExist(req, res, next){
-  const { table_name, capacity } = req.body.data
+  const { data } = req.body
+  console.log(data)
+  if(!data){
+    next({
+      status: 400, message: "a data key is required."
+    })
+  } 
+
+  const { data: { table_name, capacity } } = req.body
+
+  if(typeof capacity !== "number"){
+    next({
+      status: 400, message: "capacity must be a number."
+    })
+  }
+
   if (table_name && capacity) {
     return next()
   }
@@ -105,13 +133,20 @@ async function tableIsFree(req, res, next){
   const { table } = res.locals
   if (table.reservation_id === null) {
     return next()
+  } else {
+    next({ status: 400, message: "Table is occupied." })
   }
-  next({ status: 400, message: "Table is occupied." })
 }
 
 async function tableNameLengthIsMoreThanOne(req, res, next){
   const { table_name } = req.body.data
-  if (table_name.length >= 2) {
+
+  if(table_name.length === 1) {
+    next({
+      status: 400, message: "table_name must be longer than one character."
+    })
+  }
+  if (table_name.length >= 1) {
     return next()
   }
   next({ status: 400, message: "Table name must be at least 2 characters." })
@@ -140,9 +175,9 @@ async function tableIsOccupied(req, res, next) {
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(hasTableId), asyncErrorBoundary(tableExists), asyncErrorBoundary(read)],
-  create: [tablePropertiesExist, tableNameLengthIsMoreThanOne, asyncErrorBoundary(create)],
+  create: [asyncErrorBoundary(tablePropertiesExist), tableNameLengthIsMoreThanOne, asyncErrorBoundary(create)],
   update: [hasTableId, asyncErrorBoundary(tableExists), asyncErrorBoundary(tablePropertiesExist), tableNameLengthIsMoreThanOne, asyncErrorBoundary(update)],
-  assign: [hasTableId, asyncErrorBoundary(tableExists), hasReservationId, asyncErrorBoundary(reservationExists), tableIsFree, tableHasSufficientCapacity, asyncErrorBoundary(seatTable)],
+  assign: [asyncErrorBoundary(hasReservationId), asyncErrorBoundary(reservationExists), asyncErrorBoundary(hasTableId), asyncErrorBoundary(tableExists), asyncErrorBoundary(tableIsFree), asyncErrorBoundary(tableHasSufficientCapacity), asyncErrorBoundary(seatTable)],
   dismiss: [hasTableId, asyncErrorBoundary(tableExists), tableIsOccupied, asyncErrorBoundary(dismissTable)],
   destroy: [hasTableId, asyncErrorBoundary(tableExists), tableIsFree, asyncErrorBoundary(destroy)],
 }

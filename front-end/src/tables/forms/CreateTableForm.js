@@ -27,6 +27,12 @@ export default function CreateTableForm({ setTables }) {
     })
   }
 
+  const data = {
+    table_name: formData.table_name,
+    capacity: +formData.capacity,
+    reservation_id: null
+  }
+
   const handleCancelClick = () => {
     history.push("/dashboard")
   }
@@ -34,7 +40,7 @@ export default function CreateTableForm({ setTables }) {
   const handleSubmit = (event) => {
     event.preventDefault()
     const abortController = new AbortController()
-    createTable(formData, abortController.signal)
+    createTable(data, abortController.signal)
       .then(setTables(prev => {
         prev.push(formData)
         return prev
