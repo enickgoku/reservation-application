@@ -4,6 +4,7 @@ import { listReservations, listTables } from "../utils/api"
 
 // import CreateReservationForm from "../reservations/forms/CreateReservationForm"
 // import EditReservationsForm from "../reservations/forms/EditReservationsForm"
+import FormTables from "../form-tables/FormTables"
 import FormReservations from "../form-reservations/FormReservations"
 import ReservationsList from "../reservations/reservations-list/ReservationsList"
 import CreateTableForm from "../tables/forms/CreateTableForm"
@@ -66,10 +67,10 @@ function Dashboard(props) {
           <Redirect to={"/dashboard"} />
         </Route>
         <Route exact={true} path={"/tables/new"}>
-          <CreateTableForm setTables={setTables} />
+          <FormTables setTables={setTables} />
         </Route>
         <Route exact={true} path={"/tables/:table_id/edit"}>
-          <EditTableForm setTables={setTables} />
+          <FormTables setTables={setTables} />
         </Route>
       </Switch>
     </Row>
