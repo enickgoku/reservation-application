@@ -46,7 +46,7 @@ async function seatTable(req, res){
 
 async function dismissTable(req, res){
   const { table_id } = req.params
-  const { reservation_id } = req.body.data
+  const { reservation_id } = res.locals.table
   const dismissedTable = await service.dismissTable(table_id, reservation_id)
   res.json({ data: dismissedTable })
 }
@@ -178,6 +178,6 @@ module.exports = {
   create: [asyncErrorBoundary(tablePropertiesExist), tableNameLengthIsMoreThanOne, asyncErrorBoundary(create)],
   update: [hasTableId, asyncErrorBoundary(tableExists), asyncErrorBoundary(tablePropertiesExist), tableNameLengthIsMoreThanOne, asyncErrorBoundary(update)],
   assign: [asyncErrorBoundary(hasReservationId), asyncErrorBoundary(reservationExists), asyncErrorBoundary(hasTableId), asyncErrorBoundary(tableExists), asyncErrorBoundary(tableIsFree), asyncErrorBoundary(tableHasSufficientCapacity), asyncErrorBoundary(seatTable)],
-  dismiss: [hasTableId, asyncErrorBoundary(tableExists), tableIsOccupied, asyncErrorBoundary(dismissTable)],
+  dismiss: [asyncErrorBoundary(hasTableId), asyncErrorBoundary(tableExists), asyncErrorBoundary(tableIsOccupied), asyncErrorBoundary(dismissTable)],
   destroy: [hasTableId, asyncErrorBoundary(tableExists), tableIsFree, asyncErrorBoundary(destroy)],
 }
