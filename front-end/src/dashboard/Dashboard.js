@@ -2,17 +2,13 @@ import React, { useEffect, useState } from "react"
 import { Switch, Route, Redirect } from "react-router-dom"
 import { listReservations, listTables } from "../utils/api"
 
-// import CreateReservationForm from "../reservations/forms/CreateReservationForm"
-// import EditReservationsForm from "../reservations/forms/EditReservationsForm"
 import FormTables from "../form-tables/FormTables"
 import FormReservations from "../form-reservations/FormReservations"
 import ReservationsList from "../reservations/reservations-list/ReservationsList"
-import CreateTableForm from "../tables/forms/CreateTableForm"
 import Row from "react-bootstrap/Row"
 import Loading from "../loading/Loading"
 import SeatTable from "../reservations/seat-table/SeatTable"
 import TableList from "../tables/table-list/TableList"
-import EditTableForm from "../tables/forms/EditTableForm"
 
 import "../layout/Layout.css"
 
@@ -21,7 +17,7 @@ function Dashboard(props) {
   let {
     setDateSetting,
     currentDate, // 2022-10-24
-    dateSetting, 
+    dateSetting, // adjustable date state
   } = props
 
   const [reservations, setReservations] = useState([])
