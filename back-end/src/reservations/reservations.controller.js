@@ -7,24 +7,27 @@ Settings.defaultZoneName = "America/Michigan"
 
 // crud functions
 
-async function list(req, res) {
+async function list(req, res, next) {
   if (req.query.mobile_number) {
     const { mobile_number } = req.query
-    return res.json({ data: await service.search(mobile_number)})
-  } else {
-    const { date, phase = "all" } = req.query
-    if (phase === "all") {
-      res.json({ data: await service.listAllReservations(date) }) 
-    }
-    if (phase === "booked" || phase === "seated" || phase === "finished" || phase === "cancelled") {
-      res.json({ data: await service.listReservationsByPhase(date, phase) })
-    }
+    const data = await service.search(mobile_number)
+    return res.json({ data })
+  } 
+  if (req.query.date) {
+    const { date } = req.query
+    const data = await service.listAllReservationsByDate(date)
+    return res.json({ data })
+  }
+  if (req.query.date && req.query.phase) {
+    const { date, phase } = req.query
+    const data = await service.listReservationsByPhase(date, phase)
+    return res.json({ data })
   }
 }
 
 async function read(req, res) {
   const reservation = await service.read(req.params.reservation_id)
-  res.json({ data: reservation })
+  res.status(200).json({ data: reservation })
 }
 
 async function create(req, res) {
@@ -38,7 +41,7 @@ async function update(req, res) {
     reservation_id: req.params.reservation_id,
   }
   const data = await service.update(updatedReservation)
-  res.json({ data: data })
+  res.status(200).json({ data: data })
 }
 
 async function destroy(req, res){
@@ -50,13 +53,14 @@ async function destroy(req, res){
 async function finish(req, res){
   const { status } = req.body.data
   const data = await service.finish(req.params.reservation_id, status)
-  res.json({ data })
+  res.status(200).json({ data })
 }
 
 // Middleware validation
 
 async function reservationExists(req, res, next) {
-  const reservation = await service.read(req.params.reservation_id)
+  const reservation = await service.read(res.locals.reservation_id)
+
   if (reservation) {
     res.locals.reservation = reservation
     return next()
@@ -165,11 +169,81 @@ async function hasValidTimeRange(req, res, next) {
   next()
 }
 
+async function isNotAlreadyFinished(req, res, next) {
+  const { status } = req.body.data
+  if(status === "finished" || status === "seated"){
+    return next({
+      status: 400,
+      message: `${status}`
+    })
+  }
+  next()
+}
+
+async function reservationIsNotFinished(req, res, next) {
+  const { status } = res.locals.reservation
+  if (status === "finished") {
+    return next({
+      status: 400,
+      message: `This reso is already ${status}`
+    })
+  }
+  next()
+}
+
+async function statusIsNotUnknown(req, res, next) {
+  const { status } = req.body.data
+  if(status !== "booked" || status !== "seated" || status !== "finished" || status !== "cancelled"){
+    return next({
+      status: 400,
+      message: `${status} is not a valid status.`
+    })
+  }
+  next()
+}
+
 module.exports = {
-  list: asyncErrorBoundary(list),
-  read: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
-  create: [hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(create)],
-  update: [asyncErrorBoundary(reservationExists), hasValidProperties, hasValidDate, hasValidTime, dateIsNotOnTuesday, dateIsNotInThePast, hasValidPeople, hasValidTimeRange, asyncErrorBoundary(update)],
-  destroy: [hasReservationId, asyncErrorBoundary(reservationExists), asyncErrorBoundary(destroy)],
-  finish: asyncErrorBoundary(finish),
+  read: [
+    asyncErrorBoundary(hasReservationId), 
+    asyncErrorBoundary(reservationExists), 
+    asyncErrorBoundary(read)
+  ],
+  create: [
+    asyncErrorBoundary(hasValidProperties), 
+    asyncErrorBoundary(hasValidDate), 
+    asyncErrorBoundary(hasValidTime), 
+    asyncErrorBoundary(dateIsNotOnTuesday), 
+    asyncErrorBoundary(dateIsNotInThePast), 
+    asyncErrorBoundary(hasValidPeople), 
+    asyncErrorBoundary(hasValidTimeRange),
+    asyncErrorBoundary(isNotAlreadyFinished), 
+    asyncErrorBoundary(create)
+  ],
+  update: [
+    asyncErrorBoundary(hasReservationId), 
+    asyncErrorBoundary(reservationExists), 
+    asyncErrorBoundary(hasValidProperties), 
+    asyncErrorBoundary(hasValidDate), 
+    asyncErrorBoundary(hasValidTime), 
+    asyncErrorBoundary(dateIsNotOnTuesday), 
+    asyncErrorBoundary(dateIsNotInThePast), 
+    asyncErrorBoundary(hasValidPeople), 
+    asyncErrorBoundary(hasValidTimeRange),
+    asyncErrorBoundary(isNotAlreadyFinished),
+    asyncErrorBoundary(statusIsNotUnknown), 
+    asyncErrorBoundary(update)
+  ],
+  destroy: [
+    asyncErrorBoundary(hasReservationId), 
+    asyncErrorBoundary(reservationExists), 
+    asyncErrorBoundary(destroy)
+  ],
+  finish: [
+    asyncErrorBoundary(hasReservationId), 
+    asyncErrorBoundary(reservationExists), 
+    asyncErrorBoundary(reservationIsNotFinished),
+    asyncErrorBoundary(statusIsNotUnknown),
+    asyncErrorBoundary(finish)
+  ],
+  list: [asyncErrorBoundary(list)],
 }

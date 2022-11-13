@@ -1,4 +1,5 @@
 const service = require("./tables.service")
+const reservationService = require("../reservations/reservations.service")
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 
 async function list(req, res) {
@@ -21,7 +22,6 @@ async function read(req, res) {
 
 async function create(req, res) {
   const data = req.body.data
-  console.log(data)
   const newTable = await service.createTable(data)
   res.status(201).json({ data: newTable })
 }
@@ -108,7 +108,6 @@ async function reservationExists(req, res, next) {
 
 async function tablePropertiesExist(req, res, next){
   const { data } = req.body
-  console.log(data)
   if(!data){
     next({
       status: 400, message: "a data key is required."
@@ -172,12 +171,67 @@ async function tableIsOccupied(req, res, next) {
   next()
 }
 
+async function reservationIsNotSeated(req, res, next) {
+  const { reservation_id } = req.params
+  const reservation = reservationService.getReservationById(reservation_id)
+  if(reservation.status === "seated"){
+    return next({
+      status: 400,
+      message: "The selected reservation is already seated."
+    })
+  }
+  next()
+}
+
+async function tableIsNotSeated(req, res, next) {
+  const { table } = res.locals
+  if(table.reservation_id){
+    return next({
+      status: 400,
+      message: "The selected table is already occupied."
+    })
+  }
+  next()
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
-  read: [asyncErrorBoundary(hasTableId), asyncErrorBoundary(tableExists), asyncErrorBoundary(read)],
-  create: [asyncErrorBoundary(tablePropertiesExist), tableNameLengthIsMoreThanOne, asyncErrorBoundary(create)],
-  update: [hasTableId, asyncErrorBoundary(tableExists), asyncErrorBoundary(tablePropertiesExist), tableNameLengthIsMoreThanOne, asyncErrorBoundary(update)],
-  assign: [asyncErrorBoundary(hasReservationId), asyncErrorBoundary(reservationExists), asyncErrorBoundary(hasTableId), asyncErrorBoundary(tableExists), asyncErrorBoundary(tableIsFree), asyncErrorBoundary(tableHasSufficientCapacity), asyncErrorBoundary(seatTable)],
-  dismiss: [asyncErrorBoundary(hasTableId), asyncErrorBoundary(tableExists), asyncErrorBoundary(tableIsOccupied), asyncErrorBoundary(dismissTable)],
-  destroy: [hasTableId, asyncErrorBoundary(tableExists), tableIsFree, asyncErrorBoundary(destroy)],
+  read: [
+    asyncErrorBoundary(hasTableId), 
+    asyncErrorBoundary(tableExists), 
+    asyncErrorBoundary(read)
+  ],
+  create: [
+    asyncErrorBoundary(tablePropertiesExist), 
+    asyncErrorBoundary(tableNameLengthIsMoreThanOne), 
+    asyncErrorBoundary(create)
+  ],
+  update: [
+    asyncErrorBoundary(hasTableId),
+    asyncErrorBoundary(tableExists), 
+    asyncErrorBoundary(tablePropertiesExist), 
+    asyncErrorBoundary(tableNameLengthIsMoreThanOne), 
+    asyncErrorBoundary(update)
+  ],
+  assign: [
+    asyncErrorBoundary(hasReservationId), 
+    asyncErrorBoundary(reservationExists), 
+    asyncErrorBoundary(hasTableId), 
+    asyncErrorBoundary(tableExists), 
+    asyncErrorBoundary(tableIsNotSeated), 
+    asyncErrorBoundary(tableHasSufficientCapacity), 
+    asyncErrorBoundary(reservationIsNotSeated), 
+    asyncErrorBoundary(seatTable)],
+  dismiss: [
+    asyncErrorBoundary(hasTableId), 
+    asyncErrorBoundary(tableExists), 
+    asyncErrorBoundary(tableIsOccupied), 
+    asyncErrorBoundary(dismissTable)
+  ],
+  destroy: [
+    asyncErrorBoundary(hasTableId), 
+    asyncErrorBoundary(tableExists), 
+    asyncErrorBoundary(tableIsFree), 
+    asyncErrorBoundary(destroy)
+  ],
 }

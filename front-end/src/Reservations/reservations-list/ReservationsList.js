@@ -13,6 +13,8 @@ export default function ReservationsList(props) {
   const [reservationsError, setReservationsError] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  console.log(reservationsList)
+
   useEffect(() => {
     setReservationsError(null)
     setReservationsList(reservations)
@@ -22,6 +24,8 @@ export default function ReservationsList(props) {
   if (loading || reservationsError) {
     return <Loading />
   }
+  
+  console.log(reservationsList)
 
   return (
     <>

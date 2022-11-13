@@ -41,12 +41,14 @@ function Dashboard(props) {
     return () => abortController.abort()
   }
 
+  console.log(reservations)
+
   if(!reservations || !tables) return <Loading />
 
   return (
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
-        <Route exact={true} path={"/dashboard"}>
+        <Route exact={true} path={["/reservations", "/tables", "/dashboard"]}>
           <TableList tables={tables} tablesError={tablesError} setTablesFilter={setTablesFilter} loadDashboard={loadDashboard} />
           <ReservationsList loadDashboard={loadDashboard} dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} reservationsFilter={reservationsFilter} />
         </Route>

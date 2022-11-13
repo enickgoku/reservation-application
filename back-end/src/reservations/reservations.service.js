@@ -1,13 +1,20 @@
 const e = require("express")
 const knex = require("../db/connection")
 
-const listAllReservations = (date) => {
+const listAllReservationsByDate = (date) => {
   return knex("reservations")
       .select("*")
       .where({ reservation_date: date })
       .whereIn("status", ["booked", "seated"])
       .orderBy('reservation_time')
-      
+}
+
+
+const getReservationById = (reservation_id) => {
+  return knex("reservations")
+      .select("*")
+      .where({ reservation_id })
+      .first()
 }
 
 const listReservationsByPhase = (date, phase) => {
@@ -43,7 +50,7 @@ const destroy = (reservation_id) => {
       .del()
 }
 
-function finish(reservation_id, status) {
+function finish(reservation_id, status) { 
   if(status === "finished") {
   return knex.transaction(async (trx) => {
     await trx("reservations")
@@ -68,8 +75,9 @@ const search = (mobile_number) => {
 }
 
 module.exports = {
-  listAllReservations,
+  listAllReservationsByDate,
   listReservationsByPhase,
+  getReservationById,
   create,
   read,
   update,

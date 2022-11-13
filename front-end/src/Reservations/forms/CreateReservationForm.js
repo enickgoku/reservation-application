@@ -44,7 +44,7 @@ const CreateReservationForm = ({ loadDashboard }) => {
     const abortController = new AbortController()
 
     createReservation(reservation, abortController.signal)
-      .then(() => history.push("/dashboard"))
+      .then(() => history.push("/"))
       // reload reservations after create reservation
       .then(loadDashboard)
       .catch(setFormError)
