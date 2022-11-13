@@ -52,7 +52,8 @@ async function destroy(req, res){
 
 async function finish(req, res){
   const { status } = req.body.data
-  const data = await service.finish(req.params.reservation_id, status)
+  await service.finish(req.params.reservation_id, status)
+  const data = await service.read(req.params.reservation_id)
   res.status(200).json({ data })
 }
 
@@ -171,7 +172,12 @@ async function hasValidTimeRange(req, res, next) {
 
 async function isNotAlreadyFinished(req, res, next) {
   const { status } = req.body.data
-  if(status === "finished" || status === "seated"){
+
+  const notAllowed = [
+    `finished`,
+    `seated`,
+  ]
+  if(notAllowed.includes(status)){
     return next({
       status: 400,
       message: `${status}`
@@ -193,7 +199,15 @@ async function reservationIsNotFinished(req, res, next) {
 
 async function statusIsNotUnknown(req, res, next) {
   const { status } = req.body.data
-  if(status !== "booked" || status !== "seated" || status !== "finished" || status !== "cancelled"){
+
+  const allowedStatus = [
+    `booked`,
+    `seated`,
+    `finished`,
+    `cancelled`,
+  ]
+
+  if(!allowedStatus.includes(status)){
     return next({
       status: 400,
       message: `${status} is not a valid status.`

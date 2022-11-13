@@ -40,8 +40,9 @@ async function destroy(req, res){
 async function seatTable(req, res){
   const { table_id } = req.params
   const { reservation_id } = req.body.data
-  const seatedTable = await service.assignReservation(reservation_id, table_id)
-  res.status(200).json({ data: seatedTable })
+  await service.assignReservation(reservation_id, table_id)
+  const data = await service.getTableById(table_id)
+  res.status(200).json({ data })
 }
 
 async function dismissTable(req, res){
@@ -172,8 +173,8 @@ async function tableIsOccupied(req, res, next) {
 }
 
 async function reservationIsNotSeated(req, res, next) {
-  const { reservation_id } = req.params
-  const reservation = reservationService.getReservationById(reservation_id)
+  const { reservation_id } = req.body.data
+  const reservation = await reservationService.getReservationById(reservation_id)
   if(reservation.status === "seated"){
     return next({
       status: 400,

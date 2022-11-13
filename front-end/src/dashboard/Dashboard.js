@@ -41,8 +41,6 @@ function Dashboard(props) {
     return () => abortController.abort()
   }
 
-  console.log(reservations)
-
   if(!reservations || !tables) return <Loading />
 
   return (
