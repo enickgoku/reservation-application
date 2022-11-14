@@ -27,7 +27,7 @@ function Dashboard(props) {
   const [tablesError, setTablesError] = useState(null)
   const [tablesFilter, setTablesFilter] = useState("all")
 
-  useEffect(loadDashboard, [dateSetting, reservationsFilter, tablesFilter])
+  useEffect(loadDashboard, [dateSetting, reservationsFilter, tablesFilter, currentDate])
 
   function loadDashboard() {
     const abortController = new AbortController()

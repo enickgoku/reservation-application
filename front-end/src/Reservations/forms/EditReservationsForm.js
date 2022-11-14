@@ -54,9 +54,9 @@ function EditReservationsForm(props) {
       status: "booked",
     }
     updateReservation(data, reservation_id, abortController.signal)
-      .then(setDateSetting(formData.reservation_date))
-      .then(loadDashboard)
-      .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
+      .then(setDateSetting(reservationDate))
+      .then(history.push(`/dashboard?date=${reservationDate}`))
+      .then(() => loadDashboard)
       .catch(setFormError)
     return () => abortController.abort()
   }
@@ -77,17 +77,6 @@ function EditReservationsForm(props) {
       return () => abortController.abort()
     }
   }
-
-  // const handleReservationCancel = (event) => {
-  //   event.preventDefault()
-  //   const message = "Do you want to cancel this reservation?"
-  //   if (window.confirm(message)) {
-  //     finishReso(reservation_id, "cancelled")
-  //       .then(() => history.push("/dashboard"))
-  //       .then(loadDashboard)
-  //       .catch(setFormError)
-  //   }
-  // }
 
   if(!formData) {
     return <Loading />
@@ -173,7 +162,7 @@ function EditReservationsForm(props) {
           <ButtonGroup aria-label="Basic example" className="mt-4 w-100">
             <Button variant="dark" onClick={handleCancel}>Cancel</Button>
             <Button variant="danger" onClick={handleReservationDelete}>Delete</Button>
-            <Button variant="success" type="submit">Submit</Button>
+            <Button variant="success" type="submit" name="submit">Submit</Button>
           </ButtonGroup>
         </Form>
       </Col>

@@ -12,18 +12,21 @@ export default function ReservationToolBar(props) {
   let { setDateSetting, setReservationsFilter, dateSetting, loadDashboard, currentDate } = props
 
   const addOneDay = () => {
-    setDateSetting(DateTime.fromISO(dateSetting).plus({ days: 1 }).toISODate())
+    setDateSetting(() => DateTime.fromISO(dateSetting).plus({ days: 1 }).toISODate())
     history.push(`/dashboard?date=${dateSetting}`)
+    loadDashboard()
   }
 
   const subtractOneDay = () => {
-    setDateSetting(DateTime.fromISO(dateSetting).minus({ days: 1 }).toISODate())
+    setDateSetting(() => DateTime.fromISO(dateSetting).minus({ days: 1 }).toISODate())
     history.push(`/dashboard?date=${dateSetting}`)
+    loadDashboard()
   }
 
   const setToday = () => {
-    setDateSetting(currentDate)
+    setDateSetting(() => currentDate)
     history.push(`/dashboard?date=${currentDate}`)
+    loadDashboard()
   }
 
   return (
