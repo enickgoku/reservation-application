@@ -19,7 +19,7 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
       const abortController = new AbortController()
       finishReso(reservations.reservation_id, "finished", abortController.signal)
         .then(loadDashboard)
-        .then(() => history.push(`/tables`))
+        .then(() => history.push(`/`))
         .catch(console.log)
     }
 
@@ -34,7 +34,7 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
           ? <OverlayTrigger
               transition={false}
               placement="left"
-              overlay={<Tooltip id={`reservation-${reservations.reservation_id}-seat-tooltip`}>Seat To Table</Tooltip>}
+              overlay={<Tooltip id={`reservation-${reservations.reservation_id}-seat-tooltip`}>Seat</Tooltip>}
             >
               <Button
                 variant="dark"
@@ -43,6 +43,7 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
                 href={`/reservations/${reservation_id}/seat`}
               >
                 <i className="ri-map-pin-user-fill" />
+                Seat
               </Button>
             </OverlayTrigger>
           : null
@@ -51,17 +52,18 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
           ? <OverlayTrigger
               transition={false}
               placement="left"
-              overlay={<Tooltip id={`reservation-${reservations.reservation_id}-finish-tooltip`}>Finish Reservation</Tooltip>}
+              overlay={<Tooltip id={`reservation-${reservations.reservation_id}-finish-tooltip`}>Finish</Tooltip>}
             >
               <Button
                 as="a"
                 variant="dark"
                 className="d-flex align-items-center text-muted"
-                data-reservation-id-status={reservations.reservation_id}
                 style={{ fontSize: "1.2rem" }}
+                data-reservation-id-status={reservations.reservation_id}
                 onClick={handleFinish}
               >
                 <i className="ri-close-circle-fill" />
+                Finish
               </Button>
             </OverlayTrigger>
           : null

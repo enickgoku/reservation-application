@@ -36,7 +36,7 @@ export default function TableCardOptions(props) {
           ? <OverlayTrigger
               transition={false}
               placement="left"
-              overlay={<Tooltip id={`table-${table.table_id}-dismiss-tooltip`}>Dismiss Guests</Tooltip>}
+              overlay={<Tooltip id={`table-${table.table_id}-dismiss-tooltip`}>Finish</Tooltip>}
             >
               <Button
                 variant="dark"
@@ -46,6 +46,7 @@ export default function TableCardOptions(props) {
                 onClick={handleDismissReservation}
               >
                 <i className="ri-user-unfollow-fill" />
+                Finish
               </Button>
             </OverlayTrigger>
           : null}

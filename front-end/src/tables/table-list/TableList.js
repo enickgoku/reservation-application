@@ -11,7 +11,7 @@ export default function TableList(props) {
     tables,
     tablesError,
     setTablesFilter,
-    loadDashboard
+    loadDashboard,
   } = props
 
   if (!tables) {

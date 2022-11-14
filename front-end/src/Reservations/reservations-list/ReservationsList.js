@@ -7,7 +7,7 @@ import ReservationToolBar from "../reservations-options-bar/ReservationToolBar"
 
 export default function ReservationsList(props) {
 
-  let { reservations, dateSetting, currentDate, setReservationsFilter, setDateSetting, loadDashboard } = props
+  let { reservations, dateSetting, currentDate, setReservationsFilter, setDateSetting, loadDashboard, tables } = props
 
   const [reservationsList, setReservationsList] = useState([])
   const [reservationsError, setReservationsError] = useState(null)
@@ -32,6 +32,7 @@ export default function ReservationsList(props) {
             key={reservation.reservation_id}
             reservations={reservation}
             loadDashboard={loadDashboard}
+            tables={tables}
           />
       ))}
     </>

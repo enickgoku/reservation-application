@@ -34,7 +34,7 @@ export default function CreateTableForm({ setTables }) {
   }
 
   const handleCancelClick = () => {
-    history.push("/dashboard")
+    history.goBack()
   }
   
   const handleSubmit = (event) => {
