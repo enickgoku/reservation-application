@@ -50,10 +50,11 @@ function EditReservationsForm(props) {
       reservation_date: formData.reservation_date,
       reservation_time: formData.reservation_time,
       people: parseInt(formData.people),
+      status: "booked",
     }
     updateReservation(data, reservation_id, abortController.signal)
       .then(loadDashboard)
-      .then(() => history.push(`/`))
+      .then(() => history.push(`/dashboard`))
       .catch(setFormError)
     return () => abortController.abort()
   }
@@ -80,7 +81,7 @@ function EditReservationsForm(props) {
     const message = "Do you want to cancel this reservation? This cannot be undone."
     if (window.confirm(message)) {
       finishReso(reservation_id, "cancelled")
-        .then(() => history.push("/"))
+        .then(() => history.push("/dashboard"))
         .then(loadDashboard)
         .catch(setFormError)
     }

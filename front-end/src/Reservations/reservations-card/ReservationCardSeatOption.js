@@ -81,6 +81,7 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
             href={`/reservations/${reservation_id}/edit`}
           >
             <i className="ri-pencil-line" />
+            Edit
           </Button>
         </OverlayTrigger>
       </ButtonGroup>
