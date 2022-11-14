@@ -51,10 +51,10 @@ function Dashboard(props) {
           <ReservationsList loadDashboard={loadDashboard} dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} reservationsFilter={reservationsFilter} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
-          <FormReservations loadDashboard={loadDashboard} />
+          <FormReservations loadDashboard={loadDashboard} dateSetting={dateSetting} setDateSetting={setDateSetting} />
         </Route>
         <Route exact={true} path={"/reservations/:reservation_id/edit"}>
-          <FormReservations setReservations={setReservations} reservations={reservations} currentDate={currentDate} loadDashboard={loadDashboard} />
+          <FormReservations setReservations={setReservations} reservations={reservations} currentDate={currentDate} loadDashboard={loadDashboard} dateSetting={dateSetting} setDateSetting={setDateSetting} />
         </Route>
         <Route exact={true} path={"/reservations/:reservation_id/seat"}>
           <SeatTable {...props} />
@@ -63,10 +63,10 @@ function Dashboard(props) {
           <Redirect to={"/dashboard"} />
         </Route>
         <Route exact={true} path={"/tables/new"}>
-          <FormTables setTables={setTables} />
+          <FormTables setTables={setTables} dateSetting={dateSetting} setDateSetting={setDateSetting} />
         </Route>
         <Route exact={true} path={"/tables/:table_id/edit"}>
-          <FormTables setTables={setTables} />
+          <FormTables setTables={setTables} dateSetting={dateSetting} setDateSetting={setDateSetting} />
         </Route>
       </Switch>
     </Row>

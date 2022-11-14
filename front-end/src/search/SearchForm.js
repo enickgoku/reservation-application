@@ -38,8 +38,6 @@ export default function SearchForm() {
     history.goBack()
   }
 
-  console.log(reservations)
-
   useEffect(() => {
     if (reservations.length) {
       setDisplayReservations(
