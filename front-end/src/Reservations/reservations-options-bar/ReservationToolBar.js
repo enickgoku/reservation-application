@@ -1,4 +1,5 @@
 import React from "react"
+import { useHistory } from "react-router-dom"
 
 import { DateTime } from "luxon"
 
@@ -6,21 +7,23 @@ import { Button, Dropdown } from 'react-bootstrap'
 
 export default function ReservationToolBar(props) {
 
-  let { setDateSetting, setReservationsFilter, dateSetting, loadDashboard } = props
+  const history = useHistory()
+
+  let { setDateSetting, setReservationsFilter, dateSetting, loadDashboard, currentDate } = props
 
   const addOneDay = () => {
     setDateSetting(DateTime.fromISO(dateSetting).plus({ days: 1 }).toISODate())
-    loadDashboard()
+    history.push(`/dashboard?date=${dateSetting}`)
   }
 
   const subtractOneDay = () => {
     setDateSetting(DateTime.fromISO(dateSetting).minus({ days: 1 }).toISODate())
-    loadDashboard()
+    history.push(`/dashboard?date=${dateSetting}`)
   }
 
   const setToday = () => {
-    setDateSetting(DateTime.local().toISODate())
-    loadDashboard()
+    setDateSetting(currentDate)
+    history.push(`/dashboard?date=${currentDate}`)
   }
 
   return (

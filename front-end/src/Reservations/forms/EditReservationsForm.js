@@ -9,13 +9,14 @@ import Loading from "../../loading/Loading"
 
 import { Col, Form, Button, ButtonGroup } from "react-bootstrap"
 
-const { deleteReservation, updateReservation, getReservation, finishReso } = require("../../utils/api")
+const { deleteReservation, updateReservation, getReservation } = require("../../utils/api")
 
 function EditReservationsForm(props) {
 
   let {
     loadDashboard,
-    reservations
+    reservations,
+    setDateSetting,
   } = props
 
   const history = useHistory()
@@ -53,8 +54,9 @@ function EditReservationsForm(props) {
       status: "booked",
     }
     updateReservation(data, reservation_id, abortController.signal)
+      .then(setDateSetting(formData.reservation_date))
       .then(loadDashboard)
-      .then(() => history.push(`/dashboard`))
+      .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
       .catch(setFormError)
     return () => abortController.abort()
   }
@@ -76,22 +78,20 @@ function EditReservationsForm(props) {
     }
   }
 
-  const handleReservationCancel = (event) => {
-    event.preventDefault()
-    const message = "Do you want to cancel this reservation? This cannot be undone."
-    if (window.confirm(message)) {
-      finishReso(reservation_id, "cancelled")
-        .then(() => history.push("/dashboard"))
-        .then(loadDashboard)
-        .catch(setFormError)
-    }
-  }
+  // const handleReservationCancel = (event) => {
+  //   event.preventDefault()
+  //   const message = "Do you want to cancel this reservation?"
+  //   if (window.confirm(message)) {
+  //     finishReso(reservation_id, "cancelled")
+  //       .then(() => history.push("/dashboard"))
+  //       .then(loadDashboard)
+  //       .catch(setFormError)
+  //   }
+  // }
 
   if(!formData) {
     return <Loading />
   }
-
-  let reservation = formData
 
   const reservationDate = formData?.reservation_date
     ? DateTime.fromISO(formData.reservation_date).toFormat("yyyy-MM-dd")
@@ -173,12 +173,10 @@ function EditReservationsForm(props) {
           <ButtonGroup aria-label="Basic example" className="mt-4 w-100">
             <Button variant="dark" onClick={handleCancel}>Cancel</Button>
             <Button variant="danger" onClick={handleReservationDelete}>Delete</Button>
-            <Button variant="secondary" data-reservation-id-cancel={reservation.reservation_id} onClick={handleReservationCancel}>Cancel Reservation</Button>
             <Button variant="success" type="submit">Submit</Button>
           </ButtonGroup>
         </Form>
       </Col>
-      
     </>
   )
 }

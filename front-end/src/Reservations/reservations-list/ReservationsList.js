@@ -25,7 +25,7 @@ export default function ReservationsList(props) {
 
   return (
     <>
-      <ReservationToolBar currentDate={currentDate} dateSetting={dateSetting} setDateSetting={setDateSetting} setReservationsFilter={setReservationsFilter} loadDashboard={loadDashboard} />
+      <ReservationToolBar currentDate={currentDate} dateSetting={dateSetting} setDateSetting={setDateSetting} setReservationsFilter={setReservationsFilter} loadDashboard={loadDashboard} reservations={reservations} />
       <ErrorAlert error={reservationsError} />
       {reservationsList.map((reservation) => (
           <ReservationCard

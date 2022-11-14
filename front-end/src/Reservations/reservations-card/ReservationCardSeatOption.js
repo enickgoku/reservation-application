@@ -25,6 +25,17 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
 
   }
 
+  const handleReservationCancel = (event) => {
+    event.preventDefault()
+    const message = "Do you want to cancel this reservation?"
+    if (window.confirm(message)) {
+      finishReso(reservations.reservation_id, "cancelled")
+        .then(() => history.push("/dashboard"))
+        .then(loadDashboard)
+        .catch(console.log)
+    }
+  }
+
   const { reservation_id } = reservations
 
   return(
@@ -82,6 +93,24 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
           >
             <i className="ri-pencil-line" />
             Edit
+          </Button>
+
+        </OverlayTrigger>
+        <OverlayTrigger
+          transition={false}
+          placement="left"
+          overlay={<Tooltip id={`reservation-${reservations.reservation_id}-cancel-tooltip`}>Cancel</Tooltip>}
+        >
+          <Button
+            as="a"
+            variant="dark"
+            className="d-flex align-items-center text-muted"
+            style={{ fontSize: "1.2rem" }}
+            data-reservation-id-cancel={reservations.reservation_id}
+            onClick={handleReservationCancel}
+          >
+            <i className="ri-close-circle-fill" />
+            Cancel
           </Button>
         </OverlayTrigger>
       </ButtonGroup>
