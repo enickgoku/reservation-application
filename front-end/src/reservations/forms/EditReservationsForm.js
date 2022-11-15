@@ -46,7 +46,6 @@ function EditReservationsForm(props) {
 
   const handleUpdateSubmit = (event) => {
     event.preventDefault()
-    const abortController = new AbortController()
     const data = {
       first_name: formData.first_name,
       last_name: formData.last_name,
@@ -58,11 +57,9 @@ function EditReservationsForm(props) {
     }
     
     updateReservation(data, reservation_id)
-      .then(setDateSetting(data.reservation_date))
-      .then(loadDashboard)
-      .then(history.push(`/dashboard`))
+      .then(() => setDateSetting(data.reservation_date))
+      .then(() => history.push(`/dashboard`))
       .catch(setFormError)
-    return () => abortController.abort()
   }
 
   const handleCancel = () => {
@@ -75,7 +72,6 @@ function EditReservationsForm(props) {
     if (window.confirm(message)) {
       deleteReservation(reservation_id)
         .then(() => history.push(`/dashboard`))
-        .then(loadDashboard)
         .catch(setFormError)
     }
   }

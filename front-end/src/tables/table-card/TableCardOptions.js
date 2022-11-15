@@ -22,7 +22,7 @@ export default function TableCardOptions(props) {
     if (window.confirm(message)) {
       // const abortController = new AbortController()
       removeReservation(table.table_id, table.reservation_id)
-        .then(loadDashboard)
+        .then(() => loadDashboard())
         .then(() => history.push(`/tables`))
         .catch(setTablesError)
       // return () => abortController.abort()
