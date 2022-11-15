@@ -59,7 +59,7 @@ function EditReservationsForm(props) {
     
     updateReservation(data, reservation_id)
       .then(setDateSetting(data.reservation_date))
-      .then(loadDashboard())
+      .then(loadDashboard)
       .then(history.push(`/dashboard`))
       .catch(setFormError)
     return () => abortController.abort()
