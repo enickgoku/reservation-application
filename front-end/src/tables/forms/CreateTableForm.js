@@ -12,7 +12,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup"
 import { createTable } from "../../utils/api"
 
 
-export default function CreateTableForm({ setTables }) {
+export default function CreateTableForm({loadDashboard }) {
   
   const history = useHistory()
 
@@ -39,15 +39,10 @@ export default function CreateTableForm({ setTables }) {
   
   const handleSubmit = (event) => {
     event.preventDefault()
-    const abortController = new AbortController()
-    createTable(data, abortController.signal)
-      .then(setTables(prev => {
-        prev.push(formData)
-        return prev
-      }))
-      .then(() => history.push(`/`))
+    createTable(data)
+      .then(() => loadDashboard())
+      .then(() => history.push(`/dashboard`))
       .catch(setFormError)
-    return () => abortController.abort()
   }
 
 
