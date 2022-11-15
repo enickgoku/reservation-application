@@ -9,7 +9,8 @@ import { getReservation, listTables, seatTable } from "../../utils/api"
 export default function SeatTable(props){
 
   let {
-    setDateSetting
+    setDateSetting,
+    loadDashboard
   } = props
 
   const history = useHistory()
@@ -21,25 +22,23 @@ export default function SeatTable(props){
   const [reservation, setReservation] = useState({})
 
   useEffect(() => {
+    const abortController = new AbortController()
     function loadReservation() {
-        const abortController = new AbortController()
         getReservation(reservation_id, abortController.signal)
             .then((response) => {
                 setReservation(response)
                 setDateSetting(response.reservation_date)
             })
             .catch(setFormError)
-        return () => abortController.abort()
     }
     function loadFreeTables() {
-        const abortController = new AbortController()
-        listTables(abortController.signal)
+        listTables({status: "free"},abortController.signal)
             .then(setFreeTables)
             .catch(setFormError)
-        return () => abortController.abort()
     }
     loadReservation()
     loadFreeTables()
+    return () => abortController.abort()
   }, [reservation_id, setDateSetting])
 
   const handleCancel = () => {
@@ -51,7 +50,8 @@ export default function SeatTable(props){
     seatTable(reservation_id, formData.table_id)
         .then(() => {
             setDateSetting(reservation.reservation_date)
-            history.push(`/`)
+            loadDashboard()
+            history.push(`/dashboard`)
         })
         .catch(setFormError)
   }
@@ -65,7 +65,7 @@ export default function SeatTable(props){
 
   const freeTableOptions = freeTables.map((table, index) => {
     return (
-    <option key={index} value={table.table_id}>{`${table.table_name} - ${table.capacity}`}</option>
+    <option key={index} value={table?.table_id}>{`${table?.table_name} - ${table?.capacity}`}</option>
     )
   })
  

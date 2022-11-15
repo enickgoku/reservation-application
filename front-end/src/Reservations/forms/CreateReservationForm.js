@@ -44,9 +44,9 @@ const CreateReservationForm = ({ loadDashboard, setDateSetting, dateSetting }) =
 
     createReservation(reservation, abortController.signal)
       .then(() => {
-        setDateSetting(reservation.reservation_date)
         loadDashboard()
-        history.push(`/dashboard?date=${reservation.reservation_date}`)
+        setDateSetting(reservation.reservation_date)
+        history.push(`/dashboard`)
       })
       .catch(setFormError)
     return () => abortController.abort()

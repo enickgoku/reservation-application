@@ -3,16 +3,14 @@ const reservationService = require("../reservations/reservations.service")
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 
 async function list(req, res) {
-  const { status = "free" } = req.query
-  if (status === "all") {
-    res.json({ data: await service.list() })
-  }
+  const { status } = req.query
   if (status === "occupied") {
-    res.json({ data: await service.listSeatedTables() })
+    return res.json({ data: await service.listSeatedTables() })
   }
   if (status === "free") {
-    res.json({ data: await service.listFreeTables() })
+    return res.json({ data: await service.listFreeTables() })
   }
+  res.json({ data: await service.list() })
 }
 
 async function read(req, res) {

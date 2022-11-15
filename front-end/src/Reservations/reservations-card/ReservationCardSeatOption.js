@@ -19,7 +19,7 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
       const abortController = new AbortController()
       finishReso(reservations.reservation_id, "finished", abortController.signal)
         .then(loadDashboard)
-        .then(() => history.push(`/`))
+        .then(() => history.push(`/dashboard`))
         .catch(console.log)
     }
 
@@ -30,8 +30,8 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
     const message = "Do you want to cancel this reservation?"
     if (window.confirm(message)) {
       finishReso(reservations.reservation_id, "cancelled")
-        .then(() => history.push("/dashboard"))
         .then(loadDashboard)
+        .then(() => history.push("/dashboard"))
         .catch(console.log)
     }
   }
@@ -106,7 +106,7 @@ export default function ResercationCardSeatOptions({ reservations, loadDashboard
             variant="dark"
             className="d-flex align-items-center text-muted"
             style={{ fontSize: "1.2rem" }}
-            data-reservation-id-cancel={reservations.reservation_id}
+            data-reservation-id-cancel={`${reservations.reservation_id}`}
             onClick={handleReservationCancel}
           >
             <i className="ri-close-circle-fill" />

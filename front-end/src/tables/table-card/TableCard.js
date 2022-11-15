@@ -11,13 +11,7 @@ export default function TableCard(props) {
     loadDashboard,
   } = props
 
-  const showFreeStatus = (table) => {
-    if (table.reservation_id == null) {
-      return "Free"
-    } else {
-      return "Occupied"
-    }
-  }
+  const status = table.reservation_id ? "Occupied" : "Free"
 
   const border = table?.reservation_id ? "border border-danger border-5" : ""
 
@@ -27,7 +21,7 @@ export default function TableCard(props) {
         <Card.Body className="text-dark">
           <Card.Title>Table Name: {table?.table_name}</Card.Title>
           <Card.Title>Capacity: {table?.capacity}</Card.Title>
-          <Card.Title data-table-id-status={table.table_id}>Status: {showFreeStatus(table)}</Card.Title>
+          <Card.Text data-table-id-status={table.table_id}>Status: {status}</Card.Text>
           <TableCardOptions table={table} loadDashboard={loadDashboard} />
         </Card.Body>
       </Card>

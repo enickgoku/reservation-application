@@ -135,7 +135,7 @@ async function dateIsNotInThePast(req, res, next) {
   if (reservationDateTime < DateTime.now()) {
     return next({
       status: 400,
-      message: "Reservations cannot be made in the past."
+      message: "future"
     })
   }
   next()

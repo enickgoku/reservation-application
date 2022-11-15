@@ -31,13 +31,20 @@ function Dashboard(props) {
 
   function loadDashboard() {
     const abortController = new AbortController()
+
+    const params = {}
+
+    if (tablesFilter !== 'all'){
+    params.status = tablesFilter
+    }
+    
     setReservationsError(null)
+    listTables(params, abortController.signal)
+      .then(setTables)
+      .catch(setTablesError)
     listReservations({ date: dateSetting, phase: reservationsFilter }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError)
-    listTables({ date: dateSetting, status: tablesFilter }, abortController.signal)
-      .then(setTables)
-      .catch(setTablesError)
     return () => abortController.abort()
   }
 
@@ -54,10 +61,10 @@ function Dashboard(props) {
           <FormReservations loadDashboard={loadDashboard} dateSetting={dateSetting} setDateSetting={setDateSetting} />
         </Route>
         <Route exact={true} path={"/reservations/:reservation_id/edit"}>
-          <FormReservations setReservations={setReservations} reservations={reservations} currentDate={currentDate} loadDashboard={loadDashboard} dateSetting={dateSetting} setDateSetting={setDateSetting} />
+          <FormReservations setReservations={setReservations} reservations={reservations} currentDate={currentDate} loadDashboard={loadDashboard} dateSetting={dateSetting} setDateSetting={setDateSetting} reservationsFilter={reservationsFilter} />
         </Route>
         <Route exact={true} path={"/reservations/:reservation_id/seat"}>
-          <SeatTable {...props} />
+          <SeatTable {...props} loadDashboard={loadDashboard} />
         </Route>
         <Route exact={true} path={"/tables"}>
           <Redirect to={"/dashboard"} />

@@ -15,7 +15,6 @@ function EditReservationsForm(props) {
 
   let {
     loadDashboard,
-    reservations,
     setDateSetting,
   } = props
 
@@ -31,7 +30,7 @@ function EditReservationsForm(props) {
       .then(setFormData)
       .catch(setFormError)
     return () => abortController.abort()
-  }, [reservation_id, reservations])
+  }, [reservation_id])
 
   const handleChange = ({ currentTarget }) => {
     setFormError(null)
@@ -40,6 +39,10 @@ function EditReservationsForm(props) {
       [currentTarget.name]: currentTarget.value,
     })
   }
+
+  const reservationDate = formData?.reservation_date
+    ? DateTime.fromISO(formData.reservation_date).toFormat("yyyy-MM-dd")
+    : ""
 
   const handleUpdateSubmit = (event) => {
     event.preventDefault()
@@ -53,38 +56,33 @@ function EditReservationsForm(props) {
       people: parseInt(formData.people),
       status: "booked",
     }
-    updateReservation(data, reservation_id, abortController.signal)
-      .then(setDateSetting(reservationDate))
-      .then(history.push(`/dashboard?date=${reservationDate}`))
-      .then(() => loadDashboard)
+    
+    updateReservation(data, reservation_id)
+      .then(setDateSetting(data.reservation_date))
+      .then(loadDashboard())
+      .then(history.push(`/dashboard`))
       .catch(setFormError)
     return () => abortController.abort()
   }
 
   const handleCancel = () => {
-    history.goBack()
+    loadDashboard()
+    history.push(`/dashboard`)
   }
 
-  const handleReservationDelete = (event) => {
-    event.preventDefault()
+  const handleReservationDelete = () => {
     const message = `Do you want to delete this reservation? This cannot be undone.`
     if (window.confirm(message)) {
-      const abortController = new AbortController()
-      deleteReservation(reservation_id, abortController.signal)
+      deleteReservation(reservation_id)
         .then(() => history.push(`/dashboard`))
         .then(loadDashboard)
         .catch(setFormError)
-      return () => abortController.abort()
     }
   }
 
   if(!formData) {
     return <Loading />
   }
-
-  const reservationDate = formData?.reservation_date
-    ? DateTime.fromISO(formData.reservation_date).toFormat("yyyy-MM-dd")
-    : ""
 
   return (
     <>
@@ -160,9 +158,9 @@ function EditReservationsForm(props) {
             />
           </Form.Group>
           <ButtonGroup aria-label="Basic example" className="mt-4 w-100">
-            <Button variant="dark" onClick={handleCancel}>Cancel</Button>
-            <Button variant="danger" onClick={handleReservationDelete}>Delete</Button>
-            <Button variant="success" type="submit" name="submit">Submit</Button>
+            <Button variant="dark" type="button" onClick={handleCancel}>Cancel</Button>
+            <Button variant="danger" type="button" onClick={handleReservationDelete}>Delete</Button>
+            <Button variant="success" type="submit">Submit</Button>
           </ButtonGroup>
         </Form>
       </Col>

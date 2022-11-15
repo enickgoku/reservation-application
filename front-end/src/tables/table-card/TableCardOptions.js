@@ -20,12 +20,12 @@ export default function TableCardOptions(props) {
   function handleDismissReservation() {
     const message = "Is this table ready to seat new guests? This cannot be undone."
     if (window.confirm(message)) {
-      const abortController = new AbortController()
-      removeReservation(table.table_id, table.reservation_id, abortController.signal)
-        .then(() => history.push("/tables"))
+      // const abortController = new AbortController()
+      removeReservation(table.table_id, table.reservation_id)
         .then(loadDashboard)
+        .then(() => history.push(`/tables`))
         .catch(setTablesError)
-      return () => abortController.abort()
+      // return () => abortController.abort()
     }
   }
 
