@@ -55,7 +55,14 @@ function EditReservationsForm(props) {
       people: parseInt(formData.people),
       status: "booked",
     }
-    
+
+    const phoneFormat = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+
+    if(!phoneFormat.test(formData.mobile_number)) {
+      setFormError({ message: "Please enter a valid phone number" })
+      return null
+    }
+
     updateReservation(data, reservation_id)
       .then(() => setDateSetting(data.reservation_date))
       .then(() => history.push(`/dashboard`))
@@ -115,7 +122,7 @@ function EditReservationsForm(props) {
               name="mobile_number" 
               type="tel" 
               defaultValue={formData?.mobile_number}
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               onChange={handleChange} 
             />
           </Form.Group>

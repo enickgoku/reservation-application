@@ -40,6 +40,13 @@ const CreateReservationForm = ({ loadDashboard, setDateSetting, dateSetting }) =
       people: parseInt(formData.people),
     }
 
+    const phoneFormat = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+
+    if(!phoneFormat.test(formData.mobile_number)) {
+      setFormError({ message: "Please enter a valid phone number" })
+      return null
+    }
+
     const abortController = new AbortController()
 
     createReservation(reservation, abortController.signal)
@@ -88,7 +95,7 @@ const CreateReservationForm = ({ loadDashboard, setDateSetting, dateSetting }) =
             <Form.Control id="mobile_number" 
               required={true} 
               name="mobile_number"
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
+              // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
               type="tel" 
               placeholder="Mobile Number"
               onChange={handleChange} 
