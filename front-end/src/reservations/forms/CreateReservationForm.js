@@ -87,7 +87,8 @@ const CreateReservationForm = ({ loadDashboard, setDateSetting, dateSetting }) =
             <Form.Label htmlFor="mobile_number">Mobile Number</Form.Label>
             <Form.Control id="mobile_number" 
               required={true} 
-              name="mobile_number" 
+              name="mobile_number"
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
               type="tel" 
               placeholder="Mobile Number"
               onChange={handleChange} 

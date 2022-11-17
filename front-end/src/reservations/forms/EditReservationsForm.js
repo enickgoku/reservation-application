@@ -115,6 +115,7 @@ function EditReservationsForm(props) {
               name="mobile_number" 
               type="tel" 
               defaultValue={formData?.mobile_number}
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               onChange={handleChange} 
             />
           </Form.Group>
