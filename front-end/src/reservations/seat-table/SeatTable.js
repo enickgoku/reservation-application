@@ -65,7 +65,7 @@ export default function SeatTable(props){
 
   const freeTableOptions = freeTables.map((table, index) => {
     return (
-    <option key={index} value={table?.table_id}>{`${table?.table_name} - ${table?.capacity}`}</option>
+    <option key={table?.table_id} value={table?.table_id}>{`${table?.table_name} - ${table?.capacity}`}</option>
     )
   })
  
