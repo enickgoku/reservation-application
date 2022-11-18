@@ -73,7 +73,7 @@ function Dashboard(props) {
           <FormTables setTables={setTables} dateSetting={dateSetting} setDateSetting={setDateSetting} loadDashboard={loadDashboard} />
         </Route>
         <Route exact={true} path={"/tables/:table_id/edit"}>
-          <FormTables setTables={setTables} dateSetting={dateSetting} setDateSetting={setDateSetting} />
+          <FormTables setTables={setTables} dateSetting={dateSetting} setDateSetting={setDateSetting} loadDashboard={loadDashboard} />
         </Route>
       </Switch>
     </Row>

@@ -85,7 +85,6 @@ export default function FormReservation(props) {
 
       updateReservation(data, reservation_id)
         .then(() => setDateSetting(data.reservation_date))
-        .then(() => loadDashboard())
         .then(() => history.push(`/dashboard`))
         .catch(setFormError)
     } else {
