@@ -10,9 +10,13 @@ import Loading from "../loading/Loading"
 import SeatTable from "../reservations/seat-table/SeatTable"
 import TableList from "../tables/table-list/TableList"
 
+import { useReservations } from "../hooks/useReservations"
+
 import "../layout/Layout.css"
 
 function Dashboard(props) {
+
+  const { fetchReservations } = useReservations()
 
   let {
     setDateSetting,
@@ -27,7 +31,7 @@ function Dashboard(props) {
   const [tablesError, setTablesError] = useState(null)
   const [tablesFilter, setTablesFilter] = useState("all")
 
-  useEffect(loadDashboard, [dateSetting, reservationsFilter, tablesFilter, currentDate])
+  useEffect(loadDashboard, [dateSetting, reservationsFilter, tablesFilter, currentDate, fetchReservations])
 
   function loadDashboard() {
     const abortController = new AbortController()
@@ -37,14 +41,11 @@ function Dashboard(props) {
     if (tablesFilter !== 'all'){
     params.status = tablesFilter
     }
-    
     setReservationsError(null)
     listTables(params, abortController.signal)
       .then(setTables)
       .catch(setTablesError)
-    listReservations({ date: dateSetting, phase: reservationsFilter }, abortController.signal)
-      .then(setReservations)
-      .catch(setReservationsError)
+    const allReservations = fetchReservations({ dateSetting, reservationsFilter }, abortController.signal)
     return () => abortController.abort()
   }
 
