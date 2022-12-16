@@ -1,10 +1,5 @@
 const { DateTime } = require("luxon")
-const reservations = require("../seeds/00-reservations.json")
-
-const dateToday = 
-  DateTime.local().toFormat("EEEE") === "Tuesday"
-    ? DateTime.local().plus({ days: 1 }).toISODate()
-    : DateTime.local().toISODate()
+const reservations = require("./00-reservations.json")
 
 exports.seed = function (knex) {
   return knex
