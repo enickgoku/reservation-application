@@ -58,13 +58,20 @@ const reducer = (state, action) => {
         ),
       }
     }
-    case 'FETCH_RESERVATIONS': {
-      const { date, phase, signal } = payload
-
-      listReservations(date, phase, signal)
+    case 'FETCH_RESERVATIONS_PENDING': {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      }
+    }
+    case 'FETCH_RESERVATIONS_COMPLETE': {
+      const { data } = payload
 
       return {
-        ...state.reservations,
+        ...state,
+        reservations: data,
+        loading: false,
       }
     }
     case 'FETCH_RESERVATIONS_FAIL': {
@@ -91,8 +98,10 @@ const reducer = (state, action) => {
 }
 
 const inititalState = {
-  reservations: {},
+  reservations: [],
   reservation: {},
+  loading: true,
+  error: null,
 }
 
 const ReservationsContext = createContext(inititalState)
@@ -147,22 +156,33 @@ export const ReservationsProvider = ({ children }) => {
 
   const fetchReservations = useCallback(({ date, phase }, signal) => {
     dispatch({
-      type: 'FETCH_RESERVATIONS',
+      type: 'FETCH_RESERVATIONS_PENDING',
       payload: {
-        date,
-        phase,
-        signal,
+        loading: true,
       },
     })
+    listReservations({ date, phase }, signal)
+      .then((data) => {
+        dispatch({
+          type: 'FETCH_RESERVATIONS_COMPLETE',
+          payload: {
+            data,
+          }
+        })
+      })
+      .catch((error) => {
+        dispatch({
+          type: 'FETCH_RESERVATIONS_FAIL',
+          payload: {
+            error,
+          }
+        })
+      })
   }, [])
-  const fetchReservationsFail = useCallback((error) => {
-    dispatch({
-      type: 'FETCH_RESERVATIONS_FAIL',
-      payload: {
-        error,
-      },
-    })
-  }, [])
+
+  const reservations = useMemo(() => {
+    return state.reservations
+  }, [state.reservations])
 
   const fetchReservation = useCallback((reservation_id) => {
     dispatch({
@@ -181,10 +201,10 @@ export const ReservationsProvider = ({ children }) => {
       editReservationFail,
       deleteReservation,
       fetchReservations,
-      fetchReservationsFail,
       fetchReservation,
+      reservations,
     }),
-    [createReservation, createReservationFail, deleteReservation, editReservation, editReservationFail, fetchReservation, fetchReservations, fetchReservationsFail]
+    [createReservation, createReservationFail, deleteReservation, editReservation, editReservationFail, fetchReservation, fetchReservations, reservations]
   )
 
   return (

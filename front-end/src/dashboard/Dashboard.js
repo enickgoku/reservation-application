@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Switch, Route, Redirect } from "react-router-dom"
-import { listReservations, listTables } from "../utils/api"
+import { listTables } from "../utils/api"
 
 import FormTables from "../form-tables/FormTables"
 import FormReservation from "../form-reservations/FormReservations"
@@ -16,7 +16,7 @@ import "../layout/Layout.css"
 
 function Dashboard(props) {
 
-  const { fetchReservations } = useReservations()
+  const { fetchReservations, reservations } = useReservations()
 
   let {
     setDateSetting,
@@ -24,8 +24,6 @@ function Dashboard(props) {
     dateSetting, // adjustable date state
   } = props
 
-  const [reservations, setReservations] = useState([])
-  const [reservationsError, setReservationsError] = useState(null)
   const [reservationsFilter, setReservationsFilter] = useState("all")
   const [tables, setTables] = useState([])
   const [tablesError, setTablesError] = useState(null)
@@ -37,15 +35,15 @@ function Dashboard(props) {
     const abortController = new AbortController()
 
     const params = {}
+    const resoParams = { date: dateSetting, phase: reservationsFilter }
 
     if (tablesFilter !== 'all'){
     params.status = tablesFilter
     }
-    setReservationsError(null)
     listTables(params, abortController.signal)
       .then(setTables)
       .catch(setTablesError)
-    const allReservations = fetchReservations({ dateSetting, reservationsFilter }, abortController.signal)
+    fetchReservations(resoParams, abortController.signal)
     return () => abortController.abort()
   }
 
@@ -56,13 +54,13 @@ function Dashboard(props) {
       <Switch>
         <Route exact={true} path={["/reservations", "/tables", "/dashboard"]}>
           <TableList tables={tables} tablesError={tablesError} setTablesFilter={setTablesFilter} loadDashboard={loadDashboard} />
-          <ReservationsList loadDashboard={loadDashboard} dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} reservationsError={reservationsError} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} reservationsFilter={reservationsFilter} />
+          <ReservationsList loadDashboard={loadDashboard} dateSetting={dateSetting} currentDate={currentDate} reservations={reservations} setReservationsFilter={setReservationsFilter} setDateSetting={setDateSetting} reservationsFilter={reservationsFilter} />
         </Route>
         <Route exact={true} path={"/reservations/new"}>
           <FormReservation loadDashboard={loadDashboard} dateSetting={dateSetting} setDateSetting={setDateSetting} />
         </Route>
         <Route exact={true} path={"/reservations/:reservation_id/edit"}>
-          <FormReservation setReservations={setReservations} reservations={reservations} currentDate={currentDate} loadDashboard={loadDashboard} dateSetting={dateSetting} setDateSetting={setDateSetting} reservationsFilter={reservationsFilter} />
+          <FormReservation reservations={reservations} currentDate={currentDate} loadDashboard={loadDashboard} dateSetting={dateSetting} setDateSetting={setDateSetting} reservationsFilter={reservationsFilter} />
         </Route>
         <Route exact={true} path={"/reservations/:reservation_id/seat"}>
           <SeatTable {...props} loadDashboard={loadDashboard} />

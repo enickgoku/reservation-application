@@ -103,8 +103,6 @@ export default function FormTables(props) {
     }
   }
 
-  console.log(formData)
-
   return (
     <>
       <Col sm={8} md={6} lg={5} xl={5} className="mb-5">
