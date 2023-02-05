@@ -8,18 +8,17 @@ Settings.defaultZoneName = "America/Michigan"
 // crud functions
 
 async function list(req, res, next) {
-  if (req.query.mobile_number) {
-    const { mobile_number } = req.query
+  const { date, mobile_number, phase } = req.query
+
+  if (mobile_number) {
     const data = await service.search(mobile_number)
     return res.json({ data })
   } 
-  if (req.query.date) {
-    const { date } = req.query
+  if (date) {
     const data = await service.listAllReservationsByDate(date)
     return res.json({ data })
   }
-  if (req.query.date && req.query.phase) {
-    const { date, phase } = req.query
+  if (date && phase) {
     const data = await service.listReservationsByPhase(date, phase)
     return res.json({ data })
   }
