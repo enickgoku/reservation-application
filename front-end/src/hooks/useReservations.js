@@ -17,11 +17,16 @@ const reducer = (state, action) => {
     case 'CREATE_RESERVATION': {
       const { reservation } = payload
 
-      createReservation(reservation.reservation_id)
-
       return {
         ...state,
         reservation,
+      }
+    }
+    case 'CREATE_RESERVATION_PENDING': {
+      return {
+        ...state,
+        loading: true,
+        error: null,
       }
     }
     case 'CREATE_RESERVATION_FAIL': {
@@ -82,14 +87,27 @@ const reducer = (state, action) => {
         error,
       }
     }
-    case 'FETCH_RESERVATION': {
+    case 'FETCH_RESERVATION_COMPLETE': {
       const { reservation } = payload
-
-      getReservation(reservation.reservation_id)
 
       return {
         ...state,
         reservation,
+      }
+    }
+    case 'FETCH_RESERVATION_PENDING': {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      }
+    }
+    case 'FETCH_RESERVATION_FAIL': {
+      const { error } = payload
+      
+      return {
+        ...state,
+        error,
       }
     }
     default: 
@@ -109,22 +127,26 @@ const ReservationsContext = createContext(inititalState)
 export const ReservationsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, inititalState)
 
-  const createReservation = useCallback((reservation) => {
-    dispatch({
-      type: 'CREATE_RESERVATION',
-      payload: {
-        reservation,
-      },
-    })
-  }, [])
+  const createNewReservation = useCallback((data) => {
+    dispatch({ type: 'CREATE_RESERVATION_PENDING' })
 
-  const createReservationFail = useCallback((error) => {
-    dispatch({
-      type: 'CREATE_RESERVATION_FAIL',
-      payload: {
-        error,
-      },
-    })
+    return createReservation(data)
+      .then((reservation) => {
+        dispatch({
+          type: 'CREATE_RESERVATION_COMPLETE',
+          payload: {
+            reservation,
+          },
+        })
+      })
+      .catch((error) => {
+        dispatch({
+          type: 'CREATE_RESERVATION_FAIL',
+          payload: {
+            error,
+          },
+        })
+      })
   }, [])
 
   const editReservation = useCallback((reservation) => {
@@ -132,15 +154,6 @@ export const ReservationsProvider = ({ children }) => {
       type: 'EDIT_RESERVATION',
       payload: {
         reservation,
-      },
-    })
-  }, [])
-
-  const editReservationFail = useCallback((error) => {
-    dispatch({
-      type: 'EDIT_RESERVATION_FAIL',
-      payload: {
-        error,
       },
     })
   }, [])
@@ -185,26 +198,37 @@ export const ReservationsProvider = ({ children }) => {
   }, [state.reservations])
 
   const fetchReservation = useCallback((reservation_id) => {
-    dispatch({
-      type: 'FETCH_RESERVATION',
-      payload: {
-        reservation_id,
-      },
-    })
+    dispatch({ type: 'FETCH_RESERVATION_PENDING' })
+
+    return getReservation(reservation_id)
+      .then((reservation) => {
+        dispatch({
+          type: 'FETCH_RESERVATION_COMPLETE',
+          payload: {
+            reservation,
+          },
+        })
+      })
+      .catch((error) => {
+        dispatch({
+          type: 'FETCH_RESERVATION_FAIL',
+          payload: {
+            error,
+          },
+        })
+      })
   }, [])
 
   const value = useMemo(
     () => ({
-      createReservation,
-      createReservationFail,
+      createNewReservation,
       editReservation,
-      editReservationFail,
       deleteReservation,
       fetchReservations,
       fetchReservation,
       reservations,
     }),
-    [createReservation, createReservationFail, deleteReservation, editReservation, editReservationFail, fetchReservation, fetchReservations, reservations]
+    [createNewReservation, deleteReservation, editReservation, fetchReservation, fetchReservations, reservations]
   )
 
   return (
