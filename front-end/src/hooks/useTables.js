@@ -6,7 +6,7 @@ import {
   useReducer,
 } from 'react'
 
-import { createTable, listTables, getTable } from '../utils/api'
+import { createTable, listTables, getTable, updateTable } from '../utils/api'
 
 const reducer = (state, action) => {
   const { type, payload = {} } = action
@@ -38,7 +38,7 @@ const reducer = (state, action) => {
         error,
       }
     }
-    case 'EDIT_TABLE': {
+    case 'EDIT_TABLE_COMPLETE': {
       const { table } = payload
 
       return {
@@ -85,6 +85,29 @@ const reducer = (state, action) => {
         error,
       }
     }
+    case 'FETCH_TABLE_PENDING': {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      }
+    }
+    case 'FETCH_TABLE_COMPLETE': {
+      const { table } =  payload
+
+      return {
+        ...state,
+        table,
+      }
+    }
+    case ' FETCH_TABLE_FAIL': {
+      const { error } = payload
+
+      return {
+        ...state,
+        error,
+      }
+    }
     default: 
       throw new Error(`Unknown action type: ${type}`)
   }
@@ -122,13 +145,82 @@ export const TablesProvider = ({ children}) => {
           },
         })
       })
-  })
+  }, [])
+
+  const editTable = useCallback((table) => {
+    dispatch({ type: 'EDIT_TABLE_PENDING' })
+
+    return updateTable(table)
+      .then((table) => {
+        dispatch({
+          type: 'EDIT_TABLE_COMPLETE',
+          payload: {
+            table,
+          },
+        })
+      })
+      .catch((error) => {
+        dispatch({
+          type: 'EDIT_TABLE_FAIL',
+          payload: {
+            error,
+          },
+        })
+      }) 
+  }, [])
+
+  const fetchTables = useCallback((status) => {
+    dispatch({ type: 'FETCH_TABLES_PENDING'})
+
+    return listTables(status)
+      .then((tables) => {
+        dispatch({
+          type: 'FETCH_TABLES_COMPLETE',
+          payload: {
+            tables,
+          }
+        })
+      })
+      .catch((error) => {
+        dispatch({
+          type: 'FETCH_TABLES_FAIL',
+          payload: {
+            error,
+          },
+        })
+      })
+  }, [])
+
+  const fetchTable = useCallback((table_id) => {
+    dispatch({ type: 'FETCH_TABLE_PENDING' })
+
+    return getTable(table_id)
+      .then((table) => {
+        dispatch({
+          type: 'FETCH_TABLE_COMPLETE',
+          payload: {
+            table,
+          }
+        })
+      })
+      .catch((error) => {
+        dispatch({
+          type: 'FETCH_TABLE_FAIL',
+          payload: {
+            error,
+          },
+        })
+      })
+  }, [])
 
   const value = useMemo(
     () => ({
       createNewTable,
+      editTable,
+      fetchTable,
+      fetchTables,
     }),
-    [createNewTable]
+    [createNewTable, editTable, fetchTable, fetchTables]
   )
 
   return (
