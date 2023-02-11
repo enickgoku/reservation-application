@@ -213,19 +213,27 @@ export const TablesProvider = ({ children}) => {
       })
   }, [])
 
+  const tables = useMemo(() => {
+    return state.tables
+  }, [state.tables])
+
   const value = useMemo(
     () => ({
       createNewTable,
       editTable,
       fetchTable,
       fetchTables,
+      tables,
     }),
-    [createNewTable, editTable, fetchTable, fetchTables]
+    [createNewTable, editTable, fetchTable, fetchTables, tables]
   )
 
   return (
     <TablesContext.Provider value={value}>
       {children}
+      
     </TablesContext.Provider>
   )
 }
+
+export const useTables = () => useContext(TablesContext)
