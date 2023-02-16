@@ -6,7 +6,7 @@ import {
   useReducer,
 } from 'react'
 
-import { createTable, listTables, getTable, updateTable } from '../utils/api'
+import { createTable, listTables, getTable, updateTable, deleteTable } from '../utils/api'
 
 const reducer = (state, action) => {
   const { type, payload = {} } = action
@@ -54,12 +54,27 @@ const reducer = (state, action) => {
         error,
       }
     }
-    case 'DELETE_TABLE': {
+    case 'DELETE_TABLE_PENDING': {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      }
+    }
+    case 'DELETE_TABLE_COMPLETE': {
       const { table_id } = payload
 
       return {
         ...state,
         tables: state.tables.filter((table) => table.table_id !== table_id),
+      }
+    }
+    case 'DELETE_TABLE_FAIL': {
+      const { error } = payload
+      
+      return {
+        ...state,
+        error,
       }
     }
     case 'FETCH_TABLES_COMPLETE': {
@@ -169,6 +184,37 @@ export const TablesProvider = ({ children}) => {
       }) 
   }, [])
 
+  const deleteTable = useCallback((tableId) => {
+    dispatch({
+      type: 'DELETE_TABLE_PENDING',
+      payload: {
+        loading: true,
+      }
+    })
+
+    return deleteTable(tableId)
+      .then(() => {
+        dispatch({
+          type: 'DELETE_TABLE_COMPLETE',
+          payload: {
+            tableId,
+          },
+        })
+      })
+      .then(() => {
+        state.tables.filter((table) => table.table_id !== tableId)
+        return state.tables
+      })
+      .catch((error) => {
+        dispatch({
+          type: 'DELETE_TABLE_FAIL',
+          payload: {
+            error,
+          },
+        })
+      })
+  }, [])
+
   const fetchTables = useCallback((status) => {
     dispatch({ type: 'FETCH_TABLES_PENDING'})
 
@@ -231,7 +277,6 @@ export const TablesProvider = ({ children}) => {
   return (
     <TablesContext.Provider value={value}>
       {children}
-      
     </TablesContext.Provider>
   )
 }
