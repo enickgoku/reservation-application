@@ -167,14 +167,15 @@ export const ReservationsProvider = ({ children }) => {
     })
   }, [])
 
-  const fetchReservations = useCallback(({ date, phase }, signal) => {
+  const fetchReservations = useCallback((params, signal) => {
     dispatch({
       type: 'FETCH_RESERVATIONS_PENDING',
       payload: {
         loading: true,
       },
     })
-    listReservations({ date, phase }, signal)
+    console.log(params, "reso params")
+    listReservations(params, signal)
       .then((data) => {
         dispatch({
           type: 'FETCH_RESERVATIONS_COMPLETE',

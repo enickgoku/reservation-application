@@ -184,7 +184,7 @@ export const TablesProvider = ({ children}) => {
       }) 
   }, [])
 
-  const deleteTable = useCallback((tableId) => {
+  const deleteATable = useCallback((tableId) => {
     dispatch({
       type: 'DELETE_TABLE_PENDING',
       payload: {
@@ -213,9 +213,11 @@ export const TablesProvider = ({ children}) => {
           },
         })
       })
-  }, [])
+  }, [state.tables])
 
-  const fetchTables = useCallback((status) => {
+  const fetchTables = useCallback((params, signal) => {
+    const { status } = params || {}
+    console.log(status)
     dispatch({ type: 'FETCH_TABLES_PENDING'})
 
     return listTables(status)
@@ -266,12 +268,13 @@ export const TablesProvider = ({ children}) => {
   const value = useMemo(
     () => ({
       createNewTable,
+      deleteATable,
       editTable,
       fetchTable,
       fetchTables,
       tables,
     }),
-    [createNewTable, editTable, fetchTable, fetchTables, tables]
+    [createNewTable, deleteATable, editTable, fetchTable, fetchTables, tables]
   )
 
   return (

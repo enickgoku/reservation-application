@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import { Switch, Route, Redirect } from "react-router-dom"
-import { listTables } from "../utils/api"
 
 import FormTables from "../form-tables/FormTables"
 import FormReservation from "../form-reservations/FormReservations"
@@ -10,13 +9,14 @@ import Loading from "../loading/Loading"
 import SeatTable from "../reservations/seat-table/SeatTable"
 import TableList from "../tables/table-list/TableList"
 
-import { useReservations } from "../hooks/useReservations"
+import { useTables, useReservations } from "../hooks"
 
 import "../layout/Layout.css"
 
 function Dashboard(props) {
 
   const { fetchReservations, reservations } = useReservations()
+  const { fetchTables, tables } = useTables()
 
   let {
     setDateSetting,
@@ -25,24 +25,21 @@ function Dashboard(props) {
   } = props
 
   const [reservationsFilter, setReservationsFilter] = useState("all")
-  const [tables, setTables] = useState([])
   const [tablesError, setTablesError] = useState(null)
   const [tablesFilter, setTablesFilter] = useState("all")
 
-  useEffect(loadDashboard, [dateSetting, reservationsFilter, tablesFilter, currentDate, fetchReservations])
+  useEffect(loadDashboard, [dateSetting, reservationsFilter, tablesFilter, currentDate, fetchReservations, fetchTables])
 
   function loadDashboard() {
     const abortController = new AbortController()
 
-    const params = {}
+    let tablesParams = { status: tablesFilter }
     const resoParams = { date: dateSetting, phase: reservationsFilter }
 
     if (tablesFilter !== 'all'){
-    params.status = tablesFilter
+    tablesParams= tablesFilter
     }
-    listTables(params, abortController.signal)
-      .then(setTables)
-      .catch(setTablesError)
+    fetchTables(tablesParams, abortController.signal)
     fetchReservations(resoParams, abortController.signal)
     return () => abortController.abort()
   }
@@ -69,10 +66,10 @@ function Dashboard(props) {
           <Redirect to={"/dashboard"} />
         </Route>
         <Route exact={true} path={"/tables/new"}>
-          <FormTables setTables={setTables} dateSetting={dateSetting} setDateSetting={setDateSetting} loadDashboard={loadDashboard} />
+          <FormTables dateSetting={dateSetting} setDateSetting={setDateSetting} loadDashboard={loadDashboard} />
         </Route>
         <Route exact={true} path={"/tables/:table_id/edit"}>
-          <FormTables setTables={setTables} dateSetting={dateSetting} setDateSetting={setDateSetting} loadDashboard={loadDashboard} />
+          <FormTables dateSetting={dateSetting} setDateSetting={setDateSetting} loadDashboard={loadDashboard} />
         </Route>
       </Switch>
     </Row>
