@@ -34,7 +34,7 @@ function Dashboard(props) {
     const abortController = new AbortController()
 
     let tablesParams = { status: tablesFilter }
-    const resoParams = { date: dateSetting, phase: reservationsFilter }
+    let resoParams = { date: dateSetting, phase: reservationsFilter }
 
     if (tablesFilter !== 'all'){
     tablesParams= tablesFilter
