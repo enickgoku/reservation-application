@@ -174,7 +174,6 @@ export const ReservationsProvider = ({ children }) => {
         loading: true,
       },
     })
-    console.log(params, "reso params")
     listReservations(params, signal)
       .then((data) => {
         dispatch({

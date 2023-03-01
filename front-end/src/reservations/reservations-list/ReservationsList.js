@@ -9,13 +9,11 @@ export default function ReservationsList(props) {
 
   let { reservations, dateSetting, currentDate, setReservationsFilter, setDateSetting, loadDashboard, tables } = props
 
-  const [reservationsList, setReservationsList] = useState([])
   const [reservationsError, setReservationsError] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setReservationsError(null)
-    setReservationsList(reservations)
     setLoading(false)
   }, [reservations, dateSetting])
 
@@ -27,7 +25,7 @@ export default function ReservationsList(props) {
     <>
       <ReservationToolBar currentDate={currentDate} dateSetting={dateSetting} setDateSetting={setDateSetting} setReservationsFilter={setReservationsFilter} loadDashboard={loadDashboard} reservations={reservations} />
       <ErrorAlert error={reservationsError} />
-      {reservationsList.map((reservation) => (
+      {reservations.map((reservation) => (
           <ReservationCard
             key={reservation.reservation_id}
             reservations={reservation}

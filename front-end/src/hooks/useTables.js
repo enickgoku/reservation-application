@@ -217,7 +217,6 @@ export const TablesProvider = ({ children}) => {
 
   const fetchTables = useCallback((params, signal) => {
     const { status } = params || {}
-    console.log(status)
     dispatch({ type: 'FETCH_TABLES_PENDING'})
 
     return listTables(status)
