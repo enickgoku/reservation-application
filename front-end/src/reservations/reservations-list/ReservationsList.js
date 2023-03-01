@@ -11,10 +11,21 @@ export default function ReservationsList(props) {
 
   const [reservationsError, setReservationsError] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [isDesktopOrLaptop, setIsDesktopOrLaptop] = useState(window.innerWidth >= 768)
 
   useEffect(() => {
     setReservationsError(null)
     setLoading(false)
+
+    const handleResize = () => {
+      setIsDesktopOrLaptop(window.innerWidth >= 768)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
   }, [reservations, dateSetting])
 
   if (loading || reservationsError) {
@@ -22,7 +33,7 @@ export default function ReservationsList(props) {
   }
 
   return (
-    <>
+    <div className={isDesktopOrLaptop ? "d-flex flex-column align-items-start flex-shrink-0 mr-5 h-50 overflow-auto" : ""}>
       <ReservationToolBar currentDate={currentDate} dateSetting={dateSetting} setDateSetting={setDateSetting} setReservationsFilter={setReservationsFilter} loadDashboard={loadDashboard} reservations={reservations} />
       <ErrorAlert error={reservationsError} />
       {reservations.map((reservation) => (
@@ -33,6 +44,6 @@ export default function ReservationsList(props) {
             tables={tables}
           />
       ))}
-    </>
+    </div>
   )
 }

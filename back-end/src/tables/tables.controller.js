@@ -10,7 +10,7 @@ async function list(req, res) {
   if (status === "free") {
     return res.json({ data: await service.listFreeTables() })
   }
-  res.json({ data: await service.list() })
+  res.json({ data: await service.list()})
 }
 
 async function read(req, res) {

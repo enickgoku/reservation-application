@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Switch, Route, Redirect } from "react-router-dom"
+import { useMediaQuery } from "react-responsive"
 
 import FormTables from "../form-tables/FormTables"
 import FormReservation from "../form-reservations/FormReservations"
@@ -47,27 +48,62 @@ function Dashboard(props) {
 
   useEffect(loadDashboard, [dateSetting, reservationsFilter, tablesFilter, currentDate, fetchReservations, fetchTables])
 
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1000px)'
+  })
+
   if(!reservations || !tables) return <Loading />
 
   return (
     <Row className="d-flex flex-column align-items-center flex-md-row justify-content-md-center align-items-md-start w-100">
       <Switch>
         <Route exact path={["/reservations", "/tables", "/dashboard"]}>
-          <TableList
-            tables={tables}
-            tablesError={tablesError}
-            setTablesFilter={setTablesFilter}
-            loadDashboard={loadDashboard}
-          />
-          <ReservationsList
-            loadDashboard={loadDashboard}
-            dateSetting={dateSetting}
-            currentDate={currentDate}
-            reservations={reservations}
-            setReservationsFilter={setReservationsFilter}
-            setDateSetting={setDateSetting}
-            reservationsFilter={reservationsFilter}
-          />
+          {isDesktopOrLaptop && (
+            <>
+              <div className="col-md-4">
+                <ReservationsList
+                  loadDashboard={loadDashboard}
+                  dateSetting={dateSetting}
+                  currentDate={currentDate}
+                  reservations={reservations}
+                  setReservationsFilter={setReservationsFilter}
+                  setDateSetting={setDateSetting}
+                  reservationsFilter={reservationsFilter}
+                />
+              </div>
+              <div className="col-md-8">
+                <TableList
+                  tables={tables}
+                  tablesError={tablesError}
+                  setTablesFilter={setTablesFilter}
+                  loadDashboard={loadDashboard}
+                />
+              </div>
+            </>
+          )}
+          {!isDesktopOrLaptop && (
+            <>
+              <div className="col-12">
+                <ReservationsList
+                  loadDashboard={loadDashboard}
+                  dateSetting={dateSetting}
+                  currentDate={currentDate}
+                  reservations={reservations}
+                  setReservationsFilter={setReservationsFilter}
+                  setDateSetting={setDateSetting}
+                  reservationsFilter={reservationsFilter}
+                />
+              </div>
+              <div className="col-12">
+                <TableList
+                  tables={tables}
+                  tablesError={tablesError}
+                  setTablesFilter={setTablesFilter}
+                  loadDashboard={loadDashboard}
+                />
+              </div>
+            </>
+          )}
         </Route>
         <Route exact path="/reservations/new">
           <FormReservation
